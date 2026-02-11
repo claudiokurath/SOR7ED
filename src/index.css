@@ -26,7 +26,7 @@
 
     /* Stealth Tech Containers */
     .stealth-card {
-        @apply relative bg-zinc-900/40 border border-white/5 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500;
+        @apply relative bg-zinc-900/40 border border-sor7ed-yellow rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500;
     }
 
     .stealth-card::before {
