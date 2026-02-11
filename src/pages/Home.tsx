@@ -1,11 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import BranchCard from '../components/BranchCard'
 import { branches } from '../data/branches'
-import { tools } from '../data/tools'
-import { articles } from '../data/articles'
+import { getBlogPosts, getTools } from '../utils/notion'
+import SignupModal from '../components/SignupModal'
 
 export default function Home() {
     const [activeFaq, setActiveFaq] = useState<number | null>(null)
+    const [dynamicTools, setDynamicTools] = useState<any[]>([])
+    const [dynamicArticles, setDynamicArticles] = useState<any[]>([])
+    const [isSignupOpen, setIsSignupOpen] = useState(false)
+    const [selectedTemplate, setSelectedTemplate] = useState('')
+    const [whatsappUrl, setWhatsappUrl] = useState('')
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const blogPosts = await getBlogPosts()
+            const toolsData = await getTools()
+            setDynamicArticles(blogPosts)
+            setDynamicTools(toolsData)
+        }
+        fetchData()
+    }, [])
+
+    const handleToolClick = (tool: any) => {
+        setSelectedTemplate(tool.name)
+        setWhatsappUrl(`https://wa.me/447360277713?text=${tool.keyword || tool.name}`)
+        setIsSignupOpen(true)
+    }
 
     const faqs = [
         { q: "What is SOR7ED?", a: "SOR7ED is a premium system delivering high-fidelity tools and insights specifically for neurodivergent minds." },
@@ -83,8 +104,8 @@ export default function Home() {
                                 </p>
 
                                 <div className="flex flex-wrap gap-4 pt-6">
-                                    {['No Fluff', 'No Signup', 'Pure Data'].map(tag => (
-                                        <span key={tag} className="px-5 py-2 bg-white/5 border border-white/10 rounded-lg text-[10px] font-mono-headline text-zinc-500">
+                                    {['No Fluff', 'Quick Signup', 'Pure Data'].map(tag => (
+                                        <span key={tag} className="px-5 py-2 bg-white/5 border border-sor7ed-yellow rounded-lg text-[10px] font-mono-headline text-zinc-500">
                                             {tag}
                                         </span>
                                     ))}
@@ -125,8 +146,13 @@ export default function Home() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {tools.map((tool) => (
-                            <div key={tool.name} className="stealth-card p-12 group cursor-pointer hover:border-sor7ed-yellow transition-all duration-500">
+                        {dynamicTools.map((tool) => (
+                            <div
+                                key={tool.name}
+                                onClick={() => handleToolClick(tool)}
+                                className="stealth-card p-12 group cursor-pointer hover:border-sor7ed-yellow transition-all duration-500"
+                            >
+                                <div className="text-4xl mb-6">{tool.icon}</div>
                                 <h3 className="text-xl font-black uppercase tracking-widest text-white mb-6">{tool.name}</h3>
                                 <p className="text-sm text-zinc-500 font-light mb-10 leading-relaxed h-12 overflow-hidden">{tool.desc}</p>
                                 <div className="flex items-center space-x-3 text-[10px] font-black tracking-[0.3em] text-sor7ed-yellow transition-all">
@@ -151,7 +177,7 @@ export default function Home() {
                     </div>
 
                     <div className="space-y-4 max-w-5xl">
-                        {articles.map((post, i) => (
+                        {dynamicArticles.map((post, i) => (
                             <div key={i} className="stealth-card p-6 group cursor-pointer hover:bg-white/[0.02]">
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-8 px-6 py-4">
                                     <div className="flex flex-col md:flex-row md:items-center gap-16 flex-grow">
@@ -219,6 +245,12 @@ export default function Home() {
                     </p>
                 </div>
             </section>
+            <SignupModal
+                isOpen={isSignupOpen}
+                onClose={() => setIsSignupOpen(false)}
+                template={selectedTemplate}
+                whatsappUrl={whatsappUrl}
+            />
         </div>
     )
 }

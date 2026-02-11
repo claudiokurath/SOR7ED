@@ -36,15 +36,23 @@ export async function saveSignup(data: {
     }
 }
 
-// These are currently unused in the UI but kept for future dynamic content
-// They would require corresponding serverless functions at /api/blog and /api/tools
+// Fetch published blog posts from Notion via serverless function
 export async function getBlogPosts() {
-    console.warn('getBlogPosts now requires a serverless endpoint. Currently returns static fallback.');
-    return [];
+    try {
+        return await apiFetch('/api/blog');
+    } catch (error) {
+        console.error('Error in getBlogPosts:', error);
+        return [];
+    }
 }
 
+// Fetch live tools from Notion via serverless function
 export async function getTools() {
-    console.warn('getTools now requires a serverless endpoint. Currently returns static fallback.');
-    return [];
+    try {
+        return await apiFetch('/api/tools');
+    } catch (error) {
+        console.error('Error in getTools:', error);
+        return [];
+    }
 }
 
