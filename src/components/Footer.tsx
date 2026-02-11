@@ -1,63 +1,72 @@
-import { Link } from 'react-router-dom'
-
 export default function Footer() {
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        e.preventDefault()
+        const element = document.querySelector(href)
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+        }
+    }
+
     return (
-        <footer className="bg-sor7ed-gray border-t border-sor7ed-gray-light">
-            <div className="container mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    {/* Brand */}
-                    <div className="col-span-1">
-                        <div className="text-2xl font-bold text-sor7ed-yellow mb-4">SOR7ED</div>
-                        <p className="text-gray-400 text-sm">
-                            ADHD-friendly tools delivered to your phone. Worry less, live more.
+        <footer className="bg-[#050505] border-t border-white/5 pt-32 pb-12 px-6">
+            <div className="container mx-auto max-w-7xl">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-32">
+                    <div className="col-span-1 md:col-span-2">
+                        <div className="flex items-center space-x-3 mb-8">
+                            <div className="w-6 h-6 bg-white text-black rounded flex items-center justify-center font-black text-[10px]">7</div>
+                            <span className="text-sm font-black tracking-[0.4em] uppercase text-white">SOR7ED</span>
+                        </div>
+                        <p className="text-zinc-600 font-light max-w-sm text-sm leading-relaxed mb-12">
+                            High-fidelity tools and systems for neurodivergent operating systems. Designed for clarity, built for focus.
                         </p>
+                        <div className="flex space-x-8">
+                            <a href="#" className="text-[10px] font-black tracking-widest text-zinc-700 hover:text-white transition-colors uppercase">Status</a>
+                            <a href="#" className="text-[10px] font-black tracking-widest text-zinc-700 hover:text-white transition-colors uppercase">Safety</a>
+                            <a href="#" className="text-[10px] font-black tracking-widest text-zinc-700 hover:text-white transition-colors uppercase">Legacy</a>
+                        </div>
                     </div>
 
-                    {/* Quick Links */}
                     <div>
-                        <h3 className="text-sor7ed-yellow font-bold mb-4">Quick Links</h3>
-                        <ul className="space-y-2">
-                            <li><Link to="/" className="text-gray-400 hover:text-white transition">Home</Link></li>
-                            <li><Link to="/tools" className="text-gray-400 hover:text-white transition">Tools</Link></li>
-                            <li><Link to="/blog" className="text-gray-400 hover:text-white transition">Blog</Link></li>
-                            <li><Link to="/about" className="text-gray-400 hover:text-white transition">About</Link></li>
+                        <h4 className="text-[10px] uppercase font-black tracking-[0.3em] text-zinc-400 mb-8">Exploration</h4>
+                        <ul className="space-y-4">
+                            {[
+                                { label: 'Tools', href: '#tools' },
+                                { label: 'Blog', href: '#blog' },
+                                { label: 'FAQ', href: '#faq' },
+                                { label: 'About', href: '#about' }
+                            ].map(item => (
+                                <li key={item.label}>
+                                    <a
+                                        href={item.href}
+                                        onClick={(e) => handleNavClick(e, item.href)}
+                                        className="text-xs font-bold text-zinc-600 hover:text-sor7ed-yellow transition-colors cursor-pointer"
+                                    >
+                                        {item.label}
+                                    </a>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
-                    {/* Resources */}
                     <div>
-                        <h3 className="text-sor7ed-yellow font-bold mb-4">Resources</h3>
-                        <ul className="space-y-2">
-                            <li><a href="#" className="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
-                            <li><a href="#" className="text-gray-400 hover:text-white transition">Terms of Service</a></li>
-                            <li><a href="#" className="text-gray-400 hover:text-white transition">FAQ</a></li>
-                        </ul>
-                    </div>
-
-                    {/* Contact */}
-                    <div>
-                        <h3 className="text-sor7ed-yellow font-bold mb-4">Get in Touch</h3>
-                        <ul className="space-y-2 text-gray-400 text-sm">
-                            <li>📱 +44 7360 277713</li>
-                            <li>📧 hello@sor7ed.com</li>
-                            <li>🌐 sor7ed.com</li>
-                            <li className="pt-2">
-                                <a
-                                    href="https://wa.me/447360277713?text=Hi"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-block bg-sor7ed-yellow text-black px-4 py-2 rounded font-bold hover:bg-yellow-400 transition"
-                                >
-                                    WhatsApp Us
-                                </a>
-                            </li>
-                        </ul>
+                        <h4 className="text-[10px] uppercase font-black tracking-[0.3em] text-zinc-400 mb-8">Uplink</h4>
+                        <div className="space-y-4">
+                            <a href="https://wa.me/447360277713" target="_blank" rel="noopener noreferrer" className="block text-xs font-bold text-zinc-600 hover:text-white transition-colors">WhatsApp</a>
+                            <p className="text-xs font-bold text-zinc-700">hello@sor7ed.com</p>
+                        </div>
                     </div>
                 </div>
 
-                <div className="border-t border-sor7ed-gray-light mt-8 pt-8 text-center text-gray-400 text-sm">
-                    <p>&copy; 2026 SOR7ED LIMITED (Company #16398701). All rights reserved.</p>
-                    <p className="mt-2">Built for neurodivergent minds. No judgment, just support.</p>
+                <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 gap-8">
+                    <p className="text-[8px] font-black tracking-[0.4em] text-zinc-800 uppercase">
+                        &copy; 2026 SOR7ED LIMITED (SYST#16398701)
+                    </p>
+                    <div className="flex items-center space-x-4">
+                        <div className="w-2 h-2 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
+                        </div>
+                        <span className="text-[8px] font-black tracking-[0.4em] text-zinc-800 uppercase">System Status: Optimal</span>
+                    </div>
                 </div>
             </div>
         </footer>
