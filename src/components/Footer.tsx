@@ -7,7 +7,7 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Brand */}
                     <div className="col-span-1">
-                        <img src="/images/logo.png" alt="SOR7ED" className="h-12 w-auto mb-4" />
+                        <div className="text-2xl font-bold text-sor7ed-yellow mb-4">SOR7ED</div>
                         <p className="text-gray-400 text-sm">
                             ADHD-friendly tools delivered to your phone. Worry less, live more.
                         </p>

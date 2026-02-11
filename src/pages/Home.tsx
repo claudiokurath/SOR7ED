@@ -8,14 +8,7 @@ export default function Home() {
             {/* Hero Section with Background Image */}
             <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
                 {/* Background Image with Overlay */}
-                <div className="absolute inset-0 z-0">
-                    <img
-                        src="/images/hero-1.jpg"
-                        alt="Hero"
-                        className="w-full h-full object-cover opacity-30"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-black"></div>
-                </div>
+                <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sor7ed-yellow/10 via-black to-black"></div>
 
                 {/* Content */}
                 <div className="relative z-10 container mx-auto px-6 text-center animate-slide-up">

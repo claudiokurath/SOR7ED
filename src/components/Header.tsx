@@ -10,11 +10,9 @@ export default function Header() {
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-3 group">
-                        <img
-                            src="/logo.png"
-                            alt="SOR7ED"
-                            className="h-10 w-auto transition-transform group-hover:scale-110"
-                        />
+                        <div className="w-10 h-10 bg-sor7ed-yellow rounded flex items-center justify-center font-black text-black text-xl transition-transform group-hover:scale-110">
+                            7
+                        </div>
                         <span className="text-2xl font-bold text-sor7ed-yellow">SOR7ED</span>
                     </Link>
 
