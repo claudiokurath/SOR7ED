@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import BranchCard from '../components/BranchCard'
+import { useNavigate } from 'react-router-dom'
 import { branches } from '../data/branches'
 import { getBlogPosts, getTools } from '../utils/notion'
 import SignupModal from '../components/SignupModal'
+import DopamineMenu from '../components/tools/DopamineMenu'
 
 export default function Home() {
     const [activeFaq, setActiveFaq] = useState<number | null>(null)
@@ -11,20 +12,63 @@ export default function Home() {
     const [isSignupOpen, setIsSignupOpen] = useState(false)
     const [selectedTemplate, setSelectedTemplate] = useState('')
     const [whatsappUrl, setWhatsappUrl] = useState('')
+    const [activeToolId, setActiveToolId] = useState<string | null>(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             const blogPosts = await getBlogPosts()
             const toolsData = await getTools()
-            setDynamicArticles(blogPosts)
-            setDynamicTools(toolsData)
+
+            // If API returns empty (common in local dev without Vercel), use high-fidelity placeholders
+            if (!blogPosts || blogPosts.length === 0) {
+                setDynamicArticles([
+                    { title: 'The Architectural Mind: Systems for ADHD', date: '2026-02-13', category: 'Mind' },
+                    { title: 'Dopamine Stewardship in a High-Noise World', date: '2026-02-12', category: 'Body' },
+                    { title: 'The Frictionless Executive: Tech Protocols', date: '2026-02-11', category: 'Tech' }
+                ])
+            } else {
+                setDynamicArticles(blogPosts)
+            }
+
+            if (!toolsData || toolsData.length === 0) {
+                setDynamicTools([
+                    { name: 'Dopamine Menu', icon: '⚡', desc: 'Strategic stimulation builder.', keyword: 'DOPAMINE', isPublic: true },
+                    { name: 'Crisis Triage', icon: '🆘', desc: 'Immediate cognitive stabilizing.', keyword: 'CRISIS' },
+                    { name: 'Focus Lock', icon: '🔒', desc: 'Deep work environment protocol.', keyword: 'FOCUS' }
+                ])
+            } else {
+                setDynamicTools(toolsData)
+            }
         }
         fetchData()
     }, [])
 
     const handleToolClick = (tool: any) => {
+        if (tool.name === 'Dopamine Menu') {
+            setActiveToolId('dopamine-menu')
+            return
+        }
+
         setSelectedTemplate(tool.name)
-        setWhatsappUrl(`https://wa.me/447360277713?text=${tool.keyword || tool.name}`)
+        const url = `https://wa.me/447360277713?text=${tool.keyword || tool.name}`
+        setWhatsappUrl(url)
+
+        if (tool.isPublic) {
+            window.location.href = url
+        } else {
+            setIsSignupOpen(true)
+        }
+    }
+
+    const handlePostClick = (post: any) => {
+        navigate(`/blog/${encodeURIComponent(post.title)}`)
+    }
+
+    const handleGetProtocol = (post: any) => {
+        setSelectedTemplate(post.title)
+        const url = `https://wa.me/447360277713?text=PROTOCOL: ${post.title}`
+        setWhatsappUrl(url)
         setIsSignupOpen(true)
     }
 
@@ -52,9 +96,8 @@ export default function Home() {
                             <span className="text-[10px] font-mono-headline text-zinc-400">System Architecture for ADHD</span>
                         </div>
 
-                        <h1 className="section-title leading-[0.9] lg:text-9xl mb-12">
-                            CLARITY FOR <br />
-                            <span className="accent-glow">MOVING BRAINS.</span>
+                        <h1 className="section-title leading-[0.8] lg:text-[12rem] md:text-[10rem] text-[5rem] mb-12 tracking-tighter">
+                            <span className="title-white">THE</span> <span className="title-yellow">LAB.</span>
                         </h1>
 
                         <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl font-light leading-relaxed mb-16">
@@ -83,126 +126,156 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Foundation Section */}
-            <section id="about" className="py-32 px-6 relative">
-                <div className="container mx-auto max-w-5xl">
-                    <div className="stealth-card p-12 md:p-20 relative">
-                        <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <div className="text-9xl font-black">7</div>
-                        </div>
+            {/* The Foundation & Vectors Section */}
+            <section id="about" className="py-32 relative flex flex-col items-center">
+                <div className="container mx-auto px-6 max-w-7xl flex flex-col items-center">
+                    <div className="max-w-4xl mx-auto stealth-card p-12 md:p-16 mb-32 relative overflow-hidden group border-sor7ed-yellow text-center flex flex-col items-center">
+                        {/* Huge background watermark */}
+                        <div className="absolute top-0 right-10 text-[260px] font-black text-white/[0.02] leading-none select-none pointer-events-none group-hover:text-sor7ed-yellow/[0.04] transition-colors duration-1000">7</div>
 
-                        <div className="max-w-2xl relative z-10">
-                            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-8">
-                                The <span className="text-sor7ed-yellow">Foundation.</span>
+                        <div className="relative z-10">
+                            <h2 className="section-title">
+                                <span className="title-white">THE</span> <span className="title-yellow">FOUNDATION.</span>
                             </h2>
-                            <div className="space-y-8 text-lg md:text-xl text-zinc-400 font-light leading-relaxed">
-                                <p>
+                            <div className="max-w-2xl">
+                                <p className="text-zinc-500 font-light leading-relaxed mb-6 text-lg">
                                     SOR7ED is a premium system delivering high-fidelity tools for neurodivergent minds. We publish 3 core updates per week.
                                 </p>
-                                <p className="text-white font-medium">
+                                <p className="text-zinc-400 font-light leading-relaxed mb-12 text-lg">
                                     Every insight includes an <span className="text-sor7ed-yellow italic">Interactive Protocol</span> you can initialize via WhatsApp.
                                 </p>
-
-                                <div className="flex flex-wrap gap-4 pt-6">
-                                    {['No Fluff', 'Quick Signup', 'Pure Data'].map(tag => (
-                                        <span key={tag} className="px-5 py-2 bg-white/5 border border-sor7ed-yellow rounded-lg text-[10px] font-mono-headline text-zinc-500">
-                                            {tag}
-                                        </span>
-                                    ))}
+                                <div className="flex flex-wrap gap-4 justify-center">
+                                    <span className="stealth-tag border-sor7ed-yellow text-sor7ed-yellow">No Fluff</span>
+                                    <span className="stealth-tag border-sor7ed-yellow/60 text-white">Quick Signup</span>
+                                    <span className="stealth-tag">Pure Data</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            {/* 7 Branches / Vectors Grid */}
-            <section id="branches" className="py-32 px-6">
-                <div className="container mx-auto max-w-7xl">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-                        <div className="max-w-xl">
-                            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">THE 7 <span className="text-sor7ed-yellow">VECTORS.</span></h2>
-                            <p className="text-zinc-500 uppercase tracking-widest text-xs font-bold leading-relaxed">Life is a system of 7 core processes. Optimization requires individual attention.</p>
-                        </div>
+                    <div className="mb-20 text-center flex flex-col items-center">
+                        <h2 className="section-title justify-center flex gap-4">
+                            <span className="title-white">THE 7</span> <span className="title-yellow">VECTORS.</span>
+                        </h2>
+                        <p className="text-zinc-600 font-mono-headline text-[10px] tracking-widest uppercase">
+                            Life is a system of 7 core processes. Optimization requires individual attention.
+                        </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {branches.map((branch, index) => (
-                            <BranchCard key={branch.name} branch={branch} delay={index * 100} />
+                        {branches.map((branch) => (
+                            <div key={branch.name} className="stealth-card p-8 group hover:border-white transition-all duration-500">
+                                <div className="flex flex-col h-full">
+                                    <div className="mb-8 overflow-hidden">
+                                        <div className="w-8 h-px bg-zinc-800 mb-4 group-hover:bg-sor7ed-yellow transition-colors" />
+                                        <span className="text-[9px] font-mono-headline text-zinc-600 group-hover:text-sor7ed-yellow transition-colors uppercase tracking-[0.2em] block">
+                                            VECTOR {branch.name}
+                                        </span>
+                                    </div>
+                                    <div className="flex-grow">
+                                        <h3 className="text-xl font-black text-white uppercase tracking-wider mb-6">{branch.name}</h3>
+                                        <p className="text-[13px] text-zinc-500 font-light leading-relaxed mb-8">{branch.description}</p>
+                                    </div>
+                                    <div className="mt-10 pt-6 border-t border-zinc-900 flex items-center justify-between">
+                                        <span className="text-[9px] font-mono-headline text-zinc-700 uppercase tracking-widest">Protocol 07</span>
+                                        <span className="text-[14px] text-zinc-800 group-hover:text-sor7ed-yellow transition-colors">+</span>
+                                    </div>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Tools Section */}
-            <section id="tools" className="py-32 px-6 border-y border-sor7ed-yellow">
-                <div className="container mx-auto max-w-7xl">
+            {/* Tools Section / Registry */}
+            <section id="tools" className="py-32 px-6 border-y border-sor7ed-yellow/20 flex flex-col items-center">
+                <div className="container mx-auto max-w-7xl text-center flex flex-col items-center">
                     <div className="max-w-3xl mb-16">
-                        <div className="text-[10px] font-mono-headline text-sor7ed-yellow mb-4">Functional Registry</div>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">INTERACTIVE <span className="accent-glow italic font-light">KITS.</span></h2>
-                        <p className="text-xl text-zinc-500 font-light max-w-xl mt-6">
-                            Low-latency systems for executive function. Zero cognitive load, maximum deployment speed.
+                        <h2 className="section-title justify-center flex gap-4">
+                            <span className="title-white">THE</span> <span className="title-yellow">REGISTRY.</span>
+                        </h2>
+                        <p className="text-zinc-600 font-mono-headline text-xs tracking-widest uppercase">
+                            Operational protocols for immediate cognitive relief.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {dynamicTools.map((tool) => (
-                            <div
-                                key={tool.name}
-                                onClick={() => handleToolClick(tool)}
-                                className="stealth-card p-12 group cursor-pointer hover:border-sor7ed-yellow transition-all duration-500"
-                            >
-                                <div className="text-4xl mb-6">{tool.icon}</div>
-                                <h3 className="text-xl font-black uppercase tracking-widest text-white mb-6">{tool.name}</h3>
-                                <p className="text-sm text-zinc-500 font-light mb-10 leading-relaxed h-12 overflow-hidden">{tool.desc}</p>
-                                <div className="flex items-center space-x-3 text-[10px] font-black tracking-[0.3em] text-sor7ed-yellow transition-all">
-                                    <span className="uppercase">Run Protocol</span>
-                                    <span className="w-8 h-px bg-sor7ed-yellow/30 group-hover:w-12 transition-all" />
+                        {dynamicTools.length > 0 ? (
+                            dynamicTools.map((tool) => (
+                                <div
+                                    key={tool.name}
+                                    onClick={() => handleToolClick(tool)}
+                                    className="stealth-card p-12 group cursor-pointer hover:border-sor7ed-yellow transition-all duration-500"
+                                >
+                                    <div className="text-4xl mb-6">{tool.icon}</div>
+                                    <h3 className="text-xl font-black uppercase tracking-widest text-white mb-6">{tool.name}</h3>
+                                    <p className="text-sm text-zinc-500 font-light mb-10 leading-relaxed h-12 overflow-hidden">{tool.desc}</p>
+                                    <div className="flex items-center space-x-3 text-[10px] font-black tracking-[0.3em] text-sor7ed-yellow transition-all">
+                                        <span className="uppercase">Run Protocol</span>
+                                        <span className="w-8 h-px bg-sor7ed-yellow/30 group-hover:w-12 transition-all" />
+                                    </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-2xl">
+                                <p className="text-zinc-600 font-mono-headline text-xs">Registry Empty // Check Notion Status: Live</p>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </section>
 
-            {/* Blog Section */}
-            <section id="blog" className="py-32 px-6">
-                <div className="container mx-auto max-w-7xl">
-                    <div className="max-w-3xl mb-32">
-                        <div className="text-[10px] font-mono-headline text-sor7ed-yellow mb-4">Central Repository</div>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">THE <span className="accent-glow italic font-light">INSIGHTS.</span></h2>
-                        <p className="text-xl text-zinc-500 font-light mt-6">
-                            High-fidelity writing for the neurodivergent operating system. Updated 3x weekly.
+            {/* Blog Section / Insights */}
+            <section id="blog" className="py-32 px-6 flex flex-col items-center">
+                <div className="container mx-auto max-w-7xl flex flex-col items-center">
+                    <div className="max-w-3xl mb-24 text-center">
+                        <h2 className="section-title justify-center flex gap-4">
+                            <span className="title-white">THE</span> <span className="title-yellow">INSIGHTS.</span>
+                        </h2>
+                        <p className="text-zinc-600 font-mono-headline text-xs tracking-widest uppercase">
+                            Deep analysis of neuro-architectural patterns.
                         </p>
                     </div>
 
-                    <div className="space-y-4 max-w-5xl">
-                        {dynamicArticles.map((post, i) => (
-                            <div key={i} className="stealth-card p-6 group cursor-pointer hover:bg-white/[0.02]">
-                                <div className="flex flex-col md:flex-row items-center justify-between gap-8 px-6 py-4">
-                                    <div className="flex flex-col md:flex-row md:items-center gap-16 flex-grow">
-                                        <span className="text-[10px] font-mono-headline text-zinc-600 italic uppercase min-w-[100px]">{post.date}</span>
-                                        <h2 className="text-xl font-bold text-zinc-400 group-hover:text-white transition-colors uppercase tracking-[0.1em]">{post.title}</h2>
-                                    </div>
-                                    <div className="flex items-center gap-12">
-                                        <span className="text-[10px] font-mono-headline text-sor7ed-yellow italic">{post.category}</span>
-                                        <div className="w-12 h-12 rounded-full border border-sor7ed-yellow/30 flex items-center justify-center text-zinc-700 group-hover:border-sor7ed-yellow group-hover:text-sor7ed-yellow transition-all">
-                                            <span className="text-xs">VIEW</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
+                        {dynamicArticles.length > 0 ? (
+                            dynamicArticles.map((post, i) => (
+                                <div
+                                    key={i}
+                                    onClick={() => handlePostClick(post)}
+                                    className="stealth-card p-12 group cursor-pointer hover:border-sor7ed-yellow transition-all duration-500 flex flex-col items-center text-center"
+                                >
+                                    <div className="text-[10px] font-mono-headline text-zinc-600 italic uppercase mb-6 tracking-[0.2em]">{post.date}</div>
+                                    <h3 className="text-xl font-black text-white hover:text-sor7ed-yellow transition-colors uppercase tracking-widest mb-8 h-20 flex items-center justify-center">
+                                        {post.title}
+                                    </h3>
+                                    <div className="mt-auto pt-6 border-t border-zinc-900 w-full flex items-center justify-between">
+                                        <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-widest italic">{post.category}</span>
+                                        <div className="w-8 h-8 rounded-full border border-sor7ed-yellow/30 flex items-center justify-center text-zinc-700 group-hover:border-sor7ed-yellow group-hover:text-sor7ed-yellow transition-all">
+                                            <span className="text-[10px]">&rarr;</span>
                                         </div>
                                     </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className="col-span-full py-20 text-center border border-dashed border-white/10 rounded-2xl w-full">
+                                <p className="text-zinc-600 font-mono-headline text-xs">Repository Syncing // Check Notion Status: Published</p>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </section>
 
-            {/* FAQ Section */}
-            <section id="faq" className="py-32 px-6 bg-zinc-900/10">
+            {/* FAQ Section / Documentation */}
+            <section id="faq" className="py-32 px-6 bg-zinc-900/10 border-t border-white/5">
                 <div className="container mx-auto max-w-4xl">
                     <div className="text-center mb-24">
-                        <div className="text-[10px] font-mono-headline text-sor7ed-yellow mb-4">Manual / Documentation</div>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">COMMON <span className="accent-glow italic font-light">QUERIES.</span></h2>
+                        <h2 className="section-title justify-center flex gap-4">
+                            <span className="title-white">COMMON</span> <span className="title-yellow">QUERIES.</span>
+                        </h2>
+                        <p className="text-zinc-600 font-mono-headline text-[10px] tracking-widest uppercase">
+                            Manual // Documentation // Support
+                        </p>
                     </div>
 
                     <div className="space-y-4">
@@ -232,19 +305,39 @@ export default function Home() {
             </section>
 
             {/* Final CTA Layer */}
-            <section className="py-40 px-6 relative overflow-hidden border-t border-sor7ed-yellow">
+            <section className="py-60 px-6 relative overflow-hidden border-t border-sor7ed-yellow/20">
                 <div className="container mx-auto text-center relative z-10">
-                    <h2 className="text-5xl md:text-8xl font-black mb-12 tracking-tighter uppercase leading-[0.9]">
-                        Ready to <br /><span className="text-sor7ed-yellow accent-glow italic font-light">Evolve?</span>
+                    <h2 className="section-title mb-16 leading-[0.9]">
+                        <span className="title-white">READY TO</span> <br /><span className="title-yellow">EVOLVE?</span>
                     </h2>
-                    <a href="https://wa.me/447360277713?text=Hi" target="_blank" rel="noopener noreferrer" className="btn-primary transform hover:scale-110">
-                        Initialize Connection
-                    </a>
-                    <p className="mt-12 text-zinc-500 font-mono-headline text-[10px]">
+                    <div className="flex justify-center">
+                        <a href="https://wa.me/447360277713?text=Hi" target="_blank" rel="noopener noreferrer" className="btn-primary scale-110 hover:scale-125 transition-transform">
+                            Initialize Connection
+                        </a>
+                    </div>
+                    <p className="mt-20 text-zinc-700 font-mono-headline text-[10px] tracking-[0.5em] uppercase">
                         No friction. No noise. Just systems.
                     </p>
                 </div>
             </section>
+            {/* Interactive Tool Overlay */}
+            {activeToolId && (
+                <div className="fixed inset-0 bg-black/95 z-[60] overflow-y-auto px-6 py-20 animate-in fade-in duration-500">
+                    <div className="container mx-auto max-w-5xl relative">
+                        <button
+                            onClick={() => setActiveToolId(null)}
+                            className="absolute -top-12 right-0 text-white/50 hover:text-white font-mono-headline text-xs tracking-widest flex items-center space-x-2"
+                        >
+                            <span>[ CLOSE SYSTEM ]</span>
+                            <span className="text-lg">×</span>
+                        </button>
+
+                        {activeToolId === 'dopamine-menu' && <DopamineMenu />}
+                    </div>
+                </div>
+            )}
+
+
             <SignupModal
                 isOpen={isSignupOpen}
                 onClose={() => setIsSignupOpen(false)}

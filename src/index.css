@@ -60,16 +60,27 @@
         font-family: 'antarctican-headline', sans-serif;
     }
 
-    /* Typography */
+    /* Industrial Stealth Titles */
     .section-title {
-        @apply text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 bg-clip-text text-transparent;
+        @apply text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase mb-8;
         font-family: 'antarctican-headline', sans-serif;
-        background-image: linear-gradient(to bottom, #ffffff 0%, #71717a 100%);
+    }
+
+    .title-white {
+        @apply text-white;
+    }
+
+    .title-yellow {
+        @apply text-sor7ed-yellow;
+    }
+
+    /* Tags from the screenshot */
+    .stealth-tag {
+        @apply px-4 py-2 border border-white/20 rounded text-[9px] font-mono-headline text-zinc-500 uppercase tracking-[0.2em] hover:border-sor7ed-yellow hover:text-white transition-all;
     }
 
     .accent-glow {
         @apply text-sor7ed-yellow;
-        filter: drop-shadow(0 0 8px rgba(245, 198, 20, 0.4));
     }
 }
 
