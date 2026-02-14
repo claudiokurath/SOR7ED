@@ -1,7 +1,9 @@
 import { Client } from '@notionhq/client'
 
 // Initialize Notion client (Server-side)
+// @ts-ignore
 const crmNotion = new Client({ auth: process.env.NOTION_CRM_TOKEN })
+// @ts-ignore
 const CRM_DATABASE_ID = process.env.NOTION_CRM_DATABASE_ID
 
 export default async function handler(req: any, res: any) {

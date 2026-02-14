@@ -1,6 +1,8 @@
 import { Client } from '@notionhq/client'
 
+// @ts-ignore
 const toolsNotion = new Client({ auth: process.env.NOTION_TOOLS_TOKEN })
+// @ts-ignore
 const TOOLS_DATABASE_ID = process.env.NOTION_TOOLS_DATABASE_ID
 
 export default async function handler(req: any, res: any) {

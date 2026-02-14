@@ -1,6 +1,8 @@
 import { Client } from '@notionhq/client'
 
+// @ts-ignore
 const blogNotion = new Client({ auth: process.env.NOTION_BLOG_TOKEN })
+// @ts-ignore
 const BLOG_DATABASE_ID = process.env.NOTION_BLOG_DATABASE_ID
 
 export default async function handler(req: any, res: any) {

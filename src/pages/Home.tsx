@@ -65,12 +65,6 @@ export default function Home() {
         navigate(`/blog/${encodeURIComponent(post.title)}`)
     }
 
-    const handleGetProtocol = (post: any) => {
-        setSelectedTemplate(post.title)
-        const url = `https://wa.me/447360277713?text=PROTOCOL: ${post.title}`
-        setWhatsappUrl(url)
-        setIsSignupOpen(true)
-    }
 
     const faqs = [
         { q: "What is SOR7ED?", a: "SOR7ED is a premium system delivering high-fidelity tools and insights specifically for neurodivergent minds." },

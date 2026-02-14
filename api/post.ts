@@ -1,6 +1,8 @@
 import { Client } from '@notionhq/client'
 
+// @ts-ignore
 const blogNotion = new Client({ auth: process.env.NOTION_BLOG_TOKEN })
+// @ts-ignore
 const BLOG_DATABASE_ID = process.env.NOTION_BLOG_DATABASE_ID
 
 export default async function handler(req: any, res: any) {
@@ -28,7 +30,7 @@ export default async function handler(req: any, res: any) {
         const props: any = (response.results[0] as any).properties
 
         // 2. Get blocks (content)
-        const blocks = await blogNotion.blocks.children.list({ block_id: pageId })
+        const blocks = await (blogNotion.blocks.children as any).list({ block_id: pageId })
 
         // 3. Get page details
         const post = {
