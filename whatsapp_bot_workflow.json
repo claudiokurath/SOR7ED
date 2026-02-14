@@ -1,0 +1,178 @@
+{
+    "name": "SOR7ED WhatsApp Bot - Stage 1 (Template Delivery)",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "whatsapp-webhook",
+                "options": {}
+            },
+            "name": "Twilio Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                100,
+                300
+            ],
+            "id": "1"
+        },
+        {
+            "parameters": {
+                "keepOnlySet": true,
+                "values": {
+                    "string": [
+                        {
+                            "name": "trigger",
+                            "value": "={{ $json.body.Body.trim().toUpperCase() }}"
+                        },
+                        {
+                            "name": "sender",
+                            "value": "={{ $json.body.From }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "name": "Extract Message",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 1,
+            "position": [
+                300,
+                300
+            ],
+            "id": "2"
+        },
+        {
+            "parameters": {
+                "resource": "databasePage",
+                "operation": "getAll",
+                "databaseId": {
+                    "__rl": true,
+                    "value": "={{ $env.NOTION_BLOG_DATABASE_ID }}",
+                    "mode": "id"
+                },
+                "filterType": "manual",
+                "filters": {
+                    "conditions": [
+                        {
+                            "key": "Trigger",
+                            "rule": "equals",
+                            "value": "={{ $json.trigger }}"
+                        }
+                    ]
+                }
+            },
+            "name": "Query Notion",
+            "type": "n8n-nodes-base.notion",
+            "typeVersion": 2,
+            "position": [
+                500,
+                300
+            ],
+            "id": "3"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "boolean": [
+                        {
+                            "value1": "={{ $node[\"Query Notion\"].json.results.length > 0 }}",
+                            "value2": true
+                        }
+                    ]
+                }
+            },
+            "name": "Found?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                700,
+                300
+            ],
+            "id": "4"
+        },
+        {
+            "parameters": {
+                "message": "={{ $node[\"Query Notion\"].json.results[0].properties.Template.rich_text[0].plain_text }}",
+                "from": "whatsapp:+447360277713",
+                "to": "={{ $node[\"Extract Message\"].json.sender }}"
+            },
+            "name": "Send Template",
+            "type": "n8n-nodes-base.twilio",
+            "typeVersion": 1,
+            "position": [
+                900,
+                200
+            ],
+            "id": "5"
+        },
+        {
+            "parameters": {
+                "message": "I don't recognize that protocol code. \n\nTry sending 'INDEX' to see all available protocols, or tell me what you're struggling with and our AI concierge will help.",
+                "from": "whatsapp:+447360277713",
+                "to": "={{ $node[\"Extract Message\"].json.sender }}"
+            },
+            "name": "Fallback Response",
+            "type": "n8n-nodes-base.twilio",
+            "typeVersion": 1,
+            "position": [
+                900,
+                400
+            ],
+            "id": "6"
+        }
+    ],
+    "connections": {
+        "Twilio Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Extract Message",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Extract Message": {
+            "main": [
+                [
+                    {
+                        "node": "Query Notion",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Query Notion": {
+            "main": [
+                [
+                    {
+                        "node": "Found?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Found?": {
+            "main": [
+                [
+                    {
+                        "node": "Send Template",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Fallback Response",
+                        "type": "main",
+                        "index": 1
+                    }
+                ]
+            ]
+        }
+    }
+}
