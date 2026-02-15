@@ -7,16 +7,9 @@ import DopamineMenu from '../components/tools/DopamineMenu'
 
 export default function Home() {
     const [activeFaq, setActiveFaq] = useState<number | null>(null)
-    const [dynamicTools, setDynamicTools] = useState<any[]>([
-        { name: 'Dopamine Menu', icon: '⚡', desc: 'Strategic stimulation builder.', keyword: 'DOPAMINE', isPublic: true },
-        { name: 'Crisis Triage', icon: '🆘', desc: 'Immediate cognitive stabilizing.', keyword: 'CRISIS' },
-        { name: 'Focus Lock', icon: '🔒', desc: 'Deep work environment protocol.', keyword: 'FOCUS' }
-    ])
-    const [dynamicArticles, setDynamicArticles] = useState<any[]>([
-        { title: 'The Architectural Mind: Systems for ADHD', date: '2026-02-13', category: 'Mind' },
-        { title: 'Dopamine Stewardship in a High-Noise World', date: '2026-02-12', category: 'Body' },
-        { title: 'The Frictionless Executive: Tech Protocols', date: '2026-02-11', category: 'Tech' }
-    ])
+    const [dynamicTools, setDynamicTools] = useState<any[]>([])
+    const [dynamicArticles, setDynamicArticles] = useState<any[]>([])
+
     const [isSignupOpen, setIsSignupOpen] = useState(false)
     const [selectedTemplate, setSelectedTemplate] = useState('')
     const [whatsappUrl, setWhatsappUrl] = useState('')
