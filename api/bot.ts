@@ -15,10 +15,8 @@ export default async function handler(req: any, res: any) {
     const DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || process.env.BLOG_DB_ID || '').trim()
 
     try {
-        if (!TOKEN || !DB_ID) throw new Error("Vercel Config Error: Missing Notion Configuration.")
+        if (!TOKEN || !DB_ID) throw new Error("Config missing.")
 
-        // THE ULTIMATE FIX: Fetch all pages and match specifically in Node.
-        // This bypasses Notion's strict/buggy filtering for specific property types.
         const response = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
             method: 'POST',
             headers: {
@@ -29,21 +27,23 @@ export default async function handler(req: any, res: any) {
             body: JSON.stringify({ page_size: 100 })
         })
 
-        if (!response.ok) throw new Error(`Notion Sync Failed: ${response.status}`)
-
         const data = await response.json()
         let replyMessage = ""
 
-        // Find the page in the result set
+        // DEBUG: Capture the first few triggers to see what's happening
+        const debugTriggers = data.results
+            .map((p: any) => p.properties.Trigger?.rich_text?.[0]?.plain_text || "NONE")
+            .slice(0, 5)
+            .join(', ')
+
         const match = data.results.find((page: any) => {
             const props = page.properties
-            // Check 'Trigger' property
-            const triggerValue = props.Trigger?.rich_text?.[0]?.plain_text || ""
-            return triggerValue.trim().toUpperCase() === trigger
+            const val = props.Trigger?.rich_text?.[0]?.plain_text || ""
+            return val.trim().toUpperCase() === trigger
         })
 
         if (match) {
-            const props = (match as any).properties
+            const props = match.properties
             const templateProp = props['Template '] || props['Template'] || props['Reply']
             if (templateProp?.rich_text?.[0]) {
                 replyMessage = templateProp.rich_text.map((t: any) => t.plain_text).join('')
@@ -51,11 +51,7 @@ export default async function handler(req: any, res: any) {
         }
 
         if (!replyMessage) {
-            if (trigger === 'INDEX' || trigger === 'HI') {
-                replyMessage = "WELCOME TO SOR7ED. \n\nActive Protocols: \n- FRIENDSHIPPACK\n- PARENTANGER\n- DOPAMINE\n- THERAPY\n\nText any keyword to begin."
-            } else {
-                replyMessage = `SOR7ED Bot: "${trigger}" matched 0 items in Notion. Text INDEX for catalog.`
-            }
+            replyMessage = `DEBUG: Trigger "${trigger}" not among: ${debugTriggers}`
         }
 
         res.setHeader('Content-Type', 'text/xml')
