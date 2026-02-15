@@ -15,9 +15,10 @@ export default async function handler(req: any, res: any) {
     const DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || process.env.BLOG_DB_ID || '').trim()
 
     try {
-        if (!TOKEN || !DB_ID) throw new Error("Vercel Config Error: Missing Notion Token or DB ID.")
+        if (!TOKEN || !DB_ID) throw new Error("Vercel Config Error: Missing Notion Configuration.")
 
-        // NATIVE FETCH: Bypassing the Notion Client library for maximum robustness
+        // BULLETPROOF: Fetch all entries and filter in Javascript
+        // This avoids issues with Notion's strict filtering and whitespace
         const response = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
             method: 'POST',
             headers: {
@@ -25,24 +26,23 @@ export default async function handler(req: any, res: any) {
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                filter: {
-                    property: 'Trigger',
-                    rich_text: { equals: trigger }
-                }
-            })
+            body: JSON.stringify({ page_size: 100 })
         })
 
-        if (!response.ok) {
-            const errJson = await response.json();
-            throw new Error(`Notion API Error: ${errJson.message || response.statusText}`);
-        }
+        if (!response.ok) throw new Error("Notion API Connection Failed.")
 
         const data = await response.json()
         let replyMessage = ""
 
-        if (data.results && data.results.length > 0) {
-            const props = data.results[0].properties
+        // Search for a matching trigger in the results
+        const match = data.results.find((page: any) => {
+            const props = page.properties
+            const nodeTrigger = props.Trigger?.rich_text?.[0]?.plain_text || ""
+            return nodeTrigger.trim().toUpperCase() === trigger
+        })
+
+        if (match) {
+            const props = (match as any).properties
             const templateProp = props['Template '] || props['Template'] || props['Reply']
 
             if (templateProp && templateProp.rich_text && templateProp.rich_text.length > 0) {
@@ -51,7 +51,12 @@ export default async function handler(req: any, res: any) {
         }
 
         if (!replyMessage) {
-            replyMessage = `SOR7ED Bot: Protocol "${trigger}" not found. Text INDEX for catalog.`
+            // Check for hardcoded constants
+            if (trigger === 'HI' || trigger === 'HELLO') {
+                replyMessage = "Welcome to SOR7ED. Text any keyword from our website to receive the protocol instantly."
+            } else {
+                replyMessage = `SOR7ED Bot: "${trigger}" not found. Text a valid keyword from the website (e.g., FRIEND or DOPAMINE).`
+            }
         }
 
         res.setHeader('Content-Type', 'text/xml')
