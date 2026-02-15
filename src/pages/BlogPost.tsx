@@ -73,9 +73,10 @@ export default function BlogPost() {
                 <div className="prose prose-invert prose-zinc max-w-none">
                     {post.blocks?.map((block: any, i: number) => {
                         const type = block.type
-                        const content = block[type]?.rich_text?.[0]?.plain_text
+                        const richText = block[type]?.rich_text || []
+                        const content = richText.map((rt: any) => rt.plain_text).join('')
 
-                        if (!content) return null
+                        if (!content && type !== 'divider') return null
 
                         switch (type) {
                             case 'paragraph':
@@ -88,8 +89,10 @@ export default function BlogPost() {
                                 return <h4 key={i} className="text-xl font-black text-white uppercase tracking-tight mt-10 mb-4">{content}</h4>
                             case 'bulleted_list_item':
                                 return <li key={i} className="text-zinc-400 text-lg mb-4 list-none border-l-2 border-sor7ed-yellow pl-6">{content}</li>
+                            case 'divider':
+                                return <hr key={i} className="border-t border-zinc-900 my-16" />
                             default:
-                                return <p key={i} className="text-zinc-500 italic mb-8">{content}</p>
+                                return null
                         }
                     })}
                 </div>

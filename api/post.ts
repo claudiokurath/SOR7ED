@@ -5,11 +5,10 @@ export default async function handler(req: any, res: any) {
     const DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || process.env.BLOG_DB_ID || '').trim()
 
     try {
-        if (!TOKEN || !DB_ID) {
-            throw new Error('Vercel Config Error: Missing Notion Configuration.')
-        }
+        if (!TOKEN || !DB_ID) throw new Error('Vercel Config Error: Missing Notion Configuration.')
 
-        // 1. Find the page by Title (slug) using native fetch
+        // 1. Fetch all pages to find the one with the matching title
+        // This is more robust than "equals" filters which are sensitive to minor formatting
         const queryResponse = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
             method: 'POST',
             headers: {
@@ -17,30 +16,28 @@ export default async function handler(req: any, res: any) {
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                filter: {
-                    property: 'Title',
-                    title: { equals: slug }
-                }
-            })
+            body: JSON.stringify({ page_size: 100 })
         })
 
-        if (!queryResponse.ok) {
-            const err = await queryResponse.json()
-            throw new Error(`Notion Query Failed: ${err.message || queryResponse.statusText}`)
-        }
+        if (!queryResponse.ok) throw new Error("Notion API Connection Failed.")
 
         const queryData = await queryResponse.json()
 
-        if (!queryData.results || queryData.results.length === 0) {
+        // Find the page where Title matches the slug
+        const page = queryData.results.find((p: any) => {
+            const title = p.properties.Title?.title[0]?.plain_text || ""
+            return title === slug || encodeURIComponent(title) === encodeURIComponent(slug || "")
+        })
+
+        if (!page) {
+            console.error(`Post not found in Notion for slug: ${slug}`)
             return res.status(404).json({ error: 'Post not found' })
         }
 
-        const page = queryData.results[0]
         const pageId = page.id
         const props = page.properties
 
-        // 2. Get content blocks using native fetch
+        // 2. Get content blocks
         const blocksResponse = await fetch(`https://api.notion.com/v1/blocks/${pageId}/children`, {
             method: 'GET',
             headers: {
