@@ -231,16 +231,33 @@ export default function Home() {
                                 <div
                                     key={i}
                                     onClick={() => handlePostClick(post)}
-                                    className="stealth-card p-12 group cursor-pointer hover:border-sor7ed-yellow transition-all duration-500 flex flex-col items-center text-center"
+                                    className="stealth-card p-0 group cursor-pointer hover:border-sor7ed-yellow transition-all duration-500 flex flex-col items-center text-center overflow-hidden"
                                 >
-                                    <div className="text-[10px] font-mono-headline text-zinc-600 italic uppercase mb-6 tracking-[0.2em]">{post.date}</div>
-                                    <h3 className="text-xl font-black text-white hover:text-sor7ed-yellow transition-colors uppercase tracking-widest mb-8 h-20 flex items-center justify-center">
-                                        {post.title}
-                                    </h3>
-                                    <div className="mt-auto pt-6 border-t border-zinc-900 w-full flex items-center justify-between">
-                                        <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-widest italic">{post.category}</span>
-                                        <div className="w-8 h-8 rounded-full border border-sor7ed-yellow/30 flex items-center justify-center text-zinc-700 group-hover:border-sor7ed-yellow group-hover:text-sor7ed-yellow transition-all">
-                                            <span className="text-[10px]">&rarr;</span>
+                                    {/* Image Container */}
+                                    <div className="w-full h-64 overflow-hidden border-b border-zinc-900 filter grayscale group-hover:grayscale-0 transition-all duration-700">
+                                        {post.image ? (
+                                            <img
+                                                src={post.image}
+                                                alt={post.title}
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-zinc-900 flex items-center justify-center text-zinc-800 font-mono-headline text-[10px] tracking-widest uppercase">
+                                                Media Missing
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="p-10 flex flex-col items-center w-full">
+                                        <div className="text-[10px] font-mono-headline text-zinc-600 italic uppercase mb-6 tracking-[0.2em]">{post.date}</div>
+                                        <h3 className="text-xl font-black text-white group-hover:text-sor7ed-yellow transition-colors uppercase tracking-widest mb-8 flex items-center justify-center text-center">
+                                            {post.title}
+                                        </h3>
+                                        <div className="mt-auto pt-6 border-t border-zinc-900 w-full flex items-center justify-between">
+                                            <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-widest italic">{post.category}</span>
+                                            <div className="w-8 h-8 rounded-full border border-sor7ed-yellow/30 flex items-center justify-center text-zinc-700 group-hover:border-sor7ed-yellow group-hover:text-sor7ed-yellow transition-all">
+                                                <span className="text-[10px]">&rarr;</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

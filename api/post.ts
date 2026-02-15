@@ -14,7 +14,12 @@ export default async function handler(req: any, res: any) {
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ page_size: 100 })
+            body: JSON.stringify({
+                filter: {
+                    property: 'Title',
+                    title: { equals: slug }
+                }
+            })
         })
 
         if (!queryResponse.ok) throw new Error("Notion API Connection Failed.")
@@ -40,16 +45,21 @@ export default async function handler(req: any, res: any) {
         })
         const blocksData = await blocksResponse.json()
 
-        // 3. Extract content from "Post Body" property if blocks are empty
-        // This handles cases where content is in a property instead of the page body
+        // Extract content from "Post Body" property
         const postBodyRichText = props['Post Body']?.rich_text || []
         const propertyContent = postBodyRichText.map((t: any) => t.plain_text).join('')
+
+        // Extract image from "Files & media" property
+        const files = props['Files & media']?.files || []
+        const imageUrl = files.length > 0
+            ? (files[0].external?.url || files[0].file?.url || '')
+            : (page.cover?.external?.url || page.cover?.file?.url || '')
 
         const post = {
             title: props.Title?.title[0]?.plain_text || 'Untitled',
             date: props['Publication Date']?.date?.start || '',
             category: props.Branch?.select?.name || 'Mind',
-            image: page.cover?.external?.url || page.cover?.file?.url || '',
+            image: imageUrl,
             propertyContent: propertyContent,
             blocks: blocksData.results || []
         }
