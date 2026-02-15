@@ -59,7 +59,7 @@ export default function BlogPost() {
 
             <article className="container mx-auto max-w-3xl px-6 py-24 relative z-10">
                 <header className="text-center mb-24">
-                    <div className="text-[10px] font-mono-headline text-sor7ed-yellow mb-8 tracking-[0.4em] uppercase">
+                    <div className="text-[11px] font-mono-headline text-sor7ed-yellow mb-8 tracking-[0.4em] uppercase font-bold">
                         Analysis // {post.date} // {post.category}
                     </div>
 
@@ -73,12 +73,68 @@ export default function BlogPost() {
                 <div className="prose prose-invert prose-zinc max-w-none">
                     {/* Render Post Body property if available */}
                     {post.propertyContent && (
-                        <div className="text-zinc-400 text-lg md:text-xl font-light leading-relaxed mb-12 tracking-wide whitespace-pre-wrap">
-                            {post.propertyContent}
+                        <div className="mb-20">
+                            {post.propertyContent.split('\n\n').map((paragraph: string, idx: number) => {
+                                // List of keywords to identify as "Titles"
+                                const keywords = ['Opening', 'Source', 'Mechanism', 'Cost', 'Alternative', 'CTA'];
+                                const firstWord = paragraph.split(/\s/)[0].replace(/[:]/g, '');
+
+                                if (keywords.includes(firstWord)) {
+                                    // It's a "Small Title"
+                                    const body = paragraph.replace(new RegExp(`^${firstWord}[:]?`, 'i'), '').trim();
+                                    return (
+                                        <div key={idx} className="mb-12">
+                                            <h4 className="text-sor7ed-yellow font-black uppercase tracking-[0.3em] text-sm mb-6 border-b border-sor7ed-yellow/10 pb-2 inline-block">
+                                                {firstWord}
+                                            </h4>
+                                            <p className="text-zinc-400 text-lg md:text-xl font-light leading-relaxed tracking-wide whitespace-pre-wrap">
+                                                {body}
+                                            </p>
+                                        </div>
+                                    );
+                                }
+
+                                return (
+                                    <p key={idx} className="text-zinc-400 text-lg md:text-xl font-light leading-relaxed mb-10 tracking-wide whitespace-pre-wrap">
+                                        {paragraph}
+                                    </p>
+                                );
+                            })}
                         </div>
                     )}
 
-                    {/* Render Page Blocks */}
+                    {/* CTA 1 SECTION */}
+                    {post.cta1 && post.cta1.length > 0 && (
+                        <div className="my-24 p-12 border border-sor7ed-yellow/40 bg-sor7ed-yellow/5 rounded-sm relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-sor7ed-yellow/30 uppercase tracking-widest">
+                                / Operational Trigger
+                            </div>
+                            <div className="relative z-10 flex flex-col items-center text-center">
+                                <div className="max-w-xl mb-10">
+                                    {post.cta1.map((part: any, i: number) => (
+                                        <span
+                                            key={i}
+                                            className={`${part.bold ? 'font-black text-white' : 'text-zinc-300 font-light'} text-lg md:text-xl leading-relaxed`}
+                                        >
+                                            {part.text}
+                                        </span>
+                                    ))}
+                                </div>
+                                {post.cta1.some((p: any) => p.link) && (
+                                    <a
+                                        href={post.cta1.find((p: any) => p.link)?.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="btn-primary"
+                                    >
+                                        Execute Action
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Render Page Blocks (as fallback or additional content) */}
                     {post.blocks?.map((block: any, i: number) => {
                         const type = block.type
                         const richText = block[type]?.rich_text || []

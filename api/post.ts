@@ -14,12 +14,7 @@ export default async function handler(req: any, res: any) {
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                filter: {
-                    property: 'Title',
-                    title: { equals: slug }
-                }
-            })
+            body: JSON.stringify({ page_size: 100 })
         })
 
         if (!queryResponse.ok) throw new Error("Notion API Connection Failed.")
@@ -49,6 +44,14 @@ export default async function handler(req: any, res: any) {
         const postBodyRichText = props['Post Body']?.rich_text || []
         const propertyContent = postBodyRichText.map((t: any) => t.plain_text).join('')
 
+        // Extract CTA 1
+        const ctaRichText = props['CTA 1']?.rich_text || []
+        const ctaData = ctaRichText.map((t: any) => ({
+            text: t.plain_text,
+            link: t.href || null,
+            bold: t.annotations?.bold || false
+        }))
+
         // Extract image from "Files & media" property
         const files = props['Files & media']?.files || []
         const imageUrl = files.length > 0
@@ -61,6 +64,7 @@ export default async function handler(req: any, res: any) {
             category: props.Branch?.select?.name || 'Mind',
             image: imageUrl,
             propertyContent: propertyContent,
+            cta1: ctaData,
             blocks: blocksData.results || []
         }
 
