@@ -1,7 +1,11 @@
 import { useState } from 'react'
 
 
-export default function DopamineMenu() {
+interface DopamineMenuProps {
+    onDeploy: () => void;
+}
+
+export default function DopamineMenu({ onDeploy }: DopamineMenuProps) {
     const [starter, setStarter] = useState<string[]>([])
     const [main, setMain] = useState<string[]>([])
     const [dessert, setDessert] = useState<string[]>([])
@@ -30,15 +34,15 @@ export default function DopamineMenu() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Starters */}
-                <div className="stealth-card p-8 border-blue-500/30">
-                    <div className="flex justify-between items-center mb-8">
+                <div className="stealth-card p-4 border-blue-500/30">
+                    <div className="flex justify-between items-center mb-6">
                         <div>
-                            <h4 className="text-xl font-bold uppercase tracking-widest text-white">Starters</h4>
-                            <p className="text-[10px] text-blue-400 uppercase font-mono-headline">5 Minutes // Quick Hit</p>
+                            <h4 className="text-lg font-bold uppercase tracking-widest text-white">Starters</h4>
+                            <p className="text-[9px] text-blue-400 uppercase font-mono-headline">5 Minutes // Quick Hit</p>
                         </div>
                         <button onClick={addStarter} className="w-8 h-8 rounded-full border border-blue-500/30 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all">+</button>
                     </div>
-                    <ul className="space-y-4">
+                    <ul className="space-y-3">
                         {starter.length > 0 ? starter.map((s, i) => (
                             <li key={i} className="text-sm text-zinc-300 border-l-2 border-blue-500/50 pl-4 py-1">{s}</li>
                         )) : (
@@ -48,15 +52,15 @@ export default function DopamineMenu() {
                 </div>
 
                 {/* Mains */}
-                <div className="stealth-card p-8 border-emerald-500/30">
-                    <div className="flex justify-between items-center mb-8">
+                <div className="stealth-card p-4 border-emerald-500/30">
+                    <div className="flex justify-between items-center mb-6">
                         <div>
-                            <h4 className="text-xl font-bold uppercase tracking-widest text-white">Mains</h4>
-                            <p className="text-[10px] text-emerald-400 uppercase font-mono-headline">30 Minutes // Deep Burn</p>
+                            <h4 className="text-lg font-bold uppercase tracking-widest text-white">Mains</h4>
+                            <p className="text-[9px] text-emerald-400 uppercase font-mono-headline">30 Minutes // Deep Burn</p>
                         </div>
                         <button onClick={addMain} className="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all">+</button>
                     </div>
-                    <ul className="space-y-4">
+                    <ul className="space-y-3">
                         {main.length > 0 ? main.map((m, i) => (
                             <li key={i} className="text-sm text-zinc-300 border-l-2 border-emerald-500/50 pl-4 py-1">{m}</li>
                         )) : (
@@ -66,15 +70,15 @@ export default function DopamineMenu() {
                 </div>
 
                 {/* Desserts */}
-                <div className="stealth-card p-8 border-purple-500/30">
-                    <div className="flex justify-between items-center mb-8">
+                <div className="stealth-card p-4 border-purple-500/30">
+                    <div className="flex justify-between items-center mb-6">
                         <div>
-                            <h4 className="text-xl font-bold uppercase tracking-widest text-white">Desserts</h4>
-                            <p className="text-[10px] text-purple-400 uppercase font-mono-headline">Rewards // End of Task</p>
+                            <h4 className="text-lg font-bold uppercase tracking-widest text-white">Desserts</h4>
+                            <p className="text-[9px] text-purple-400 uppercase font-mono-headline">Rewards // End of Task</p>
                         </div>
                         <button onClick={addDessert} className="w-8 h-8 rounded-full border border-purple-500/30 flex items-center justify-center text-purple-500 hover:bg-purple-500 hover:text-white transition-all">+</button>
                     </div>
-                    <ul className="space-y-4">
+                    <ul className="space-y-3">
                         {dessert.length > 0 ? dessert.map((d, i) => (
                             <li key={i} className="text-sm text-zinc-300 border-l-2 border-purple-500/50 pl-4 py-1">{d}</li>
                         )) : (
@@ -85,8 +89,8 @@ export default function DopamineMenu() {
             </div>
 
             <div className="pt-12 text-center">
-                <button className="btn-primary opacity-50 cursor-not-allowed">
-                    Sync to WhatsApp (Coming Soon)
+                <button onClick={onDeploy} className="btn-primary">
+                    Sync to WhatsApp
                 </button>
             </div>
         </div>

@@ -4,6 +4,8 @@ import { branches } from '../data/branches'
 import { getBlogPosts, getTools } from '../utils/notion'
 import SignupModal from '../components/SignupModal'
 import DopamineMenu from '../components/tools/DopamineMenu'
+import TimeVisualizer from '../components/tools/TimeVisualizer'
+import TaskTriage from '../components/tools/TaskTriage'
 
 export default function Home() {
     const [activeFaq, setActiveFaq] = useState<number | null>(null)
@@ -38,21 +40,28 @@ export default function Home() {
         fetchData()
     }, [])
 
+    // Unified tool interaction handling
+
     const handleToolClick = (tool: any) => {
-        if (tool.name === 'Dopamine Menu') {
+        const name = tool.name.toLowerCase();
+        if (name.includes('dopamine menu')) {
             setActiveToolId('dopamine-menu')
-            return
+        } else if (name.includes('time') || name.includes('visualizer')) {
+            setActiveToolId('time-visualizer')
+        } else if (name.includes('triage') || name.includes('executive')) {
+            setActiveToolId('task-triage')
+        } else {
+            setActiveToolId(tool.name)
         }
 
+        // Prepare WhatsApp URL for later
         setSelectedTemplate(tool.name)
         const url = `https://wa.me/447360277713?text=${tool.keyword || tool.name}`
         setWhatsappUrl(url)
+    }
 
-        if (tool.isPublic) {
-            window.location.href = url
-        } else {
-            setIsSignupOpen(true)
-        }
+    const handleDeployClick = () => {
+        setIsSignupOpen(true)
     }
 
     const handlePostClick = (post: any) => {
@@ -378,7 +387,19 @@ export default function Home() {
                                 <span className="text-lg">×</span>
                             </button>
 
-                            {activeToolId === 'dopamine-menu' && <DopamineMenu />}
+                            {activeToolId === 'dopamine-menu' && <DopamineMenu onDeploy={handleDeployClick} />}
+                            {activeToolId === 'time-visualizer' && <TimeVisualizer onDeploy={handleDeployClick} />}
+                            {activeToolId === 'task-triage' && <TaskTriage onDeploy={handleDeployClick} />}
+
+                            {!['dopamine-menu', 'time-visualizer', 'task-triage'].includes(activeToolId as string) && (
+                                <div className="py-20 text-center">
+                                    <h3 className="text-4xl font-black uppercase text-white mb-8">{activeToolId}</h3>
+                                    <p className="text-zinc-500 mb-12">System interface loading... This protocol is currently optimized for WhatsApp deployment.</p>
+                                    <button onClick={handleDeployClick} className="btn-primary">
+                                        Deploy to WhatsApp
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )
