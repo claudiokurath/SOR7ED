@@ -6,6 +6,12 @@ import SignupModal from '../components/SignupModal'
 import DopamineMenu from '../components/tools/DopamineMenu'
 import TimeVisualizer from '../components/tools/TimeVisualizer'
 import TaskTriage from '../components/tools/TaskTriage'
+import SensoryFidget from '../components/tools/SensoryFidget'
+import FocusTimer from '../components/tools/FocusTimer'
+import TaskBreaker from '../components/tools/TaskBreaker'
+import MoodTracker from '../components/tools/MoodTracker'
+import RoutineBuilder from '../components/tools/RoutineBuilder'
+import SocialSimulator from '../components/tools/SocialSimulator'
 
 export default function Home() {
     const [activeFaq, setActiveFaq] = useState<number | null>(null)
@@ -15,6 +21,7 @@ export default function Home() {
     const [isSignupOpen, setIsSignupOpen] = useState(false)
     const [selectedTemplate, setSelectedTemplate] = useState('')
     const [whatsappUrl, setWhatsappUrl] = useState('')
+
     const [activeToolId, setActiveToolId] = useState<string | null>(null)
     const [isMuted, setIsMuted] = useState(true)
     const navigate = useNavigate()
@@ -50,6 +57,18 @@ export default function Home() {
             setActiveToolId('time-visualizer')
         } else if (name.includes('triage') || name.includes('executive')) {
             setActiveToolId('task-triage')
+        } else if (name.includes('sensory') || name.includes('fidget') || name.includes('bubble')) {
+            setActiveToolId('sensory-fidget')
+        } else if (name.includes('pomodoro') || name.includes('timer') || name.includes('focus')) {
+            setActiveToolId('focus-timer')
+        } else if (name.includes('breaker') || name.includes('deconstructor') || name.includes('task') || name.includes('atomic')) {
+            setActiveToolId('task-breaker')
+        } else if (name.includes('mood') || name.includes('energy') || name.includes('tracker') || name.includes('biometric')) {
+            setActiveToolId('mood-tracker')
+        } else if (name.includes('routine') || name.includes('builder') || name.includes('architect')) {
+            setActiveToolId('routine-builder')
+        } else if (name.includes('social') || name.includes('simulator') || name.includes('scenario')) {
+            setActiveToolId('social-simulator')
         } else {
             setActiveToolId(tool.name)
         }
@@ -390,8 +409,14 @@ export default function Home() {
                             {activeToolId === 'dopamine-menu' && <DopamineMenu onDeploy={handleDeployClick} />}
                             {activeToolId === 'time-visualizer' && <TimeVisualizer onDeploy={handleDeployClick} />}
                             {activeToolId === 'task-triage' && <TaskTriage onDeploy={handleDeployClick} />}
+                            {activeToolId === 'sensory-fidget' && <SensoryFidget onDeploy={handleDeployClick} />}
+                            {activeToolId === 'focus-timer' && <FocusTimer onDeploy={handleDeployClick} />}
+                            {activeToolId === 'task-breaker' && <TaskBreaker onDeploy={handleDeployClick} />}
+                            {activeToolId === 'mood-tracker' && <MoodTracker onDeploy={handleDeployClick} />}
+                            {activeToolId === 'routine-builder' && <RoutineBuilder onDeploy={handleDeployClick} />}
+                            {activeToolId === 'social-simulator' && <SocialSimulator onDeploy={handleDeployClick} />}
 
-                            {!['dopamine-menu', 'time-visualizer', 'task-triage'].includes(activeToolId as string) && (
+                            {!['dopamine-menu', 'time-visualizer', 'task-triage', 'sensory-fidget', 'focus-timer', 'task-breaker', 'mood-tracker', 'routine-builder', 'social-simulator'].includes(activeToolId as string) && (
                                 <div className="py-20 text-center">
                                     <h3 className="text-4xl font-black uppercase text-white mb-8">{activeToolId}</h3>
                                     <p className="text-zinc-500 mb-12">System interface loading... This protocol is currently optimized for WhatsApp deployment.</p>
