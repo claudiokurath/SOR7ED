@@ -5,30 +5,23 @@ export default async function handler(req: any, res: any) {
         return res.status(405).json({ error: 'Method not allowed' })
     }
 
-    const TOKEN = (process.env.NOTION_BLOG_TOKEN || '').trim()
-    const DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || '').trim()
+    const TOKEN = (process.env.NOTION_BLOG_TOKEN || process.env.NOTION_TOKEN || '').trim()
+    const DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || process.env.BLOG_DB_ID || '').trim()
 
     try {
         if (!TOKEN || !DB_ID) {
-            throw new Error('Vercel Config Error: NOTION_BLOG_TOKEN or NOTION_BLOG_DATABASE_ID missing.')
+            console.error('Missing Environment Variables for Blog API')
+            return res.status(200).json([]) // Return empty list to avoid crashing UI
         }
 
         const notion = new Client({ auth: TOKEN })
 
-        // Fetching Published and Done posts
+        // STRICT FILTER: Only 'Published' status
         const response = await notion.databases.query({
             database_id: DB_ID,
             filter: {
-                or: [
-                    {
-                        property: 'Status',
-                        status: { equals: 'Published' }
-                    },
-                    {
-                        property: 'Status',
-                        status: { equals: 'Done' }
-                    }
-                ]
+                property: 'Status',
+                status: { equals: 'Published' }
             },
             sorts: [{
                 property: 'Publication Date',
@@ -41,14 +34,20 @@ export default async function handler(req: any, res: any) {
             return {
                 title: props.Title?.title[0]?.plain_text || 'Untitled',
                 date: props['Publication Date']?.date?.start || '',
-                category: props.Branch?.select?.name || 'Protocol',
-                readTime: '5 min' // Defaulting since property is missing in DB
+                category: props.Branch?.select?.name || 'Mind',
+                readTime: '5 min'
             }
         })
 
+        console.log(`Successfully fetched ${posts.length} published posts from Notion.`)
         return res.status(200).json(posts)
+
     } catch (error: any) {
-        console.error('Notion Blog Error:', error)
-        return res.status(500).json({ error: error.message || 'Failed to fetch blog posts' })
+        console.error('Notion Blog Sync Error:', error.message)
+        // Return clear error if integration is not shared with DB
+        if (error.code === 'object_not_found') {
+            return res.status(200).json([{ title: "🛠️ ERROR: Notion DB not shared with integration", date: "Now", category: "Config" }])
+        }
+        return res.status(200).json([])
     }
 }
