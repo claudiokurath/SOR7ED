@@ -14,7 +14,13 @@ export default async function handler(req: any, res: any) {
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ page_size: 100 })
+            body: JSON.stringify({
+                filter: {
+                    property: 'Public',
+                    checkbox: { equals: true }
+                },
+                page_size: 100
+            })
         })
 
         if (!response.ok) throw new Error("Notion Tools API Failed.")
@@ -27,7 +33,7 @@ export default async function handler(req: any, res: any) {
                 icon: props.Icon?.rich_text[0]?.plain_text || '⚒️',
                 desc: props.Description?.rich_text[0]?.plain_text || props.desc?.rich_text[0]?.plain_text || '',
                 keyword: props.Keyword?.rich_text[0]?.plain_text || '',
-                isPublic: props.Public?.checkbox || false
+                isPublic: true // Since we filtered for public ones
             }
         })
 
