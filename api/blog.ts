@@ -1,35 +1,35 @@
-import { Client } from '@notionhq/client'
-
 export default async function handler(req: any, res: any) {
-    if (req.method !== 'GET') {
-        return res.status(405).json({ error: 'Method not allowed' })
-    }
+    if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' })
 
     const TOKEN = (process.env.NOTION_BLOG_TOKEN || process.env.NOTION_TOKEN || '').trim()
     const DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || process.env.BLOG_DB_ID || '').trim()
 
     try {
-        if (!TOKEN || !DB_ID) {
-            console.error('Missing Environment Variables for Blog API')
-            return res.status(200).json([]) // Return empty list to avoid crashing UI
-        }
+        if (!TOKEN || !DB_ID) throw new Error("Vercel Config Error: Missing Notion Configuration.")
 
-        const notion = new Client({ auth: TOKEN })
-
-        // STRICT FILTER: Only 'Published' status
-        const response = await notion.databases.query({
-            database_id: DB_ID,
-            filter: {
-                property: 'Status',
-                status: { equals: 'Published' }
+        const response = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${TOKEN}`,
+                'Notion-Version': '2022-06-28',
+                'Content-Type': 'application/json'
             },
-            sorts: [{
-                property: 'Publication Date',
-                direction: 'descending'
-            }]
+            body: JSON.stringify({
+                filter: {
+                    property: 'Status',
+                    status: { equals: 'Published' }
+                },
+                sorts: [{
+                    property: 'Publication Date',
+                    direction: 'descending'
+                }]
+            })
         })
 
-        const posts = response.results.map((page: any) => {
+        if (!response.ok) throw new Error("Notion API Connection Failed.")
+
+        const data = await response.json()
+        const posts = data.results.map((page: any) => {
             const props = page.properties
             return {
                 title: props.Title?.title[0]?.plain_text || 'Untitled',
@@ -39,15 +39,9 @@ export default async function handler(req: any, res: any) {
             }
         })
 
-        console.log(`Successfully fetched ${posts.length} published posts from Notion.`)
         return res.status(200).json(posts)
-
     } catch (error: any) {
-        console.error('Notion Blog Sync Error:', error.message)
-        // Return clear error if integration is not shared with DB
-        if (error.code === 'object_not_found') {
-            return res.status(200).json([{ title: "🛠️ ERROR: Notion DB not shared with integration", date: "Now", category: "Config" }])
-        }
+        console.error('Blog Sync Error:', error)
         return res.status(200).json([])
     }
 }
