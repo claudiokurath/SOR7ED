@@ -106,3 +106,26 @@
 .animate-stealth-glow {
     animation: slow-pulse 8s ease-in-out infinite;
 }
+
+/* Documentation Styling */
+.prose-sm {
+    @apply text-zinc-400 font-light leading-loose;
+}
+
+.prose-sm h1,
+.prose-sm h2,
+.prose-sm h3 {
+    @apply text-white font-black uppercase tracking-widest mt-12 mb-6 block;
+}
+
+.prose-sm p {
+    @apply mb-6;
+}
+
+.prose-sm ul {
+    @apply list-none space-y-4 mb-8;
+}
+
+.prose-sm li {
+    @apply flex items-start before:content-['>'] before:text-sor7ed-yellow before:mr-4 before:font-black;
+}

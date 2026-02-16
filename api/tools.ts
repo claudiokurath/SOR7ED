@@ -37,10 +37,13 @@ export default async function handler(req: any, res: any) {
         const tools = data.results.map((page: any) => {
             const props = page.properties
             return {
+                id: page.id,
                 name: props.Name?.title[0]?.plain_text || 'Unnamed Tool',
-                icon: '⚒️', // Standardize on lab default or from Notion if added later
+                slug: props.Slug?.rich_text[0]?.plain_text || '',
+                icon: '⚒️',
                 desc: props.Description?.rich_text[0]?.plain_text || '',
                 keyword: props['WhatsApp CTA']?.rich_text[0]?.plain_text || '',
+                template: props.Template?.rich_text[0]?.plain_text || '',
                 isPublic: true
             }
         })
