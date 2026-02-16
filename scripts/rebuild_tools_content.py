@@ -86,8 +86,21 @@ def get_all_pages():
             
     return pages
 
+def get_existing_keywords():
+    print("🔎 Scanning specialized triggers...")
+    pages = get_all_pages()
+    keywords = []
+    for p in pages:
+        props = p.get('properties', {})
+        if props.get('WhatsApp CTA') and props['WhatsApp CTA'].get('rich_text'):
+            keywords.append(props['WhatsApp CTA']['rich_text'][0]['plain_text'])
+    return keywords
+
 def process_tools():
     print("🧠 Initializing ULTIMATE Protocol Architect v2.0 for SOR7ED...")
+    existing_keywords = get_existing_keywords()
+    print(f"🚫 Exclusion List: {len(existing_keywords)} active triggers.")
+    
     pages = get_all_pages()
     print(f"📂 Found {len(pages)} protocol definitions. Starting Total Fill...")
     
@@ -109,7 +122,7 @@ No placeholders. No generic text. High-fidelity, empathetic, and surgical.
 
 ### REQUIRED FIELDS:
 ---WHATSAPP_CTA---
-[Keyword in ALL CAPS, e.g. DOPAMINE]
+[Unique, Single Word Keyword in ALL CAPS. MUST be unique. Do NOT use: {', '.join(existing_keywords[:10])}... Examples: {name.split()[0].upper()[:8]}]
 ---PROBLEM_STATEMENT---
 [Deep cognitive pain point this solves.]
 ---WHO_ITS_FOR---
@@ -123,7 +136,7 @@ No placeholders. No generic text. High-fidelity, empathetic, and surgical.
 ---WHAT_YOU_GET---
 [Outcome bullets.]
 ---FAQ---
-[ND-specific Q&A.]
+[ND-specific Q&A. Mention texting keyword to +44 7966 628285.]
 ---OUTPUT_FORMAT---
 [Deliverable description.]
 ---DESCRIPTION---

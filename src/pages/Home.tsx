@@ -70,7 +70,7 @@ export default function Home() {
 
         // Prepare WhatsApp URL
         setSelectedTemplate(tool.name)
-        const url = `https://wa.me/447360277713?text=${tool.keyword || tool.name}`
+        const url = `https://wa.me/447966628285?text=${tool.keyword || tool.name}`
         setWhatsappUrl(url)
     }
 
@@ -87,7 +87,7 @@ export default function Home() {
         { q: "What is SOR7ED?", a: "SOR7ED is a premium system delivering high-fidelity tools and insights specifically for neurodivergent minds." },
         { q: "How do I use the tools?", a: "Select a tool from our registry. You can use it instantly on the site or send the listed keyword to our WhatsApp concierge for mobile deployment." },
         { q: "Is it really free?", a: "Yes. All our core tools and articles are free. We believe in removing friction, not adding subscription fatigue." },
-        { q: "How does the WhatsApp concierge work?", a: "Once you have a keyword (like 'DOPAMINE'), just text it to +44 7360 277713. Our system will immediately return the relevant protocol or template." }
+        { q: "How does the WhatsApp concierge work?", a: "Once you have a keyword (like 'DOPAMINE'), just text it to +44 7966 628285. Our system will immediately return the relevant protocol or template." }
     ]
 
     return (
