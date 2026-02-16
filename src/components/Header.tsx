@@ -29,22 +29,13 @@ export default function Header() {
     return (
         <header className={`fixed w-full top-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 bg-black/80 backdrop-blur-xl border-b border-sor7ed-yellow' : 'py-8 bg-transparent'}`}>
             <div className="container mx-auto px-6 flex items-center justify-between">
-                <a
-                    href="#hero"
-                    onClick={(e) => handleNavClick(e, '#hero')}
-                    className="flex items-center space-x-3 group"
-                >
-                    <div className="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center font-black text-sm group-hover:bg-sor7ed-yellow transition-colors tracking-tighter">7</div>
-                    <span className="text-lg font-black tracking-[0.3em] uppercase text-zinc-100 group-hover:text-sor7ed-yellow transition-colors font-mono-headline">SOR7ED</span>
-                </a>
+
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center space-x-12">
                     {navItems.map((item) => (
                         <a
                             key={item.label}
-                            href={item.href}
-                            onClick={(e) => handleNavClick(e, item.href)}
                             className="text-[10px] uppercase font-black tracking-[0.3em] text-zinc-500 hover:text-white transition-colors"
                         >
                             {item.label}

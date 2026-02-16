@@ -123,10 +123,7 @@ export default function Home() {
             <section id="hero" className="relative pt-48 pb-32 px-6 z-10">
                 <div className="container mx-auto max-w-7xl">
                     <div className="flex flex-col items-center text-center">
-                        <div className="inline-flex items-center space-x-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full mb-12 backdrop-blur-sm">
-                            <span className="w-1.5 h-1.5 bg-sor7ed-yellow rounded-full animate-ping" />
-                            <span className="text-[10px] font-mono-headline text-zinc-400">System Architecture for ADHD</span>
-                        </div>
+
 
                         <div className="mb-24 flex justify-center animate-in fade-in duration-1000">
                             <img
@@ -203,29 +200,7 @@ export default function Home() {
             {/* The Foundation & Vectors Section */}
             <section id="about" className="py-32 relative flex flex-col items-center">
                 <div className="container mx-auto px-6 max-w-7xl flex flex-col items-center">
-                    <div className="max-w-4xl mx-auto stealth-card p-12 md:p-16 mb-32 relative overflow-hidden group border-sor7ed-yellow text-center flex flex-col items-center">
-                        {/* Huge background watermark */}
-                        <div className="absolute top-0 right-10 text-[260px] font-black text-white/[0.02] leading-none select-none pointer-events-none group-hover:text-sor7ed-yellow/[0.04] transition-colors duration-1000">7</div>
 
-                        <div className="relative z-10">
-                            <h2 className="section-title">
-                                <span className="title-white">THE</span> <span className="title-yellow">FOUNDATION.</span>
-                            </h2>
-                            <div className="max-w-2xl">
-                                <p className="text-zinc-500 font-light leading-relaxed mb-6 text-lg">
-                                    SOR7ED is a premium system delivering high-fidelity tools for neurodivergent minds. We publish 3 core updates per week.
-                                </p>
-                                <p className="text-zinc-400 font-light leading-relaxed mb-12 text-lg">
-                                    Every insight includes an <span className="text-sor7ed-yellow italic">Interactive Protocol</span> you can initialize via WhatsApp.
-                                </p>
-                                <div className="flex flex-wrap gap-4 justify-center">
-                                    <span className="stealth-tag border-sor7ed-yellow text-sor7ed-yellow">No Fluff</span>
-                                    <span className="stealth-tag border-sor7ed-yellow/60 text-white">Quick Signup</span>
-                                    <span className="stealth-tag">Pure Data</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div className="mb-20 text-center flex flex-col items-center">
                         <h2 className="section-title justify-center flex gap-4">

@@ -12,10 +12,7 @@ export default function Footer() {
             <div className="container mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-32">
                     <div className="col-span-1 md:col-span-2">
-                        <div className="flex items-center space-x-3 mb-8">
-                            <div className="w-6 h-6 bg-white text-black rounded flex items-center justify-center font-black text-[10px]">7</div>
-                            <span className="text-sm font-black tracking-[0.4em] uppercase text-white">SOR7ED</span>
-                        </div>
+
                         <p className="text-zinc-600 font-light max-w-sm text-sm leading-relaxed mb-12">
                             High-fidelity tools and systems for neurodivergent operating systems. Designed for clarity, built for focus.
                         </p>
