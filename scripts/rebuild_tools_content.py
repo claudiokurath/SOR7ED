@@ -33,8 +33,13 @@ def call_gemini(prompt, retries=10):
             time.sleep(2)
     return None
 
-def chunk_text(text, limit=1900):
+def chunk_text(text, limit=1950):
     return [text[i:i+limit] for i in range(0, len(text), limit)]
+
+def to_rich_text(text):
+    if not text: return []
+    chunks = chunk_text(text)
+    return [{"text": {"content": chunk}} for chunk in chunks]
 
 def update_notion_page(page_id, updates):
     url = f"https://api.notion.com/v1/pages/{page_id}"
@@ -47,7 +52,10 @@ def update_notion_page(page_id, updates):
         urllib.request.urlopen(req, data=json.dumps(data).encode())
         return True
     except Exception as e:
-        print(f"   ❌ Notion Update Error: {e}")
+        if hasattr(e, 'read'):
+            print(f"   ❌ Notion Error: {e.read().decode()}")
+        else:
+            print(f"   ❌ Notion Update Error: {e}")
         return False
 
 def get_all_pages():
@@ -79,9 +87,9 @@ def get_all_pages():
     return pages
 
 def process_tools():
-    print("🚀 Initializing Tool Architecture Engine...")
+    print("🧠 Initializing ULTIMATE Protocol Architect v2.0 for SOR7ED...")
     pages = get_all_pages()
-    print(f"📂 Found {len(pages)} tool definitions.")
+    print(f"📂 Found {len(pages)} protocol definitions. Starting Total Fill...")
     
     for i, page in enumerate(pages):
         page_id = page.get('id')
@@ -91,69 +99,91 @@ def process_tools():
         if props.get('Name') and props['Name'].get('title'):
             name = props['Name']['title'][0]['plain_text']
         
-        desc = ""
-        if props.get('Description') and props['Description'].get('rich_text'):
-            desc = "".join([t['plain_text'] for t in props['Description']['rich_text']])
-
-        # Skip if already has template (unless forced)
-        if props.get('Template') and props['Template'].get('rich_text') and len(props['Template']['rich_text']) > 0:
-            print(f"[{i+1}/{len(pages)}] Skipping: {name} (Already has template)")
-            continue
-
-        print(f"[{i+1}/{len(pages)}] Architecting: {name}...")
+        print(f"[{i+1}/{len(pages)}] Total Reconstruction: {name}...")
         
-        prompt = f"""You are a senior neuro-divergent systems engineer at SOR7ED.
-You need to design an interactive "online tool" for: "{name}"
-Description: {desc}
+        prompt = f"""You are the lead neuro-architect at SOR7ED.
+You are designing the definitive interactive system for: "{name}"
 
-Every tool must have:
-1. A JSON-based schema for interactive elements.
-2. A premium, high-fidelity description.
-3. A "How It Works" protocol.
+You must fill in EVERY SINGLE property for this tool. 
+No placeholders. No generic text. High-fidelity, empathetic, and surgical.
 
-### PART 1: INTERACTIVE SCHEMA (JSON)
-Define the UI components needed. Supported components: "input" (number/text), "slider" (range), "toggle", "display" (result).
-Example format:
-{{"fields": [{{"id": "hours", "label": "Target Hours", "type": "number", "default": 1}}], "logic": "hours * 1.5", "unit": "Estimated Reality Time"}}
-
-### PART 2: THE GUIDE (Markdown)
-Write a premium, architectural guide that users can read or download. Use professional but empathetic tone.
-
-### RESPONSE FORMAT:
+### REQUIRED FIELDS:
+---WHATSAPP_CTA---
+[Keyword in ALL CAPS, e.g. DOPAMINE]
+---PROBLEM_STATEMENT---
+[Deep cognitive pain point this solves.]
+---WHO_ITS_FOR---
+[Personas and situations.]
+---HOW_IT_WORKS---
+[Sequential physical/digital steps.]
 ---SCHEMA---
-[JSON Schema Here]
----GUIDE---
-[Markdown Guide Here]
+[JSON for UI. Fields: input(number/text), slider(number), toggle(bool). Logic must be a simple math string.]
+---META_DESCRIPTION---
+[SEO text < 160 chars.]
+---WHAT_YOU_GET---
+[Outcome bullets.]
+---FAQ---
+[ND-specific Q&A.]
+---OUTPUT_FORMAT---
+[Deliverable description.]
+---DESCRIPTION---
+[A concise (2-sentence) punchy summary of the tool for card views.]
+---TARGET_AUDIENCE---
+[Brief one-liner.]
+---TECH_STACK---
+[e.g. React, Notion API, WhatsApp Concierge, Gemini Pro 2.0]
+---DATA_CAPTURE---
+[e.g. Zero-retention, local processing, WhatsApp response]
+---BRANCH---
+[Pick one: Mind, Wealth, Body, Tech, Connection, Impression, Growth]
+---PRICE---
+[Number between 9 and 49 based on tool complexity/value. No currency symbol.]
 ---
 
-Keep it concise and modular."""
+Maintain 'Stealth Luxury' brand voice: concise, powerful, premium."""
 
         response = call_gemini(prompt)
         if response:
             try:
-                # Clean and parse response
-                if "---SCHEMA---" in response and "---GUIDE---" in response:
-                    schema_data = response.split("---SCHEMA---")[1].split("---GUIDE---")[0].strip()
-                    guide_data = response.split("---GUIDE---")[1].split("---")[0].strip()
-                else:
-                    schema_data = "{}"
-                    guide_data = response
+                def extract(tag):
+                    pattern = f'---{tag}---\n(.*?)(?=\n---|$)'
+                    match = re.search(pattern, response, re.S)
+                    return match.group(1).strip() if match else ""
 
-                # Validate JSON schema
+                # Extract Price
+                price_str = extract("PRICE")
                 try:
-                    json.loads(schema_data)
+                    price = int(re.search(r'\d+', price_str).group())
                 except:
-                    schema_data = "{}"
+                    price = 19 # Default
 
                 updates = {
-                    "Template": {"rich_text": [{"text": {"content": schema_data}}]},
-                    "Description": {"rich_text": [{"text": {"content": guide_data[:2000]}}]},
-                    "Slug": {"rich_text": [{"text": {"content": name.lower().replace(' ', '-').replace("'", "")}}]}
+                    "WhatsApp CTA": {"rich_text": to_rich_text(extract("WHATSAPP_CTA"))},
+                    "Problem Statement": {"rich_text": to_rich_text(extract("PROBLEM_STATEMENT"))},
+                    "Who It's For": {"rich_text": to_rich_text(extract("WHO_ITS_FOR"))},
+                    "How It Works": {"rich_text": to_rich_text(extract("HOW_IT_WORKS"))},
+                    "Template": {"rich_text": to_rich_text(extract("SCHEMA"))},
+                    "Meta Description": {"rich_text": to_rich_text(extract("META_DESCRIPTION"))},
+                    "What You Get": {"rich_text": to_rich_text(extract("WHAT_YOU_GET"))},
+                    "FAQ": {"rich_text": to_rich_text(extract("FAQ"))},
+                    "Output Format": {"rich_text": to_rich_text(extract("OUTPUT_FORMAT"))},
+                    "Description": {"rich_text": to_rich_text(extract("DESCRIPTION"))},
+                    "Target Audience": {"rich_text": to_rich_text(extract("TARGET_AUDIENCE"))},
+                    "Tech Stack": {"rich_text": to_rich_text(extract("TECH_STACK"))},
+                    "Data Capture": {"rich_text": to_rich_text(extract("DATA_CAPTURE"))},
+                    "Credit Cost": {"number": price},
+                    "Slug": {"rich_text": to_rich_text(name.lower().replace(' ', '-').replace("'", "").replace("?", "").replace("!", "").replace(",", ""))},
+                    "Status": {"status": {"name": "Public"}}
                 }
                 
-                # Check if Status 'Public' exists before setting
+                # Handle Branch Select
+                branch_name = extract("BRANCH").capitalize()
+                valid_branches = ["Mind", "Wealth", "Body", "Tech", "Connection", "Impression", "Growth"]
+                if branch_name in valid_branches:
+                    updates["Branch"] = {"select": {"name": branch_name}}
+
                 if update_notion_page(page_id, updates):
-                    print(f"   ✅ Tool Updated.")
+                    print(f"   ✅ Protocol Fully Initialized.")
                 else:
                     print(f"   ❌ Update Failed.")
             except Exception as e:
@@ -161,7 +191,7 @@ Keep it concise and modular."""
         else:
             print(f"   ❌ Generation Failed.")
             
-        time.sleep(2)
+        time.sleep(3) # Slower to be safe
 
 if __name__ == "__main__":
     process_tools()

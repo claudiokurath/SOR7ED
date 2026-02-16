@@ -100,52 +100,43 @@ def process_blog():
         elif props.get('Name') and props['Name'].get('title'):
             title = props['Name']['title'][0]['plain_text']
             
-        # SMART RESUME: Check if 'Template ' already matches the template
-        current_content = ""
-        if props.get('Template ') and props['Template '].get('rich_text'):
-            current_content = props['Template ']['rich_text'][0]['plain_text']
-        elif props.get('Template') and props['Template'].get('rich_text'):
-            current_content = props['Template']['rich_text'][0]['plain_text']
-        
-        if current_content.startswith('#') and "TL;DR:" in current_content:
-            print(f"[{i+1}/{len(pages)}] Skipping: {title} (Already processed)")
-            continue
-
+        # No skip - force refresh
         branch_obj = props.get('Branch')
         branch = "General"
         if branch_obj and branch_obj.get('select'):
             branch = branch_obj['select']['name']
         
-        print(f"[{i+1}/{len(pages)}] Processing: {title} (Branch: {branch})")
+        print(f"[{i+1}/{len(pages)}] Re-Architecting: {title} (Branch: {branch})")
         
-        prompt = f"""You are a high-end protocol writer for SOR7ED, a system for neurodivergent minds. 
-Write a blog post for the title: "{title}"
-Follow this EXACT TEMPLATE structure:
+        prompt = f"""You are the lead neuro-architect for SOR7ED.
+Write a deep-dive protocol for the title: "{title}"
+Context: This post belongs to the '{branch}' branch of life.
+
+Follow this EXACT structure:
 
 # {title}
 
-> **TL;DR:** [One bold sentence summarizing the core neuro-architecture insight.]
+> **TL;DR:** [One surgical, high-impact sentence summarizing the core neuro-shift.]
 
-## The Problem
-[Describe the pain point viscerally. Focus on the feeling of overwhelm, friction, or the failure of traditional neurotypical advice. Use 2-3 short paragraphs.]
+## THE FRICTION
+[Describe the visceral pain point of the ND brain in this context. Focus on why 'trying harder' fails. 2-3 short, powerful paragraphs.]
 
-## The Shift
-[The core neuro-divergent reframe or insight. Use "This isn't about trying harder; it's about..." to lead into the solution.]
+## THE NEURO-SHIFT
+[The core reframe. "This isn't a discipline problem; it's a structural one." Explain the science/logic of the solution.]
 
-## The Protocol
-[3-5 Actionable, high-friction-reducing steps. Use a numbered list.]
+## THE PROTOCOL
+[3-5 Actionable, low-friction steps. Use a numbered list.]
 
 ---
 
-### Ready to hand this off?
-- **You don't have to do this alone.**
-I can handle this entire {branch} branch for you.
+### Initialize System Growth?
+I can handle the complexity of the {branch} branch for you.
 
-> **Text "START" to +44 7966 628285** to begin.
+> **Text "START" to +44 7360 277713** to begin your evolution.
 
 [End of Post]
 
-Keep the tone professional, architectural, and empathetic to ADHD/Autistic brains. No fluff."""
+Keep the tone professional, minimalist, and deeply empathetic. No fluff."""
 
         content = call_gemini(prompt)
         if content:

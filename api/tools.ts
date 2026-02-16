@@ -44,6 +44,7 @@ export default async function handler(req: any, res: any) {
                 desc: props.Description?.rich_text[0]?.plain_text || '',
                 keyword: props['WhatsApp CTA']?.rich_text[0]?.plain_text || '',
                 template: props.Template?.rich_text[0]?.plain_text || '',
+                price: props['Credit Cost']?.number || 19,
                 isPublic: true
             }
         })

@@ -7,6 +7,7 @@ interface DynamicToolProps {
         desc: string
         template: string
         keyword: string
+        price?: number
     }
     onDeploy: (keyword: string) => void
 }
@@ -152,7 +153,7 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
                         className="group flex items-center space-x-4 text-[10px] font-mono-headline text-zinc-500 hover:text-white uppercase tracking-widest transition-all"
                     >
                         <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-sor7ed-yellow group-hover:text-sor7ed-yellow transition-all">↓</span>
-                        <span>[ EXPORT SYSTEM DOCUMENTATION ]</span>
+                        <span>[ EXPORT SYSTEM DOCUMENTATION • £{tool.price || 19} ]</span>
                     </button>
                 </div>
                 <div className="flex flex-col items-end gap-4">
