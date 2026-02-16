@@ -206,15 +206,17 @@ export default async function handler(req: any, res: any) {
         }
 
         // 4. Update CRM Usage Stats
-        if (match && userPage && !UTILITY_RESPONSES[trigger]) {
+        if (match && userPage && userPage.properties && !UTILITY_RESPONSES[trigger]) {
             const updates: any = {}
             if (freeToolsUsed < 2) {
                 updates['Free Tools Used'] = { number: freeToolsUsed + 1 }
             } else {
                 updates['Credits Balance'] = { number: Math.max(0, credits - 1) }
-                updates['Total Credits Used'] = { number: (userPage.properties['Total Credits Used']?.number || 0) + 1 }
+                const currentTotal = userPage.properties['Total Credits Used']?.number || 0
+                updates['Total Credits Used'] = { number: currentTotal + 1 }
             }
-            updates['Tools Delivered'] = { number: (userPage.properties['Tools Delivered']?.number || 0) + 1 }
+            const currentDelivered = userPage.properties['Tools Delivered']?.number || 0
+            updates['Tools Delivered'] = { number: currentDelivered + 1 }
             updates['Last Active'] = { date: { start: new Date().toISOString() } }
 
             await fetch(`https://api.notion.com/v1/pages/${userPage.id}`, {
