@@ -16,8 +16,16 @@ export default async function handler(req: any, res: any) {
             },
             body: JSON.stringify({
                 filter: {
-                    property: 'Status',
-                    status: { equals: 'Public' }
+                    or: [
+                        {
+                            property: 'Status',
+                            status: { equals: 'Published' }
+                        },
+                        {
+                            property: 'Status',
+                            status: { equals: 'Public' }
+                        }
+                    ]
                 },
                 page_size: 100
             })
