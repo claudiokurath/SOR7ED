@@ -187,7 +187,7 @@ export default async function handler(req: any, res: any) {
             if (match) {
                 const props = match.properties
                 branch = props.Branch?.select?.name || "Mind"
-                const templateRichText = props.Template?.rich_text || props['Template ']?.rich_text || []
+                const templateRichText = props.Content?.rich_text || props.Template?.rich_text || props['Template ']?.rich_text || []
                 const template = templateRichText.map((t: any) => t.plain_text).join('')
 
                 const postTitle = props.Title?.title?.[0]?.plain_text || "Requested Protocol"
