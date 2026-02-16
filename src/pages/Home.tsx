@@ -129,7 +129,7 @@ export default function Home() {
                             <img
                                 src="/logo.png"
                                 alt="SOR7ED"
-                                className="h-32 md:h-56 w-auto object-contain drop-shadow-2xl"
+                                className="h-96 md:h-[40rem] w-auto object-contain drop-shadow-2xl"
                             />
                         </div>
 
@@ -158,7 +158,6 @@ export default function Home() {
 
                         <div className="flex flex-col sm:flex-row gap-8 mb-24">
                             <a href="#lab" className="btn-primary w-full sm:w-auto">Initialize Tools</a>
-                            <a href="https://wa.me/447360277713?text=Hi" className="btn-secondary w-full sm:w-auto">Message Concierge</a>
                         </div>
 
 
@@ -211,21 +210,24 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {branches.map((branch) => (
-                            <div key={branch.name} className="stealth-card p-8 group hover:border-white transition-all duration-500">
-                                <div className="flex flex-col h-full">
-                                    <div className="mb-8 overflow-hidden">
+                    <div className="flex flex-wrap gap-4 justify-center">
+                        {branches.map((branch, index) => (
+                            <div
+                                key={branch.name}
+                                className={`stealth-card p-6 md:p-8 group hover:border-white transition-all duration-500 flex-grow ${index % 3 === 0 ? 'md:w-[60%]' : 'md:w-[30%]'} w-full`}
+                            >
+                                <div className="flex flex-col h-full justify-between">
+                                    <div className="mb-4 overflow-hidden">
                                         <div className="w-8 h-px bg-zinc-800 mb-4 group-hover:bg-sor7ed-yellow transition-colors" />
                                         <span className="text-[9px] font-mono-headline text-zinc-600 group-hover:text-sor7ed-yellow transition-colors uppercase tracking-[0.2em] block">
                                             VECTOR {branch.name}
                                         </span>
                                     </div>
-                                    <div className="flex-grow">
-                                        <h3 className="text-xl font-black text-white uppercase tracking-wider mb-6">{branch.name}</h3>
-                                        <p className="text-[13px] text-zinc-500 font-light leading-relaxed mb-8">{branch.description}</p>
+                                    <div>
+                                        <h3 className="text-lg md:text-xl font-black text-white uppercase tracking-wider mb-4">{branch.name}</h3>
+                                        <p className="text-[12px] md:text-[13px] text-zinc-500 font-light leading-relaxed mb-6">{branch.description}</p>
                                     </div>
-                                    <div className="mt-10 pt-6 border-t border-zinc-900 flex items-center justify-between">
+                                    <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
                                         <span className="text-[9px] font-mono-headline text-zinc-700 uppercase tracking-widest">Protocol 07</span>
                                         <span className="text-[14px] text-zinc-800 group-hover:text-sor7ed-yellow transition-colors">+</span>
                                     </div>
@@ -289,7 +291,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 w-full max-w-7xl px-2">
                         {dynamicArticles.length > 0 ? (
                             dynamicArticles.map((post, i) => (
                                 <div
