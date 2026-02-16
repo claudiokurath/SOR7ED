@@ -32,13 +32,10 @@ export default function Header() {
                 <a
                     href="#hero"
                     onClick={(e) => handleNavClick(e, '#hero')}
-                    className="flex items-center group"
+                    className="flex items-center space-x-3 group"
                 >
-                    <img
-                        src="/logo.png"
-                        alt="SOR7ED Logo"
-                        className="h-8 w-auto filter grayscale group-hover:grayscale-0 transition-all duration-300"
-                    />
+                    <div className="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center font-black text-sm group-hover:bg-sor7ed-yellow transition-colors tracking-tighter">7</div>
+                    <span className="text-lg font-black tracking-[0.3em] uppercase text-zinc-100 group-hover:text-sor7ed-yellow transition-colors font-mono-headline">SOR7ED</span>
                 </a>
 
                 {/* Desktop Nav */}
