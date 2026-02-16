@@ -12,6 +12,9 @@ import TaskBreaker from '../components/tools/TaskBreaker'
 import MoodTracker from '../components/tools/MoodTracker'
 import RoutineBuilder from '../components/tools/RoutineBuilder'
 import SocialSimulator from '../components/tools/SocialSimulator'
+import NoiseMixer from '../components/tools/NoiseMixer'
+import BodyDouble from '../components/tools/BodyDouble'
+import CommunicationBridge from '../components/tools/CommunicationBridge'
 import DynamicTool from '../components/tools/DynamicTool'
 
 export default function Home() {
@@ -64,6 +67,9 @@ export default function Home() {
         else if (name.includes('mood') || name.includes('energy') || name.includes('tracker') || name.includes('biometric')) targetId = 'mood-tracker'
         else if (name.includes('routine') || name.includes('builder') || name.includes('architect')) targetId = 'routine-builder'
         else if (name.includes('social') || name.includes('simulator') || name.includes('scenario')) targetId = 'social-simulator'
+        else if (name.includes('noise') || name.includes('audio') || name.includes('mixer')) targetId = 'noise-mixer'
+        else if (name.includes('body double') || name.includes('presence')) targetId = 'body-double'
+        else if (name.includes('communication') || name.includes('email') || name.includes('translator') || name.includes('script')) targetId = 'communication-bridge'
 
         setActiveToolId(targetId)
         setActiveToolObject(tool)
@@ -405,8 +411,11 @@ export default function Home() {
                             {activeToolId === 'mood-tracker' && <MoodTracker onDeploy={handleDeployClick} />}
                             {activeToolId === 'routine-builder' && <RoutineBuilder onDeploy={handleDeployClick} />}
                             {activeToolId === 'social-simulator' && <SocialSimulator onDeploy={handleDeployClick} />}
+                            {activeToolId === 'noise-mixer' && <NoiseMixer onDeploy={handleDeployClick} />}
+                            {activeToolId === 'body-double' && <BodyDouble onDeploy={handleDeployClick} />}
+                            {activeToolId === 'communication-bridge' && <CommunicationBridge onDeploy={handleDeployClick} />}
 
-                            {!['dopamine-menu', 'time-visualizer', 'task-triage', 'sensory-fidget', 'focus-timer', 'task-breaker', 'mood-tracker', 'routine-builder', 'social-simulator'].includes(activeToolId as string) && activeToolObject && (
+                            {!['dopamine-menu', 'time-visualizer', 'task-triage', 'sensory-fidget', 'focus-timer', 'task-breaker', 'mood-tracker', 'routine-builder', 'social-simulator', 'noise-mixer', 'body-double', 'communication-bridge'].includes(activeToolId as string) && activeToolObject && (
                                 <DynamicTool tool={activeToolObject} onDeploy={handleDeployClick} />
                             )}
                         </div>
