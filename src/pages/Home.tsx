@@ -23,7 +23,7 @@ export default function Home() {
     const [whatsappUrl, setWhatsappUrl] = useState('')
 
     const [activeToolId, setActiveToolId] = useState<string | null>(null)
-    const [isMuted, setIsMuted] = useState(true)
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -97,14 +97,28 @@ export default function Home() {
 
     return (
         <div className="bg-[#050505] min-h-screen bg-grid relative overflow-hidden text-white font-sans">
+            {/* Full-Screen Background Video */}
+            <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover opacity-20 filter grayscale scale-105"
+                >
+                    <source src="/Intro.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+            </div>
+
             {/* Dynamic Background Glows */}
-            <div className="absolute top-0 left-0 w-full h-screen pointer-events-none">
+            <div className="absolute top-0 left-0 w-full h-screen pointer-events-none z-1">
                 <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-sor7ed-yellow/5 blur-[150px] animate-stealth-glow rounded-full" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/5 blur-[120px] rounded-full" />
             </div>
 
             {/* Hero Section */}
-            <section id="hero" className="relative pt-48 pb-32 px-6">
+            <section id="hero" className="relative pt-48 pb-32 px-6 z-10">
                 <div className="container mx-auto max-w-7xl">
                     <div className="flex flex-col items-center text-center">
                         <div className="inline-flex items-center space-x-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full mb-12 backdrop-blur-sm">
@@ -115,34 +129,6 @@ export default function Home() {
                         <h1 className="section-title leading-[0.8] lg:text-[12rem] md:text-[8rem] text-[4rem] mb-12 tracking-tighter">
                             <span className="title-white">THE</span> <span className="title-yellow">LAB.</span>
                         </h1>
-
-                        {/* Centered Square Video Container */}
-                        <div className="w-full max-w-sm aspect-square mb-20 overflow-hidden rounded-[2rem] bg-black/40 backdrop-blur-xl shadow-2xl relative group">
-                            <video
-                                autoPlay
-                                muted={isMuted}
-                                playsInline
-                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 grayscale hover:grayscale-0 rounded-[2rem]"
-                            >
-                                <source src="/Intro.mp4" type="video/mp4" />
-                            </video>
-
-                            {/* Mute Button Overlay */}
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setIsMuted(!isMuted);
-                                }}
-                                className="absolute bottom-6 right-6 z-30 p-3 rounded-full bg-black/40 border border-white/10 backdrop-blur-md text-white transition-all hover:bg-sor7ed-yellow hover:text-black opacity-0 group-hover:opacity-100"
-                            >
-                                {isMuted ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                                )}
-                            </button>
-
-                        </div>
 
                         <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl font-light leading-relaxed mb-16">
                             Sophisticated, low-friction tools for executive function.
