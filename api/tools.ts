@@ -24,6 +24,10 @@ export default async function handler(req: any, res: any) {
                         {
                             property: 'Status',
                             status: { equals: 'Public' }
+                        },
+                        {
+                            property: 'Status',
+                            status: { equals: 'Live' }
                         }
                     ]
                 },
