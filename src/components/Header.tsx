@@ -1,92 +1,37 @@
-import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
-export default function Header() {
-    const [isScrolled, setIsScrolled] = useState(false)
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-    useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 20)
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
-
-    const navItems = [
-        { label: 'Tools', href: '#tools' },
-        { label: 'Blog', href: '#blog' },
-        { label: 'Faq', href: '#faq' },
-        { label: 'About', href: '#about' }
-    ]
-
-    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        e.preventDefault()
-        const element = document.querySelector(href)
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
-        }
-        setIsMenuOpen(false)
-    }
-
+const Header = () => {
     return (
-        <header className={`fixed w-full top-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4 bg-black/80 backdrop-blur-xl border-b border-sor7ed-yellow' : 'py-8 bg-transparent'}`}>
-            <div className="container mx-auto px-6 flex items-center justify-between">
-
-
-                {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center space-x-12">
-                    {navItems.map((item) => (
-                        <a
-                            key={item.label}
-                            className="text-[10px] uppercase font-black tracking-[0.3em] text-zinc-500 hover:text-white transition-colors"
-                        >
-                            {item.label}
-                        </a>
-                    ))}
-                    <a
-                        href="https://wa.me/447360277713?text=Hi"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] uppercase font-black tracking-[0.3em] text-sor7ed-yellow border border-sor7ed-yellow/30 px-6 py-2 rounded-full hover:bg-sor7ed-yellow hover:text-black transition-all"
-                    >
-                        Connect
-                    </a>
-                </nav>
-
-                {/* Mobile Toggle */}
-                <button
-                    className="md:hidden text-white transition-colors hover:text-sor7ed-yellow"
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                >
-                    <div className="w-6 h-5 flex flex-col justify-between items-end">
-                        <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'w-6 translate-y-2.5 rotate-45' : 'w-6'}`} />
-                        <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'w-4'}`} />
-                        <span className={`h-0.5 bg-current transition-all duration-300 ${isMenuOpen ? 'w-6 -translate-y-2 -rotate-45' : 'w-2'}`} />
+        <header className="bg-black border-b border-gray-800 sticky top-0 z-50">
+            <nav className="container mx-auto px-6 py-4">
+                <div className="flex items-center justify-between">
+                    <Link to="/" className="text-2xl font-bold text-sor7ed-yellow">
+                        SOR7ED
+                    </Link>
+                    <div className="hidden md:flex space-x-8">
+                        <Link to="/" className="text-gray-300 hover:text-sor7ed-yellow transition-colors">
+                            Home
+                        </Link>
+                        <Link to="/tools" className="text-gray-300 hover:text-sor7ed-yellow transition-colors">
+                            Tools
+                        </Link>
+                        <Link to="/blog" className="text-gray-300 hover:text-sor7ed-yellow transition-colors">
+                            Blog
+                        </Link>
+                        <Link to="/about" className="text-gray-300 hover:text-sor7ed-yellow transition-colors">
+                            About
+                        </Link>
                     </div>
-                </button>
-            </div>
-
-            {/* Mobile Menu */}
-            <div className={`md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-2xl border-b border-sor7ed-yellow transition-all duration-500 overflow-hidden ${isMenuOpen ? 'max-h-screen opacity-100 py-12' : 'max-h-0 opacity-0'}`}>
-                <nav className="container mx-auto px-6 flex flex-col space-y-8 items-center text-center">
-                    {navItems.map((item) => (
-                        <a
-                            key={item.label}
-                            href={item.href}
-                            onClick={(e) => handleNavClick(e, item.href)}
-                            className="text-lg uppercase font-black tracking-[0.4em] text-zinc-400 hover:text-sor7ed-yellow transition-colors"
-                        >
-                            {item.label}
-                        </a>
-                    ))}
-                    <a
-                        href="https://wa.me/447360277713?text=Hi"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full btn-primary bg-sor7ed-yellow/10 border border-sor7ed-yellow/30 text-sor7ed-yellow py-6"
+                    <Link
+                        to="/tools"
+                        className="bg-sor7ed-yellow text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-500 transition-colors"
                     >
-                        Connect to Concierge
-                    </a>
-                </nav>
-            </div>
+                        Try Free Tools
+                    </Link>
+                </div>
+            </nav>
         </header>
     )
 }
+
+export default Header

@@ -1,8 +1,8 @@
 export default async function handler(req: any, res: any) {
     const { slug } = req.query
 
-    const TOKEN = (process.env.NOTION_BLOG_TOKEN || process.env.NOTION_TOKEN || '').trim()
-    const DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || process.env.BLOG_DB_ID || '').trim()
+    const TOKEN = (process.env.NOTION_BLOG_KEY || '').trim()
+    const DB_ID = (process.env.NOTION_BLOG_DB_ID || '').trim()
 
     try {
         if (!TOKEN || !DB_ID) throw new Error('Vercel Config Error: Missing Notion Configuration.')
@@ -40,12 +40,13 @@ export default async function handler(req: any, res: any) {
         })
         const blocksData = await blocksResponse.json()
 
-        // Extract content from "Post Body" property
-        const postBodyRichText = props['Post Body']?.rich_text || []
+        // Extract content from "Content" property (was Post Body)
+        const postBodyRichText = props['Content']?.rich_text || []
         const propertyContent = postBodyRichText.map((t: any) => t.plain_text).join('')
 
         // Extract CTA 1
-        const ctaRichText = props['CTA 1']?.rich_text || []
+        // Look for 'CTA' (new) or 'CTA 1' (legacy)
+        const ctaRichText = props['CTA']?.rich_text || props['CTA 1']?.rich_text || []
         const ctaData = ctaRichText.map((t: any) => ({
             text: t.plain_text,
             link: t.href || null,
@@ -60,7 +61,7 @@ export default async function handler(req: any, res: any) {
 
         const post = {
             title: props.Title?.title[0]?.plain_text || 'Untitled',
-            date: props['Publication Date']?.date?.start || '',
+            date: props['Publish Date']?.date?.start || '',
             category: props.Branch?.select?.name || 'Mind',
             image: imageUrl,
             propertyContent: propertyContent,

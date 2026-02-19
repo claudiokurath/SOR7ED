@@ -1,66 +1,97 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Client } from '@notionhq/client'
 
-// Initialize Notion client (Server-side)
-// @ts-ignore
-const crmNotion = new Client({ auth: process.env.NOTION_CRM_TOKEN })
-// @ts-ignore
-const CRM_DATABASE_ID = process.env.NOTION_CRM_DATABASE_ID
+const notion = new Client({ auth: process.env.NOTION_CRM_KEY })
+const CRM_DB_ID = process.env.NOTION_CRM_DB_ID!
+const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID!
+const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN!
+const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_WHATSAPP_NUMBER || '+447360277713'
 
-export default async function handler(req: any, res: any) {
-    // Add CORS headers for local development if needed, 
-    // though Vercel handles this for same-origin by default.
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end()
-    }
-
+export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' })
     }
 
     try {
-        const { name, email, phone, template, timezone, checkInHours } = req.body
+        const { customerName, email, phoneNumber, leadSource, signupDate, status, freeToolsUsed, creditsBalance } = req.body
 
-        if (!name || !email) {
-            return res.status(400).json({ error: 'Name and Email are required' })
-        }
-
-        if (!CRM_DATABASE_ID) {
-            throw new Error('VITE_NOTION_CRM_DATABASE_ID is not configured')
-        }
-
-        const response = await crmNotion.pages.create({
-            parent: { database_id: CRM_DATABASE_ID },
+        // 1. Create entry in Notion CRM
+        await notion.pages.create({
+            parent: { database_id: CRM_DB_ID },
             properties: {
                 'Customer Name': {
-                    title: [{ text: { content: name } }]
+                    title: [{ text: { content: customerName } }]
                 },
                 'Email': {
                     email: email
                 },
                 'Phone Number': {
-                    phone_number: phone || ''
+                    phone_number: phoneNumber
                 },
-                'Template Requested': {
-                    rich_text: [{ text: { content: template } }]
-                },
-                'Timezone': {
-                    rich_text: [{ text: { content: timezone || '' } }]
-                },
-                'Check-in Hours': {
-                    rich_text: [{ text: { content: checkInHours || '' } }]
+                'Lead Source': {
+                    select: { name: leadSource }
                 },
                 'Signup Date': {
-                    date: { start: new Date().toISOString() }
+                    date: { start: signupDate }
+                },
+                'Status': {
+                    status: { name: status }
+                },
+                'Free Tools Used': {
+                    number: freeToolsUsed
+                },
+                'Credits Balance': {
+                    number: creditsBalance
                 }
-            } as any
+            }
         })
 
-        return res.status(200).json({ success: true, id: response.id })
-    } catch (error: any) {
-        console.error('Notion API Error:', error)
-        return res.status(500).json({
-            error: 'Failed to save to Notion',
-            details: error.message
-        })
+        // 2. Send welcome message via Twilio WhatsApp API
+        const welcomeMessage = `Hey ${customerName}! 👋
+
+Welcome to SOR7ED. You've got 2 free tool requests waiting.
+
+Try texting:
+• DOPAMINE - Create your dopamine menu
+• TRIAGE - Sort overwhelming tasks
+• TIME - Time blindness calculator
+• SENSORY - Sensory audit
+• RSD - RSD response generator
+
+Just text the keyword and I'll send it over.
+
+— SOR7ED
+worry less, live more.`
+
+        // Create Basic Auth header
+        const authHeader = 'Basic ' + Buffer.from(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`).toString('base64')
+
+        // Send WhatsApp message via Twilio
+        const twilioResponse = await fetch(
+            `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
+            {
+                method: 'POST',
+                headers: {
+                    'Authorization': authHeader,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    From: `whatsapp:${TWILIO_WHATSAPP_NUMBER}`,
+                    To: `whatsapp:${phoneNumber}`,
+                    Body: welcomeMessage
+                })
+            }
+        )
+
+        if (!twilioResponse.ok) {
+            const errorData = await twilioResponse.json()
+            console.error('Twilio error:', errorData)
+            throw new Error('Failed to send WhatsApp message')
+        }
+
+        return res.status(200).json({ success: true, message: 'Signup successful' })
+    } catch (error) {
+        console.error('Signup error:', error)
+        return res.status(500).json({ error: 'Signup failed' })
     }
 }

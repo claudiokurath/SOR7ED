@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { saveSignup } from '../utils/notion'
 
 interface SignupModalProps {
     isOpen: boolean
@@ -8,123 +7,144 @@ interface SignupModalProps {
     whatsappUrl: string
 }
 
-export default function SignupModal({ isOpen, onClose, template, whatsappUrl }: SignupModalProps) {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [phone, setPhone] = useState('')
-    const [timezone, setTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone)
-    const [checkInHours, setCheckInHours] = useState('09:00 - 18:00')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
+const SignupModal = ({ isOpen, onClose, template, whatsappUrl }: SignupModalProps) => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: ''
+    })
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
     if (!isOpen) return null
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setLoading(true)
-        setError('')
+        setIsSubmitting(true)
+        setMessage(null)
 
         try {
-            // Save to Notion CRM
-            await saveSignup({ name, email, phone, template, timezone, checkInHours })
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    customerName: formData.name,
+                    email: formData.email,
+                    phoneNumber: formData.phone,
+                    leadSource: 'Tool: ' + template,
+                    signupDate: new Date().toISOString().split('T')[0],
+                    status: 'Trial',
+                    freeToolsUsed: 0,
+                    creditsBalance: 2
+                })
+            })
 
-            // Redirect to WhatsApp
-            window.location.href = whatsappUrl
-        } catch (err) {
-            setError('Something went wrong. Please try again.')
-            setLoading(false)
+            if (response.ok) {
+                setMessage({
+                    type: 'success',
+                    text: 'Welcome! Opening WhatsApp...'
+                })
+                setTimeout(() => {
+                    window.open(whatsappUrl, '_blank')
+                    onClose()
+                }, 1500)
+            } else {
+                throw new Error('Signup failed')
+            }
+        } catch (error) {
+            setMessage({
+                type: 'error',
+                text: 'Something went wrong. Please try texting us directly.'
+            })
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
     return (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-            <div className="bg-black border-2 border-sor7ed-yellow rounded-xl p-8 max-w-md w-full relative">
+        <div className="fixed inset-0 bg-black/90 z-[70] flex items-center justify-center p-6 animate-in fade-in duration-300">
+            <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl max-w-md w-full p-8 relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
+                    className="absolute top-4 right-4 text-white/50 hover:text-white text-2xl"
                 >
                     ×
                 </button>
 
-                <h2 className="text-3xl font-bold mb-2 text-sor7ed-yellow">Get Your Free Template</h2>
-                <p className="text-gray-400 mb-6">Quick signup to unlock: <strong className="text-white">{template}</strong></p>
+                <h3 className="text-2xl font-bold text-white mb-2">
+                    Deploy to WhatsApp
+                </h3>
+                <p className="text-zinc-500 text-sm mb-6">
+                    Get <span className="text-sor7ed-yellow">{template}</span> sent to your phone
+                </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-2">Name *</label>
+                        <label className="block text-xs text-zinc-400 mb-2 uppercase tracking-wider">
+                            Name
+                        </label>
                         <input
                             type="text"
                             required
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full px-4 py-3 bg-sor7ed-gray border border-sor7ed-gray-light rounded-lg focus:border-sor7ed-yellow focus:outline-none text-white"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-sor7ed-yellow focus:outline-none"
                             placeholder="Your name"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-2">Email *</label>
+                        <label className="block text-xs text-zinc-400 mb-2 uppercase tracking-wider">
+                            Email
+                        </label>
                         <input
                             type="email"
                             required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 bg-sor7ed-gray border border-sor7ed-gray-light rounded-lg focus:border-sor7ed-yellow focus:outline-none text-white"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-sor7ed-yellow focus:outline-none"
                             placeholder="your@email.com"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-2">Phone (optional)</label>
+                        <label className="block text-xs text-zinc-400 mb-2 uppercase tracking-wider">
+                            WhatsApp Number
+                        </label>
                         <input
                             type="tel"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="w-full px-4 py-3 bg-sor7ed-gray border border-sor7ed-gray-light rounded-lg focus:border-sor7ed-yellow focus:outline-none text-white"
-                            placeholder="+44..."
+                            required
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-sor7ed-yellow focus:outline-none"
+                            placeholder="+44 7XXX XXXXXX"
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Timezone</label>
-                            <input
-                                type="text"
-                                value={timezone}
-                                onChange={(e) => setTimezone(e.target.value)}
-                                className="w-full px-4 py-3 bg-sor7ed-gray border border-sor7ed-gray-light rounded-lg focus:border-sor7ed-yellow focus:outline-none text-white text-xs"
-                                placeholder="Europe/London"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-2">Check-in Hours</label>
-                            <input
-                                type="text"
-                                value={checkInHours}
-                                onChange={(e) => setCheckInHours(e.target.value)}
-                                className="w-full px-4 py-3 bg-sor7ed-gray border border-sor7ed-gray-light rounded-lg focus:border-sor7ed-yellow focus:outline-none text-white text-xs"
-                                placeholder="09:00 - 18:00"
-                            />
-                        </div>
-                    </div>
-
-                    {error && (
-                        <p className="text-red-400 text-sm">{error}</p>
-                    )}
-
                     <button
                         type="submit"
-                        disabled={loading}
-                        className="w-full bg-sor7ed-yellow text-black py-4 rounded-lg font-bold text-lg hover:bg-yellow-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={isSubmitting}
+                        className="w-full bg-sor7ed-yellow text-black font-bold py-3 rounded-lg hover:bg-yellow-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider text-sm"
                     >
-                        {loading ? 'Saving...' : '📱 Get Template on WhatsApp'}
+                        {isSubmitting ? 'Deploying...' : 'Deploy to Phone'}
                     </button>
 
-                    <p className="text-xs text-gray-500 text-center">
-                        We'll never spam. Unsubscribe anytime.
-                    </p>
+                    {message && (
+                        <div className={`p-3 rounded-lg text-sm ${message.type === 'success'
+                                ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                                : 'bg-red-500/20 border border-red-500/50 text-red-400'
+                            }`}>
+                            {message.text}
+                        </div>
+                    )}
                 </form>
+
+                <p className="text-xs text-zinc-600 mt-4 text-center">
+                    By signing up, you agree to receive WhatsApp messages from SOR7ED.
+                </p>
             </div>
         </div>
     )
 }
+
+export default SignupModal

@@ -87,24 +87,34 @@ export default function BlogPost() {
                             <div className="relative z-10 flex flex-col items-center text-center">
                                 <div className="max-w-xl mb-10">
                                     {post.cta1.map((part: any, i: number) => (
-                                        <span
-                                            key={i}
-                                            className={`${part.bold ? 'font-black text-white' : 'text-zinc-300 font-light'} text-lg md:text-xl leading-relaxed`}
-                                        >
-                                            {part.text}
-                                        </span>
+                                        part.link ? (
+                                            <a
+                                                key={i}
+                                                href={part.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={`text-sor7ed-yellow hover:text-white transition-colors border-b border-sor7ed-yellow ${part.bold ? 'font-bold' : ''}`}
+                                            >
+                                                {part.text}
+                                            </a>
+                                        ) : (
+                                            <span
+                                                key={i}
+                                                className={`${part.bold ? 'font-black text-white' : 'text-zinc-300 font-light'} text-lg md:text-xl leading-relaxed`}
+                                            >
+                                                {part.text}
+                                            </span>
+                                        )
                                     ))}
                                 </div>
-                                {post.cta1.some((p: any) => p.link) && (
-                                    <a
-                                        href={post.cta1.find((p: any) => p.link)?.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="btn-primary"
-                                    >
-                                        Execute Action
-                                    </a>
-                                )}
+                                <a
+                                    href={post.cta1.find((p: any) => p.link)?.link || `https://wa.me/447360277713?text=PROTOCOL: ${encodeURIComponent(post.title)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn-primary mt-8 inline-block"
+                                >
+                                    Execute Action
+                                </a>
                             </div>
                         </div>
                     )}

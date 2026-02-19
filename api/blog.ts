@@ -17,7 +17,7 @@ export default async function handler(req: any, res: any) {
             body: JSON.stringify({
                 filter: {
                     property: 'Status',
-                    status: { equals: 'Published' }
+                    status: { equals: 'Done' } // Updated to match 'Done' status in populated DB
                 },
                 sorts: [{
                     property: 'Publication Date',
@@ -38,18 +38,20 @@ export default async function handler(req: any, res: any) {
                 ? (files[0].external?.url || files[0].file?.url || '')
                 : (page.cover?.external?.url || page.cover?.file?.url || '')
 
-            // 2. Extract excerpt from "Post Body" property
-            const bodyRichText = props['Post Body']?.rich_text || []
+            // 2. Extract excerpt from "Content" property (was "Post Body")
+            const bodyRichText = props['Content']?.rich_text || []
             const fullBody = bodyRichText.map((t: any) => t.plain_text).join('')
             const excerpt = fullBody.length > 120 ? fullBody.substring(0, 117) + '...' : fullBody
 
             return {
+                id: page.id,
                 title: props.Title?.title[0]?.plain_text || 'Untitled',
                 date: props['Publication Date']?.date?.start || '',
                 category: props.Branch?.select?.name || 'Mind',
                 readTime: '5 min',
                 image: imageUrl,
-                excerpt: excerpt
+                excerpt: excerpt,
+                slug: props.Slug?.rich_text[0]?.plain_text || '' // Added Slug
             }
         })
 

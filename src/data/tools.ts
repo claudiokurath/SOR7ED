@@ -1,15 +1,50 @@
-export interface Tool {
-    icon: string;
-    name: string;
-    desc: string;
-    category: string;
-}
-
-export const tools: Tool[] = [
-    { icon: '', name: 'Dopamine Menu', desc: 'Create your personal menu of quick dopamine hits', category: 'Executive Function' },
-    { icon: '', name: 'Executive Function Triage', desc: 'Sort overwhelming tasks into manageable next steps', category: 'Executive Function' },
-    { icon: '', name: 'Time Blindness Calculator', desc: 'See where your time really goes (ADHD-adjusted)', category: 'Time Management' },
-    { icon: '', name: 'Focus Mode', desc: 'ND-friendly concentration kits', category: 'Focus' },
-    { icon: '', name: 'Spend Guard', desc: 'Impulse control for your wallet', category: 'Wealth' },
-    { icon: '', name: 'Social Kit', desc: 'Communication shortcuts', category: 'Connection' }
-];
+export const tools = [
+    {
+        id: 'dopamine-menu',
+        emoji: '🎯',
+        name: 'Dopamine Menu Generator',
+        description: 'Create a personalized menu of activities sorted by effort level to fight decision fatigue.',
+        whatsappKeyword: 'DOPAMINE',
+        category: 'MIND'
+    },
+    {
+        id: 'executive-function',
+        emoji: '🧩',
+        name: 'Executive Function Triage',
+        description: 'Identify which executive function is struggling today and get targeted support strategies.',
+        whatsappKeyword: 'TRIAGE',
+        category: 'MIND'
+    },
+    {
+        id: 'time-blindness',
+        emoji: '⏰',
+        name: 'Time Blindness Calculator',
+        description: 'Estimate realistic task duration based on ADHD time perception patterns.',
+        whatsappKeyword: 'TIME',
+        category: 'TECH'
+    },
+    {
+        id: 'sensory-audit',
+        emoji: '👂',
+        name: 'Sensory Audit',
+        description: 'Map your sensory preferences and create an accommodation plan for work and home.',
+        whatsappKeyword: 'SENSORY',
+        category: 'BODY'
+    },
+    {
+        id: 'rsd-response',
+        emoji: '💬',
+        name: 'RSD Response Generator',
+        description: 'Generate calm, balanced responses when rejection sensitive dysphoria is triggered.',
+        whatsappKeyword: 'RSD',
+        category: 'CONNECTION'
+    },
+    {
+        id: 'task-breakdown',
+        emoji: '📋',
+        name: 'Task Breakdown Wizard',
+        description: 'Break overwhelming projects into ADHD-friendly micro-tasks with time estimates.',
+        whatsappKeyword: 'BREAKDOWN',
+        category: 'TECH'
+    }
+]

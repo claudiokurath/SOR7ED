@@ -1,71 +1,42 @@
-export default function Footer() {
-    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        e.preventDefault()
-        const element = document.querySelector(href)
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
-        }
-    }
-
+const Footer = () => {
     return (
-        <footer className="bg-[#050505] border-t border-sor7ed-yellow pt-32 pb-12 px-6">
-            <div className="container mx-auto max-w-7xl">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-32">
-                    <div className="col-span-1 md:col-span-2">
-
-                        <p className="text-zinc-600 font-light max-w-sm text-sm leading-relaxed mb-12">
-                            High-fidelity tools and systems for neurodivergent operating systems. Designed for clarity, built for focus.
-                        </p>
-                        <div className="flex space-x-8">
-                            <a href="#" className="text-[10px] font-black tracking-widest text-zinc-700 hover:text-white transition-colors uppercase">Status</a>
-                            <a href="#" className="text-[10px] font-black tracking-widest text-zinc-700 hover:text-white transition-colors uppercase">Safety</a>
-                            <a href="#" className="text-[10px] font-black tracking-widest text-zinc-700 hover:text-white transition-colors uppercase">Legacy</a>
-                        </div>
-                    </div>
-
+        <footer className="bg-black border-t border-gray-800 py-12">
+            <div className="container mx-auto px-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
-                        <h4 className="text-[10px] uppercase font-black tracking-[0.3em] text-zinc-400 mb-8">Exploration</h4>
-                        <ul className="space-y-4">
-                            {[
-                                { label: 'Tools', href: '#tools' },
-                                { label: 'Blog', href: '#blog' },
-                                { label: 'FAQ', href: '#faq' },
-                                { label: 'About', href: '#about' }
-                            ].map(item => (
-                                <li key={item.label}>
-                                    <a
-                                        href={item.href}
-                                        onClick={(e) => handleNavClick(e, item.href)}
-                                        className="text-xs font-bold text-zinc-600 hover:text-sor7ed-yellow transition-colors cursor-pointer"
-                                    >
-                                        {item.label}
-                                    </a>
-                                </li>
-                            ))}
+                        <h3 className="text-sor7ed-yellow text-xl font-bold mb-4">SOR7ED</h3>
+                        <p className="text-gray-400 text-sm">
+                            ADHD-friendly tools and resources for neurodivergent adults.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+                        <ul className="space-y-2 text-gray-400 text-sm">
+                            <li><a href="/" className="hover:text-sor7ed-yellow transition-colors">Home</a></li>
+                            <li><a href="/tools" className="hover:text-sor7ed-yellow transition-colors">Tools</a></li>
+                            <li><a href="/blog" className="hover:text-sor7ed-yellow transition-colors">Blog</a></li>
+                            <li><a href="/about" className="hover:text-sor7ed-yellow transition-colors">About</a></li>
                         </ul>
                     </div>
-
                     <div>
-                        <h4 className="text-[10px] uppercase font-black tracking-[0.3em] text-zinc-400 mb-8">Uplink</h4>
-                        <div className="space-y-4">
-                            <a href="https://wa.me/447360277713" target="_blank" rel="noopener noreferrer" className="block text-xs font-bold text-zinc-600 hover:text-white transition-colors">WhatsApp</a>
-                            <p className="text-xs font-bold text-zinc-700">hello@sor7ed.com</p>
-                        </div>
+                        <h4 className="text-white font-semibold mb-4">Contact</h4>
+                        <ul className="space-y-2 text-gray-400 text-sm">
+                            <li>Email: hello@sor7ed.com</li>
+                            <li>WhatsApp: +44 7360 277713</li>
+                            <li>London, UK</li>
+                        </ul>
                     </div>
-                </div>
-
-                <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-sor7ed-yellow gap-8">
-                    <p className="text-[8px] font-black tracking-[0.4em] text-zinc-800 uppercase">
-                        &copy; 2026 SOR7ED LIMITED (SYST#16398701)
-                    </p>
-                    <div className="flex items-center space-x-4">
-                        <div className="w-2 h-2 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
-                        </div>
-                        <span className="text-[8px] font-black tracking-[0.4em] text-zinc-800 uppercase">System Status: Optimal</span>
+                    <div>
+                        <h4 className="text-white font-semibold mb-4">Legal</h4>
+                        <ul className="space-y-2 text-gray-400 text-sm">
+                            <li>Company #16398701</li>
+                            <li>© 2026 SOR7ED LIMITED</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </footer>
     )
 }
+
+export default Footer

@@ -3,29 +3,21 @@ import { Branch } from '../data/branches'
 interface BranchCardProps {
     branch: Branch;
     delay?: number;
+    className?: string;
 }
 
-export default function BranchCard({ branch, delay = 0 }: BranchCardProps) {
+export default function BranchCard({ branch, delay = 0, className = "" }: BranchCardProps) {
     return (
         <div
-            className="stealth-card p-12 group"
+            className={`bg-sor7ed-yellow p-8 md:p-12 group transition-all duration-700 hover:-translate-y-2 flex flex-col justify-between h-full ${className}`}
             style={{ animationDelay: `${delay}ms` }}
         >
-            <div className="text-[10px] font-mono-headline text-zinc-700 mb-8 flex items-center">
-                <span className="w-8 h-px bg-white/10 mr-4" />
-                Vector {branch.name}
-            </div>
-            <h3 className="text-xl font-bold uppercase tracking-widest text-white mb-6 group-hover:text-sor7ed-yellow transition-colors leading-tight">
+            <h3 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-black mb-4 leading-[0.85]">
                 {branch.name}
             </h3>
-            <p className="text-zinc-500 font-light text-sm leading-relaxed mb-8">
+            <p className="text-black/80 font-medium text-sm md:text-base leading-relaxed max-w-sm">
                 {branch.description}
             </p>
-
-            <div className="pt-8 border-t border-sor7ed-yellow flex justify-between items-center opacity-40 group-hover:opacity-100 transition-opacity">
-                <span className="text-[9px] font-mono-headline text-zinc-700">Protocol 07</span>
-                <div className="w-1.5 h-1.5 bg-zinc-800 rounded-full group-hover:bg-sor7ed-yellow transition-colors" />
-            </div>
         </div>
     )
 }

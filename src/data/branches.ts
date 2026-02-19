@@ -1,51 +1,58 @@
-export interface Branch {
-    name: string;
-    icon: string;
-    description: string;
-    color: string;
-}
-
-export const branches: Branch[] = [
+export const branches = [
     {
+        id: 'mind',
+        emoji: '🧠',
         name: 'Mind',
-        icon: '',
-        description: 'Executive function, focus, and cognitive clarity.',
-        color: 'from-blue-500/20 to-cyan-500/20'
+        tagline: 'Mental Clarity & Emotional Regulation',
+        color: '#9B59B6',
+        description: 'Understanding ADHD, managing emotions, building self-awareness, and developing coping strategies.'
     },
     {
+        id: 'wealth',
+        emoji: '💰',
         name: 'Wealth',
-        icon: '',
-        description: 'Financial systems and impulsive spending management.',
-        color: 'from-emerald-500/20 to-teal-500/20'
+        tagline: 'Financial Systems & Money Management',
+        color: '#27AE60',
+        description: 'ADHD tax reduction, budgeting systems, income optimization, and building financial security.'
     },
     {
+        id: 'body',
+        emoji: '💪',
         name: 'Body',
-        icon: '',
-        description: 'Energy levels, sleep, and sensory regulation.',
-        color: 'from-orange-500/20 to-red-500/20'
+        tagline: 'Physical Health & Sensory Needs',
+        color: '#E74C3C',
+        description: 'Movement, nutrition, sleep, sensory accommodations, and sustainable health habits.'
     },
     {
+        id: 'tech',
+        emoji: '💻',
         name: 'Tech',
-        icon: '',
-        description: 'Digital organization and automation for ADHD.',
-        color: 'from-purple-500/20 to-indigo-500/20'
+        tagline: 'Digital Tools & Productivity Systems',
+        color: '#3498DB',
+        description: 'Apps, automation, organization systems, and technology that works with your brain.'
     },
     {
+        id: 'connection',
+        emoji: '🤝',
         name: 'Connection',
-        icon: '',
-        description: 'Social anxiety, RSD, and communication systems.',
-        color: 'from-pink-500/20 to-rose-500/20'
+        tagline: 'Relationships & Community',
+        color: '#E67E22',
+        description: 'Communication skills, boundary setting, finding your people, and building meaningful relationships.'
     },
     {
-        name: 'Growth',
-        icon: '',
-        description: 'Self-awareness and neurodivergent advocacy.',
-        color: 'from-yellow-500/20 to-amber-500/20'
-    },
-    {
+        id: 'impression',
+        emoji: '✨',
         name: 'Impression',
-        icon: '',
-        description: 'Environment design and sensory-friendly living.',
-        color: 'from-violet-500/20 to-fuchsia-500/20'
+        tagline: 'Identity & Self-Expression',
+        color: '#F39C12',
+        description: 'Personal branding, communication style, unmasking, and showing up authentically.'
+    },
+    {
+        id: 'growth',
+        emoji: '🌱',
+        name: 'Growth',
+        tagline: 'Learning & Skill Development',
+        color: '#16A085',
+        description: 'Career development, skill building, continuous learning, and expanding your capabilities.'
     }
-];
+]

@@ -1,61 +1,49 @@
-export default async function handler(req: any, res: any) {
-    if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' })
+import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { Client } from '@notionhq/client'
 
-    const TOKEN = (process.env.NOTION_TOOLS_TOKEN || process.env.NOTION_TOKEN || '').trim()
-    const DB_ID = (process.env.NOTION_TOOLS_DATABASE_ID || process.env.TOOLS_DB_ID || '').trim()
+const notion = new Client({ auth: process.env.NOTION_TOOLS_KEY })
+const TOOLS_DB_ID = process.env.NOTION_TOOLS_DB_ID!
 
+// Branch → color map (matches branches.ts)
+const BRANCH_COLORS: Record<string, string> = {
+    MIND: '#9B59B6',
+    WEALTH: '#27AE60',
+    BODY: '#E74C3C',
+    TECH: '#3498DB',
+    CONNECTION: '#E67E22',
+    IMPRESSION: '#F39C12',
+    GROWTH: '#16A085',
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
-        if (!TOKEN || !DB_ID) throw new Error("Vercel Config Error: Missing Tools Config.")
-
-        const response = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${TOKEN}`,
-                'Notion-Version': '2022-06-28',
-                'Content-Type': 'application/json'
+        const response = await notion.databases.query({
+            database_id: TOOLS_DB_ID,
+            filter: {
+                property: 'Status',
+                select: { equals: 'Live' },
             },
-            body: JSON.stringify({
-                filter: {
-                    or: [
-                        {
-                            property: 'Status',
-                            status: { equals: 'Published' }
-                        },
-                        {
-                            property: 'Status',
-                            status: { equals: 'Public' }
-                        },
-                        {
-                            property: 'Status',
-                            status: { equals: 'Live' }
-                        }
-                    ]
-                },
-                page_size: 100
-            })
+            sorts: [{ property: 'Name', direction: 'ascending' }],
         })
 
-        if (!response.ok) throw new Error("Notion Tools API Failed.")
-
-        const data = await response.json()
-        const tools = data.results.map((page: any) => {
+        const tools = response.results.map((page: any) => {
             const props = page.properties
+            const branch = props.Branch?.select?.name || ''
             return {
-                id: page.id,
-                name: props.Name?.title[0]?.plain_text || 'Unnamed Tool',
-                slug: props.Slug?.rich_text[0]?.plain_text || '',
-                icon: '⚒️',
-                desc: props.Description?.rich_text[0]?.plain_text || '',
-                keyword: props['WhatsApp CTA']?.rich_text[0]?.plain_text || '',
-                template: props.Template?.rich_text[0]?.plain_text || '',
-                price: props['Credit Cost']?.number || 19,
-                isPublic: true
+                id: props.Slug?.rich_text?.[0]?.plain_text || page.id,
+                emoji: props.Emoji?.rich_text?.[0]?.plain_text || '🔧',
+                name: props.Name?.title?.[0]?.plain_text || 'Untitled',
+                description: props.Description?.rich_text?.[0]?.plain_text || '',
+                whatsappKeyword: props['WhatsApp Keyword']?.rich_text?.[0]?.plain_text || '',
+                category: branch,
+                branchColor: BRANCH_COLORS[branch] || '#F5C614',
             }
         })
 
+        res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
         return res.status(200).json(tools)
-    } catch (error: any) {
-        console.error('Tools Sync Error:', error)
-        return res.status(200).json([])
+    } catch (error) {
+        console.error('Failed to fetch tools:', error)
+        return res.status(500).json({ error: 'Failed to fetch tools' })
     }
 }
