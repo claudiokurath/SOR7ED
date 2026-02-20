@@ -20,8 +20,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const response = await notion.databases.query({
             database_id: TOOLS_DB_ID,
             filter: {
-                property: 'Status',
-                status: { equals: 'Published' },
+                or: [
+                    {
+                        property: 'Status',
+                        status: { equals: 'Published' }
+                    },
+                    {
+                        property: 'Status',
+                        status: { equals: 'Scheduled' }
+                    }
+                ]
             },
             sorts: [{ property: 'Name', direction: 'ascending' }],
         })

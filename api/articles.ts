@@ -24,27 +24,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     try {
-        const url = `https://api.notion.com/v1/databases/${DATABASE_ID}/query`;
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${NOTION_TOKEN}`,
-                'Notion-Version': '2022-06-28',
-                'Content-Type': 'application/json'
+        const response = await notion.databases.query({
+            database_id: DATABASE_ID,
+            filter: {
+                or: [
+                    {
+                        property: 'Status',
+                        status: { equals: 'Published' }
+                    },
+                    {
+                        property: 'Status',
+                        status: { equals: 'Scheduled' }
+                    }
+                ]
             },
-            body: JSON.stringify({
-                filter: {
-                    property: 'Status',
-                    status: { equals: 'Published' }
-                },
-                sorts: [{ property: 'Publish Date', direction: 'descending' }]
-            })
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`Notion API Error (${response.status}):`, errorText);
-            return res.status(response.status).json({ error: 'Notion API failure', details: errorText });
         }
 
         const data = await response.json() as any;
