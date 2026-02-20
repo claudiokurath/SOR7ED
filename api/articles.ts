@@ -25,32 +25,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             sorts: [{ property: 'Publish Date', direction: 'descending' }],
         })
 
-        const articles = response.results.map((page: any) => {
-            const props = page.properties
-            const branch = props.Branch?.select?.name || ''
-            const publishDate = props['Publish Date']?.date?.start || ''
-            return {
-                id: props.Slug?.rich_text?.[0]?.plain_text || page.id,
-                title: props.Title?.title?.[0]?.plain_text || 'Untitled',
-                excerpt: props['Meta Description']?.rich_text?.[0]?.plain_text || '',
-                branch,
-                branchColor: BRANCH_COLORS[branch] || '#F5C614',
-                readTime: props['Read Time']?.rich_text?.[0]?.plain_text || '',
-                date: publishDate
-                    ? new Date(publishDate).toLocaleDateString('en-GB', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                    })
-                    : '',
-                whatsappKeyword: props['Trigger']?.rich_text?.[0]?.plain_text || '',
-            }
-        })
+        // detailed content for single post view
+        const content = props.Content?.rich_text?.[0]?.plain_text || ''
+        const cta = props.CTA?.rich_text?.[0]?.plain_text || ''
+        const coverImage = page.cover?.external?.url || page.cover?.file?.url || props['Files & media']?.files?.[0]?.file?.url || props['Files & media']?.files?.[0]?.external?.url || ''
 
-        res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
-        return res.status(200).json(articles)
-    } catch (error) {
-        console.error('Failed to fetch articles:', error)
-        return res.status(500).json({ error: 'Failed to fetch articles' })
-    }
+        return {
+            id: props.Slug?.rich_text?.[0]?.plain_text || page.id,
+            title: props.Title?.title?.[0]?.plain_text || 'Untitled',
+            excerpt: props['Meta Description']?.rich_text?.[0]?.plain_text || '',
+            content, // Added full content
+            cta,     // Added CTA
+            coverImage, // Added image
+            branch,
+            branchColor: BRANCH_COLORS[branch] || '#F5C614',
+            readTime: props['Read Time']?.rich_text?.[0]?.plain_text || '',
+            date: publishDate
+                ? new Date(publishDate).toLocaleDateString('en-GB', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                })
+                : '',
+            whatsappKeyword: props['Trigger']?.rich_text?.[0]?.plain_text || '',
+        }
+    })
+
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
+    return res.status(200).json(articles)
+} catch (error) {
+    console.error('Failed to fetch articles:', error)
+    return res.status(500).json({ error: 'Failed to fetch articles' })
+}
 }
