@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Client } from '@notionhq/client'
 
-const notion = new Client({ auth: process.env.NOTION_BLOG_KEY })
+const notion = new Client({ auth: process.env.NOTION_BLOG_KEY || process.env.NOTION_API_KEY })
 const BLOG_DB_ID = process.env.NOTION_BLOG_DB_ID!
 
 const BRANCH_COLORS: Record<string, string> = {
@@ -15,17 +15,9 @@ const BRANCH_COLORS: Record<string, string> = {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-    const NOTION_TOKEN = process.env.NOTION_BLOG_KEY || process.env.NOTION_API_KEY;
-    const DATABASE_ID = process.env.NOTION_BLOG_DB_ID;
-
-    if (!NOTION_TOKEN || !DATABASE_ID) {
-        console.error('Missing Notion Configuration');
-        return res.status(500).json({ error: 'Missing environment variables' });
-    }
-
     try {
         const response = await notion.databases.query({
-            database_id: DATABASE_ID,
+            database_id: BLOG_DB_ID,
             filter: {
                 or: [
                     {
@@ -38,13 +30,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     }
                 ]
             },
-        }
+            sorts: [{ property: 'Publish Date', direction: 'descending' }],
+        })
 
-        const data = await response.json() as any;
-        const articles = data.results.map((page: any) => {
-            const props = page.properties;
-            const branch = props.Branch?.select?.name || '';
-            const publishDate = props['Publish Date']?.date?.start || '';
+        const articles = response.results.map((page: any) => {
+            const props = page.properties
+            const branch = props.Branch?.select?.name || ''
+            const publishDate = props['Publish Date']?.date?.start || ''
 
             return {
                 id: props.Slug?.rich_text?.[0]?.plain_text || page.id,
@@ -64,13 +56,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     })
                     : '',
                 whatsappKeyword: props['WhatsApp Keyword']?.rich_text?.[0]?.plain_text || props['Trigger']?.rich_text?.[0]?.plain_text || '',
-            };
-        });
+            }
+        })
 
-        res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate=59'); // Reduce cache for testing
-        return res.status(200).json(articles);
+        res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate=59')
+        return res.status(200).json(articles)
     } catch (error: any) {
-        console.error('Fetch operation failed:', error.message);
-        return res.status(500).json({ error: 'Internal server error', message: error.message });
+        console.error('Failed to fetch articles:', error.message)
+        return res.status(500).json({ error: 'Failed to fetch articles', message: error.message })
     }
 }
