@@ -145,7 +145,7 @@ export default function Home() {
 
                     <div className="w-full flex flex-col gap-4">
                         {/* Row 1: Connection / Mind (2 cols) */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-auto md:h-[320px]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-auto md:h-[400px]">
                             {['Connection', 'Mind'].map(name => {
                                 const branch = branches.find(b => b.name === name);
                                 if (!branch) return null;
@@ -154,7 +154,7 @@ export default function Home() {
                         </div>
 
                         {/* Row 2: Body / Tech / Wealth (3 cols) */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-[320px]">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-[400px]">
                             {['Body', 'Tech', 'Wealth'].map(name => {
                                 const branch = branches.find(b => b.name === name);
                                 if (!branch) return null;
@@ -163,7 +163,7 @@ export default function Home() {
                         </div>
 
                         {/* Row 3: Growth / Impression (2 cols) */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-auto md:h-[320px]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-auto md:h-[400px]">
                             {['Growth', 'Impression'].map(name => {
                                 const branch = branches.find(b => b.name === name);
                                 if (!branch) return null;
