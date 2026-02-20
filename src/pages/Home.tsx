@@ -143,33 +143,21 @@ export default function Home() {
                         </h2>
                     </div>
 
-                    <div className="w-full flex flex-col gap-4">
-                        {/* Row 1: Connection / Mind */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-auto md:h-[400px]">
-                            {['Connection', 'Mind'].map(name => {
-                                const branch = branches.find(b => b.name === name);
-                                if (!branch) return null;
-                                return <BranchCard key={name} branch={branch} />;
-                            })}
-                        </div>
+                    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {['Connection', 'Mind', 'Body', 'Tech', 'Wealth', 'Growth', 'Impression'].map((name, i) => {
+                            const branch = branches.find(b => b.name === name);
+                            if (!branch) return null;
 
-                        {/* Row 2: Body / Tech / Wealth */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-auto md:h-[400px]">
-                            {['Body', 'Tech', 'Wealth'].map(name => {
-                                const branch = branches.find(b => b.name === name);
-                                if (!branch) return null;
-                                return <BranchCard key={name} branch={branch} />;
-                            })}
-                        </div>
+                            // Spanning logic for the 7th item to center it or make it distinct
+                            const isLast = i === 6;
+                            const spanClass = isLast ? "md:col-span-2 lg:col-span-1 lg:col-start-2" : "";
 
-                        {/* Row 3: Growth / Impression */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-auto md:h-[400px]">
-                            {['Growth', 'Impression'].map(name => {
-                                const branch = branches.find(b => b.name === name);
-                                if (!branch) return null;
-                                return <BranchCard key={name} branch={branch} />;
-                            })}
-                        </div>
+                            return (
+                                <div key={name} className={`h-[320px] ${spanClass}`}>
+                                    <BranchCard branch={branch} className="h-full" />
+                                </div>
+                            );
+                        })}
                     </div>
 
                 </div>
