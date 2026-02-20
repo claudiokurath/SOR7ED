@@ -11,6 +11,7 @@ export default {
                 'sor7ed-black': '#000000',
                 'sor7ed-gray': '#000000', // Pitch Black
                 'sor7ed-gray-light': '#1a1a1a', // Subtle boundary
+                'border': '#1a1a1a', // Fix for missing border-border utility
             },
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
