@@ -20,7 +20,10 @@ export function useNotionData<T>(endpoint: string, fallback: T[]): {
                 if (!cancelled) setData(json)
             })
             .catch((err) => {
-                if (!cancelled) setError(err.message)
+                if (!cancelled) {
+                    console.error(`Fetch error for ${endpoint}:`, err.message)
+                    setError(err.message)
+                }
                 // fallback data stays in place
             })
             .finally(() => {
