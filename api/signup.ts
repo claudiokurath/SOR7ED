@@ -16,7 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const { customerName, email, phoneNumber, leadSource, signupDate, status, freeToolsUsed, creditsBalance } = req.body
 
         // 1. Create entry in Notion CRM
-        await notion.pages.create({
+        await (notion.pages as any).create({
             parent: { database_id: CRM_DB_ID },
             properties: {
                 'Customer Name': {
@@ -90,8 +90,8 @@ worry less, live more.`
         }
 
         return res.status(200).json({ success: true, message: 'Signup successful' })
-    } catch (error) {
+    } catch (error: any) {
         console.error('Signup error:', error)
-        return res.status(500).json({ error: 'Signup failed' })
+        return res.status(500).json({ error: 'Signup failed', message: error.message })
     }
 }
