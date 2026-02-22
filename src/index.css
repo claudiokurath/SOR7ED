@@ -79,3 +79,102 @@
     @apply text-white font-bold;
   }
 }
+
+/* Custom Entrance Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+.zoom-in {
+  animation: zoom-in 1s ease-out;
+}
+
+.slide-in-from-bottom-20 {
+  animation: slide-up 1s ease-out;
+}
+
+.slide-in-from-left-20 {
+  animation: slide-left 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.slide-in-from-right-20 {
+  animation: slide-right 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-700 {
+  animation-delay: 700ms;
+}
+
+.duration-1000 {
+  animation-duration: 1000ms;
+}
+
+.fill-mode-both {
+  animation-fill-mode: both;
+}

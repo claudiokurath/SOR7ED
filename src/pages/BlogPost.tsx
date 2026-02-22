@@ -108,20 +108,39 @@ export default function BlogPost() {
                 {/* CTA Section */}
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-sor7ed-yellow/50"></div>
-                    <h3 className="text-2xl font-bold mb-4 text-white">Ready to deploy this system?</h3>
-                    <p className="text-zinc-400 mb-8 max-w-lg mx-auto">
-                        {article.cta || "Get this protocol sent directly to your WhatsApp for instant access when you need it most."}
-                    </p>
-                    <a
-                        href={`https://wa.me/447360277713?text=${article.whatsappKeyword || 'Hi'}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn-primary inline-flex items-center gap-2"
-                    >
-                        <span>Initialize Protocol</span>
-                        <span className="text-xs opacity-70">via WhatsApp</span>
-                    </a>
+
+                    {localStorage.getItem('sor7ed_guest') === 'true' ? (
+                        <>
+                            <h3 className="text-2xl font-bold mb-4 text-white">Action Required</h3>
+                            <p className="text-zinc-400 mb-8 max-w-lg mx-auto uppercase tracking-widest text-[10px]">
+                                This is an operational protocol. To deploy this logic to your device and initialize the AI-assisted flow, you must be a member.
+                            </p>
+                            <button
+                                onClick={() => navigate('/')}
+                                className="btn-primary inline-flex items-center gap-2"
+                            >
+                                <span>Sign Up to Deploy</span>
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <h3 className="text-2xl font-bold mb-4 text-white">Ready to deploy this system?</h3>
+                            <p className="text-zinc-400 mb-8 max-w-lg mx-auto">
+                                {article.cta || "Get this protocol sent directly to your WhatsApp for instant access when you need it most."}
+                            </p>
+                            <a
+                                href={`https://wa.me/447360277713?text=${article.whatsappKeyword || 'Hi'}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn-primary inline-flex items-center gap-2"
+                            >
+                                <span>Initialize Protocol</span>
+                                <span className="text-xs opacity-70">via WhatsApp</span>
+                            </a>
+                        </>
+                    )}
                 </div>
+
 
             </div>
         </div>
