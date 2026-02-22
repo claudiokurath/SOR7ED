@@ -42,7 +42,7 @@ export default async function handler(req: any, res: any) {
     const { Body } = bodyData || {}
     // Improved cleanup: remove leading numbers/dots (e.g. "1. COOLOFF" -> "COOLOFF")
     const rawTrigger = (Body || '').trim().toUpperCase().replace(/^[\d\.\s\-]+/, '')
-    
+
     // 1. Resolve Canonical Trigger
     const trigger = ALIAS_MAP[rawTrigger] || rawTrigger
 
@@ -68,7 +68,7 @@ export default async function handler(req: any, res: any) {
 
         // 3. User Resolution (CRM)
         let userPage: any = null
-        if (userPhone && !UTILITY_RESPONSES[trigger]) {
+        if (userPhone) {
             const crmQuery = await fetch(`https://api.notion.com/v1/databases/${CRM_DB_ID}/query`, {
                 method: 'POST',
                 headers: {
@@ -108,21 +108,13 @@ export default async function handler(req: any, res: any) {
             }
         }
 
-        let match: any = null
-        let replyMessage = ""
-        let branch = "Mind"
-
-        // Credit Check Logic
         const freeToolsUsed = userPage?.properties?.['Free Tools Used']?.number || 0
         const credits = userPage?.properties?.['Credits Balance']?.number || 0
-        const isAuthorized = UTILITY_RESPONSES[trigger] || freeToolsUsed < 2 || credits > 0
 
-        if (!isAuthorized && !UTILITY_RESPONSES[trigger]) {
-            res.setHeader('Content-Type', 'text/xml')
-            return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>🔴 You've used all your free tools!\n\nTo unlock more, you need credits.\n\nCREDIT PACKS:\n💚 Starter (5 tools) = £15\n💙 Value (10 tools) = £25 ⭐ Most popular\n💜 Premium (20 tools) = £40 (Save £20!)\n\nBuy now: https://buy.stripe.com/sor7ed_credits\n\nQuestions? Reply HELP</Message></Response>`)
-        }
+        let replyMessage = ""
+        let match: any = null
 
-        // Search Tools first (Primary operational layer)
+        // --- STEP A: Search Tools (Operational Layer - CHARGED) ---
         const toolsResponse = await fetch(`https://api.notion.com/v1/databases/${TOOLS_DB_ID}/query`, {
             method: 'POST',
             headers: {
@@ -131,10 +123,7 @@ export default async function handler(req: any, res: any) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                filter: {
-                    property: 'WhatsApp Keyword',
-                    rich_text: { equals: trigger }
-                },
+                filter: { property: 'WhatsApp Keyword', rich_text: { equals: trigger } },
                 page_size: 1
             })
         })
@@ -142,72 +131,29 @@ export default async function handler(req: any, res: any) {
         match = toolsData.results?.[0]
 
         if (match) {
+            // AUTHORIZATION CHECK FOR TOOLS
+            const isAuthorized = freeToolsUsed < 2 || credits > 0
+            if (!isAuthorized) {
+                res.setHeader('Content-Type', 'text/xml')
+                return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>🔴 You've used all your free tools!\n\nTo unlock more, you need credits.\n\nCREDIT PACKS:\n💚 Starter (5 tools) = £15\n💙 Value (10 tools) = £25 ⭐ Most popular\n💜 Premium (20 tools) = £40 (Save £20!)\n\nBuy now: https://buy.stripe.com/sor7ed_credits\n\nQuestions? Reply HELP</Message></Response>`)
+            }
+
             const props = match.properties
-            branch = props.Branch?.select?.name || "Mind"
+            const branch = props.Branch?.select?.name || "Mind"
             const templateRichText = props.Template?.rich_text || props.Description?.rich_text || []
             const template = templateRichText.map((t: any) => t.plain_text).join('')
-
             const toolName = props.Name?.title?.[0]?.plain_text || "Requested Tool"
 
             let creditNotice = ""
-            if (!UTILITY_RESPONSES[trigger]) {
-                if (freeToolsUsed < 2) {
-                    creditNotice = `🛡️ Free tool ${freeToolsUsed + 1}/2 delivered.`
-                } else {
-                    creditNotice = `✅ Tool unlocked. Remaining credits: ${credits - 1}`
-                }
+            if (freeToolsUsed < 2) {
+                creditNotice = `🛡️ Free tool ${freeToolsUsed + 1}/2 delivered.`
+            } else {
+                creditNotice = `✅ Tool unlocked. Remaining credits: ${credits - 1}`
             }
 
             replyMessage = `Reflected: You want the ${toolName}. Got it. [Branch: ${branch}]\n\n${template}\n\n${creditNotice}`
-        }
 
-        // Search Blog/Articles if no tool match
-        if (!replyMessage) {
-            const blogResponse = await fetch(`https://api.notion.com/v1/databases/${BLOG_DB_ID}/query`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${TOKEN}`,
-                    'Notion-Version': '2022-06-28',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    filter: {
-                        property: 'WhatsApp Trigger',
-                        rich_text: { equals: trigger }
-                    },
-                    page_size: 1
-                })
-
-            })
-            const blogData = await blogResponse.json()
-            match = blogData.results?.[0]
-
-            if (match) {
-                const props = match.properties
-                branch = props.Branch?.select?.name || "Mind"
-                const t1 = props['Template ']?.rich_text || []
-                const t2 = props['Template']?.rich_text || []
-                const t3 = props['Content']?.rich_text || []
-                const templateRichText = t1.length > 0 ? t1 : (t2.length > 0 ? t2 : t3)
-                const template = templateRichText.map((t: any) => t.plain_text).join('')
-
-                const postTitle = props.Title?.title?.[0]?.plain_text || "Requested Protocol"
-
-                let creditNotice = ""
-                if (!UTILITY_RESPONSES[trigger]) {
-                    if (freeToolsUsed < 2) {
-                        creditNotice = `🛡️ Free protocol ${freeToolsUsed + 1}/2 delivered.`
-                    } else {
-                        creditNotice = `✅ Protocol unlocked. Remaining credits: ${credits - 1}`
-                    }
-                }
-
-                replyMessage = `Reflected: Opening "${postTitle}". [Branch: ${branch}]\n\n${template}\n\n${creditNotice}`
-            }
-        }
-
-        // 4. Update CRM Usage Stats
-        if (match && userPage && userPage.properties && !UTILITY_RESPONSES[trigger]) {
+            // CHARGE FOR TOOL
             const updates: any = {}
             if (freeToolsUsed < 2) {
                 updates['Free Tools Used'] = { number: freeToolsUsed + 1 }
@@ -220,27 +166,71 @@ export default async function handler(req: any, res: any) {
             updates['Tools Delivered'] = { number: currentDelivered + 1 }
             updates['Last Active'] = { date: { start: new Date().toISOString() } }
 
-            // Track requested templates
             const existingTemplates = userPage.properties['Template Requested']?.rich_text?.[0]?.plain_text || ''
             const templateList = existingTemplates ? existingTemplates.split(',').map((t: string) => t.trim()) : []
             if (!templateList.includes(trigger)) {
                 templateList.push(trigger)
-                updates['Template Requested'] = {
-                    rich_text: [{ text: { content: templateList.join(', ') } }]
-                }
+                updates['Template Requested'] = { rich_text: [{ text: { content: templateList.join(', ') } }] }
             }
 
             await fetch(`https://api.notion.com/v1/pages/${userPage.id}`, {
                 method: 'PATCH',
+                headers: { 'Authorization': `Bearer ${TOKEN}`, 'Notion-Version': '2022-06-28', 'Content-Type': 'application/json' },
+                body: JSON.stringify({ properties: updates })
+            })
+        }
+
+        // --- STEP B: Search Blog/Articles (Content Layer - FREE) ---
+        if (!replyMessage) {
+            const blogResponse = await fetch(`https://api.notion.com/v1/databases/${BLOG_DB_ID}/query`, {
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${TOKEN}`,
                     'Notion-Version': '2022-06-28',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ properties: updates })
+                body: JSON.stringify({
+                    filter: { property: 'WhatsApp Trigger', rich_text: { equals: trigger } },
+                    page_size: 1
+                })
             })
-        }
+            const blogData = await blogResponse.json()
+            match = blogData.results?.[0]
 
+            if (match) {
+                const props = match.properties
+                const branch = props.Branch?.select?.name || "Mind"
+                const t1 = props['Template ']?.rich_text || []
+                const t2 = props['Template']?.rich_text || []
+                const t3 = props['Content']?.rich_text || []
+                const templateRichText = t1.length > 0 ? t1 : (t2.length > 0 ? t2 : t3)
+                const template = templateRichText.map((t: any) => t.plain_text).join('')
+                const postTitle = props.Title?.title?.[0]?.plain_text || "Requested Protocol"
+
+                replyMessage = `Reflected: Opening "${postTitle}". [Branch: ${branch}]\n\n${template}\n\n🍀 Insight delivered [FREE]`
+
+                // LOG ACTIVITY IN CRM (No charge)
+                if (userPage) {
+                    const updates: any = {}
+                    updates['Last Active'] = { date: { start: new Date().toISOString() } }
+                    const currentDelivered = userPage.properties['Tools Delivered']?.number || 0
+                    updates['Tools Delivered'] = { number: currentDelivered + 1 }
+
+                    const existingTemplates = userPage.properties['Template Requested']?.rich_text?.[0]?.plain_text || ''
+                    const templateList = existingTemplates ? existingTemplates.split(',').map((t: string) => t.trim()) : []
+                    if (!templateList.includes(trigger)) {
+                        templateList.push(trigger)
+                        updates['Template Requested'] = { rich_text: [{ text: { content: templateList.join(', ') } }] }
+                    }
+
+                    await fetch(`https://api.notion.com/v1/pages/${userPage.id}`, {
+                        method: 'PATCH',
+                        headers: { 'Authorization': `Bearer ${TOKEN}`, 'Notion-Version': '2022-06-28', 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ properties: updates })
+                    })
+                }
+            }
+        }
 
         if (!replyMessage) {
             replyMessage = `SOR7ED Bot: "${trigger}" unknown. Valid protocols include DOPAMINE, TRIAGE, COOLOFF, SENSORY. \n\nReply MENU for more.`
@@ -248,6 +238,7 @@ export default async function handler(req: any, res: any) {
 
         res.setHeader('Content-Type', 'text/xml')
         return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>${replyMessage}</Message></Response>`)
+
 
     } catch (error: any) {
         res.setHeader('Content-Type', 'text/xml')
