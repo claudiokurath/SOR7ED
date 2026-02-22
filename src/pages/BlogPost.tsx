@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useNotionData } from '../hooks/useNotionData'
+import { formatContent } from '../utils/formatContent'
 
 interface Article {
     id: string
@@ -98,9 +99,10 @@ export default function BlogPost() {
 
                 {/* Content */}
                 <div className="prose prose-invert prose-lg max-w-none mb-16">
-                    <div className="text-zinc-300 whitespace-pre-wrap leading-relaxed">
-                        {article.content}
-                    </div>
+                    <div
+                        className="blog-content text-zinc-300 leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: formatContent(article.content) }}
+                    />
                 </div>
 
                 {/* CTA Section */}

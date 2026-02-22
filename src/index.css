@@ -6,9 +6,11 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-black text-white antialiased;
   }
+
   html {
     scroll-behavior: smooth;
   }
@@ -18,32 +20,62 @@
   .btn-primary {
     @apply inline-block bg-sor7ed-yellow text-black px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-400 transition-all duration-300 transform hover:scale-105;
   }
-  
+
   .btn-secondary {
     @apply inline-block bg-transparent border-2 border-sor7ed-yellow text-sor7ed-yellow px-8 py-4 rounded-lg text-lg font-bold hover:bg-sor7ed-yellow hover:text-black transition-all duration-300;
   }
-  
+
   .section-title {
     @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6;
   }
-  
+
   .card-hover {
     @apply transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-sor7ed-yellow/20;
   }
+
   /* Stealth/Cyberpunk Design Classes */
   .stealth-card {
     @apply bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl transition-all duration-500;
   }
+
   .title-white {
     @apply text-white font-black uppercase tracking-tighter;
   }
+
   .title-yellow {
     @apply text-sor7ed-yellow font-black uppercase tracking-tighter;
   }
+
   .bg-grid {
-    background-image: 
+    background-image:
       linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     background-size: 50px 50px;
+  }
+
+  /* Rendered Blog Content Styles */
+  .blog-content h2 {
+    @apply text-2xl font-bold mt-12 mb-4 tracking-tight uppercase text-white;
+  }
+
+  .blog-content h3 {
+    @apply text-xl font-bold mt-8 mb-3 tracking-tight uppercase text-zinc-100;
+  }
+
+  .blog-content ul {
+    @apply space-y-3 my-6 list-none;
+  }
+
+  .blog-content li {
+    @apply pl-6 relative text-zinc-400;
+  }
+
+  .blog-content li::before {
+    content: "→";
+    @apply absolute left-0 text-sor7ed-yellow opacity-50;
+  }
+
+  .blog-content strong {
+    @apply text-white font-bold;
   }
 }
