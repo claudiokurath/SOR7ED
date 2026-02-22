@@ -16,27 +16,22 @@ const UTILITY_RESPONSES: Record<string, string> = {
 
 const ALIAS_MAP: Record<string, string> = {
     'ACTION KIT': 'ACTIONKIT', 'EXECUTIVE DYSFUNCTION': 'ACTIONKIT', 'LOW FRICTION': 'ACTIONKIT',
-    'TIME BLINDNESS': 'TIMERAILS', 'TIMERS': 'TIMERAILS', 'FINISH CLEANLY': 'TIMERAILS',
-    'AFTER WORK': 'LANDINGRITUAL', 'DECOMPRESSION': 'LANDINGRITUAL', 'UNMASKING': 'LANDINGRITUAL',
-    'MONEY RESET': 'MONEYRESET', 'IMPULSE SPEND': 'MONEYRESET', 'DEBT': 'MONEYRESET',
-    'MELTDOWN': 'WORKPARK', 'SHUTDOWN': 'WORKPARK', 'OVERWHELM': 'WORKPARK',
-    'CONSENT KIT': 'CONSENTKIT', 'INTIMACY': 'CONSENTKIT',
-    'CAPACITY SCRIPT': 'CAPACITYSCRIPT', 'MASKING INTIMACY': 'CAPACITYSCRIPT',
-    'BOUNDARIES PACK': 'BOUNDARIESPACK', 'HOLIDAY SCRIPTS': 'BOUNDARIESPACK',
-    'THERAPY BRIEF': 'THERAPYBRIEF', 'THERAPY PREP': 'THERAPYBRIEF',
-    'PARK': 'PARK', 'STOP': 'STOP', 'TIMELINE': 'TIMELINE',
-    'GAMING RAILS': 'GAMINGRAILS', 'GAME TIME': 'GAMINGRAILS',
-    'PHILOSOPHY': 'ABOUT', 'MISSION': 'ABOUT', 'WHY SOR7ED': 'ABOUT',
+    'TIME BLINDNESS': 'TIME', 'TIMERS': 'TIME', 'FINISH CLEANLY': 'TIME', 'TIMEWARP': 'TIME',
+    'AFTER WORK': 'RECOVERY', 'DECOMPRESSION': 'RECOVERY', 'UNMASKING': 'RECOVERY', 'REBOUND': 'RECOVERY',
+    'MONEY RESET': 'MONEY', 'IMPULSE SPEND': 'MONEY', 'DEBT': 'MONEY', 'ADHDTAX': 'MONEY', 'ADHD-TAX': 'MONEY',
+    'MELTDOWN': 'MELTDOWN', 'SHUTDOWN': 'MELTDOWN', 'OVERWHELM': 'MELTDOWN', 'WORKMELT': 'MELTDOWN',
+    'CONSENT KIT': 'CONSENT', 'INTIMACY': 'CONSENT', 'CONSENTKIT': 'CONSENT',
+    'CAPACITY SCRIPT': 'FRIENDS', 'MASKING INTIMACY': 'FRIENDS', 'FRIENDSHIP': 'FRIENDS',
+    'BOUNDARIES PACK': 'BOUNDARIES', 'HOLIDAY SCRIPTS': 'BOUNDARIES',
+    'THERAPY BRIEF': 'THERAPY', 'THERAPY PREP': 'THERAPY',
     'WAKE': 'AGENCYPLAN',
     'TASK TRIAGE': 'TRIAGE', 'EXECUTIVE FUNCTION': 'TRIAGE',
-    'TIME CALCULATOR': 'TIMEWARP',
+    'TIME CALCULATOR': 'TIME',
     'SENSORY AUDIT': 'SENSORY', 'OVERLOAD': 'SENSORY',
-    'RSD SCRIPTS': 'COOLOFF', 'REJECTION': 'COOLOFF',
-    'COST CALCULATOR': 'ADHDTAX', 'ADHD TAX': 'ADHDTAX', 'ADHD-TAX': 'ADHDTAX'
+    'RSD SCRIPTS': 'COOLOFF', 'REJECTION': 'COOLOFF', 'RSD': 'RSD'
 }
 
 export default async function handler(req: any, res: any) {
-    // console.log('Bot Request Recieved:', req.method)
     if (req.method !== 'POST') return res.status(405).send('Method Not Allowed')
 
     let bodyData = req.body
@@ -45,10 +40,12 @@ export default async function handler(req: any, res: any) {
     }
 
     const { Body } = bodyData || {}
-    const rawTrigger = (Body || '').trim().toUpperCase()
-
+    // Improved cleanup: remove leading numbers/dots (e.g. "1. COOLOFF" -> "COOLOFF")
+    const rawTrigger = (Body || '').trim().toUpperCase().replace(/^[\d\.\s\-]+/, '')
+    
     // 1. Resolve Canonical Trigger
     const trigger = ALIAS_MAP[rawTrigger] || rawTrigger
+
 
     // 2. Handle Global Utility Words
     if (UTILITY_RESPONSES[trigger]) {
@@ -175,11 +172,12 @@ export default async function handler(req: any, res: any) {
                 },
                 body: JSON.stringify({
                     filter: {
-                        property: 'Trigger',
+                        property: 'WhatsApp Trigger',
                         rich_text: { equals: trigger }
                     },
                     page_size: 1
                 })
+
             })
             const blogData = await blogResponse.json()
             match = blogData.results?.[0]
