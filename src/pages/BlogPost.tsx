@@ -25,16 +25,19 @@ export default function BlogPost() {
 
     useEffect(() => {
         if (articles.length > 0 && title) {
-            const decodedTitle = decodeURIComponent(title)
-            const found = articles.find(a => a.title === decodedTitle)
+            const decodedTitle = decodeURIComponent(title).trim().toLowerCase()
+            const found = articles.find(a =>
+                a.title.trim().toLowerCase() === decodedTitle ||
+                encodeURIComponent(a.title.trim()) === encodeURIComponent(title)
+            )
             if (found) {
                 setArticle(found)
             } else if (!loading) {
-                // Not found
                 console.log("Article not found:", decodedTitle)
             }
         }
     }, [articles, title, loading])
+
 
     if (loading) {
         return (

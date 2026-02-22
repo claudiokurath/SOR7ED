@@ -97,6 +97,7 @@ export default function Home() {
 
                         <div className="flex flex-col sm:flex-row gap-8 mb-32 animate-in slide-in-from-bottom-8 duration-1000 delay-1000 fill-mode-both">
                             <a href="#lab" className="btn-primary w-full sm:w-auto">Initialize Tools</a>
+                            <button onClick={() => navigate('/vault')} className="btn-secondary w-full sm:w-auto border-white/20 text-white hover:bg-white/5 uppercase tracking-widest text-xs">Access Vault</button>
                         </div>
 
                         {/* How It Works Section */}

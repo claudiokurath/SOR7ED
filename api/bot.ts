@@ -135,7 +135,7 @@ export default async function handler(req: any, res: any) {
             },
             body: JSON.stringify({
                 filter: {
-                    property: 'WhatsApp CTA',
+                    property: 'WhatsApp Keyword',
                     rich_text: { equals: trigger }
                 },
                 page_size: 1
@@ -222,6 +222,16 @@ export default async function handler(req: any, res: any) {
             updates['Tools Delivered'] = { number: currentDelivered + 1 }
             updates['Last Active'] = { date: { start: new Date().toISOString() } }
 
+            // Track requested templates
+            const existingTemplates = userPage.properties['Template Requested']?.rich_text?.[0]?.plain_text || ''
+            const templateList = existingTemplates ? existingTemplates.split(',').map((t: string) => t.trim()) : []
+            if (!templateList.includes(trigger)) {
+                templateList.push(trigger)
+                updates['Template Requested'] = {
+                    rich_text: [{ text: { content: templateList.join(', ') } }]
+                }
+            }
+
             await fetch(`https://api.notion.com/v1/pages/${userPage.id}`, {
                 method: 'PATCH',
                 headers: {
@@ -232,6 +242,7 @@ export default async function handler(req: any, res: any) {
                 body: JSON.stringify({ properties: updates })
             })
         }
+
 
         if (!replyMessage) {
             replyMessage = `SOR7ED Bot: "${trigger}" unknown. Valid protocols include DOPAMINE, TRIAGE, COOLOFF, SENSORY. \n\nReply MENU for more.`

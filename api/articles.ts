@@ -31,12 +31,21 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
             const branch = props.Branch?.select?.name || ''
             const publishDate = props['Publish Date']?.date?.start || ''
 
+            const contentRichText = props['Content']?.rich_text || []
+            const content = contentRichText.map((t: any) => t.plain_text).join('')
+
+            const excerptRichText = props['Excerpt']?.rich_text || props['Meta Description']?.rich_text || []
+            const excerpt = excerptRichText.map((t: any) => t.plain_text).join('')
+
+            const ctaRichText = props['CTA']?.rich_text || []
+            const cta = ctaRichText.map((t: any) => t.plain_text).join('')
+
             return {
                 id: props.Slug?.rich_text?.[0]?.plain_text || page.id,
                 title: props.Title?.title?.[0]?.plain_text || 'Untitled',
-                excerpt: props['Excerpt']?.rich_text?.[0]?.plain_text || props['Meta Description']?.rich_text?.[0]?.plain_text || '',
-                content: props['Content']?.rich_text?.[0]?.plain_text || '',
-                cta: props['CTA']?.rich_text?.[0]?.plain_text || '',
+                excerpt,
+                content,
+                cta,
                 coverImage: page.cover?.external?.url || page.cover?.file?.url || props['Files & media']?.files?.[0]?.file?.url || props['Files & media']?.files?.[0]?.external?.url || '',
                 branch,
                 branchColor: BRANCH_COLORS[branch] || '#F5C614',

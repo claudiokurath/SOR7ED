@@ -8,6 +8,7 @@ import About from './pages/About'
 import Signup from './pages/Signup'
 
 import BlogPost from './pages/BlogPost'
+import Vault from './pages/Vault'
 
 function App() {
     return (
@@ -22,8 +23,10 @@ function App() {
                         <Route path="/blog/:title" element={<BlogPost />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/vault" element={<Vault />} />
                     </Routes>
                 </main>
+
                 <Footer />
             </div>
         </Router>

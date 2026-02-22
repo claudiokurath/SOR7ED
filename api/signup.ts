@@ -15,36 +15,54 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
         const { customerName, email, phoneNumber, leadSource, signupDate, status, freeToolsUsed, creditsBalance } = req.body
 
+        // Sanitize phone number (remove spaces, dashes, etc. but keep +)
+        const sanitizedPhoneNumber = phoneNumber.replace(/[^\d+]/g, '')
+
+        console.log(`Processing signup for ${customerName} (${sanitizedPhoneNumber})`)
+
         // 1. Create entry in Notion CRM
-        await (notion.pages as any).create({
-            parent: { database_id: CRM_DB_ID },
-            properties: {
-                'Customer Name': {
-                    title: [{ text: { content: customerName } }]
-                },
-                'Email': {
-                    email: email
-                },
-                'Phone Number': {
-                    phone_number: phoneNumber
-                },
-                'Lead Source': {
-                    select: { name: leadSource }
-                },
-                'Signup Date': {
-                    date: { start: signupDate }
-                },
-                'Status': {
-                    status: { name: status }
-                },
-                'Free Tools Used': {
-                    number: freeToolsUsed
-                },
-                'Credits Balance': {
-                    number: creditsBalance
+        try {
+            await (notion.pages as any).create({
+                parent: { database_id: CRM_DB_ID },
+                properties: {
+                    'Customer Name': {
+                        title: [{ text: { content: customerName } }]
+                    },
+                    'Email': {
+                        email: email
+                    },
+                    'Phone Number': {
+                        phone_number: sanitizedPhoneNumber
+                    },
+                    'Lead Source': {
+                        select: { name: leadSource || 'Direct' }
+                    },
+                    'Signup Date': {
+                        date: { start: signupDate }
+                    },
+                    'Status': {
+                        select: { name: status }
+                    },
+                    'Free Tools Used': {
+                        number: freeToolsUsed
+                    },
+                    'Credits Balance': {
+                        number: creditsBalance
+                    },
+                    'Tools Delivered': {
+                        number: 1
+                    },
+                    'Template Requested': {
+                        rich_text: [{ text: { content: leadSource.replace('Tool: ', '') } }]
+                    }
                 }
-            }
-        })
+            })
+        } catch (notionError: any) {
+            console.error('Notion CRM Error:', notionError)
+            // Even if Notion fails, we might still want to try sending the WhatsApp message 
+            // or at least know it failed here specifically.
+            throw new Error(`CRM Integration failed: ${notionError.message}`)
+        }
 
         // 2. Send welcome message via Twilio WhatsApp API
         const welcomeMessage = `Hey ${customerName}! 👋
@@ -66,6 +84,8 @@ worry less, live more.`
         // Create Basic Auth header
         const authHeader = 'Basic ' + Buffer.from(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`).toString('base64')
 
+        console.log(`Sending Twilio message to ${sanitizedPhoneNumber}...`)
+
         // Send WhatsApp message via Twilio
         const twilioResponse = await fetch(
             `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
@@ -77,7 +97,7 @@ worry less, live more.`
                 },
                 body: new URLSearchParams({
                     From: `whatsapp:${TWILIO_WHATSAPP_NUMBER}`,
-                    To: `whatsapp:${phoneNumber}`,
+                    To: `whatsapp:${sanitizedPhoneNumber}`,
                     Body: welcomeMessage
                 })
             }
@@ -86,12 +106,17 @@ worry less, live more.`
         if (!twilioResponse.ok) {
             const errorData = await twilioResponse.json()
             console.error('Twilio error:', errorData)
-            throw new Error('Failed to send WhatsApp message')
+            throw new Error(`WhatsApp delivery failed: ${errorData.message || 'Unknown Twilio error'}`)
         }
 
         return res.status(200).json({ success: true, message: 'Signup successful' })
     } catch (error: any) {
         console.error('Signup error:', error)
-        return res.status(500).json({ error: 'Signup failed', message: error.message })
+        return res.status(500).json({
+            error: 'Signup failed',
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        })
     }
 }
+
