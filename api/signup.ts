@@ -1,11 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Client } from '@notionhq/client'
+import { NOTION_CONFIG, TWILIO_CONFIG } from './notion-config'
 
-const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
-const CRM_DB_ID = (process.env.NOTION_CRM_DB_ID || process.env.CRM_DATABASE_ID || "2e90d6014acc80c0b603ffa9e74f7f7d").trim()
-const TWILIO_ACCOUNT_SID = (process.env.TWILIO_ACCOUNT_SID || "ACd0b71f7f267952855cb3ce0fb950505680ca7ff6e58205").trim()
-const TWILIO_AUTH_TOKEN = (process.env.TWILIO_AUTH_TOKEN || "fb562143e370be7264").trim()
-const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_WHATSAPP_NUMBER || '+447360277713'
+const NOTION_API_KEY = NOTION_CONFIG.apiKey
+const CRM_DB_ID = NOTION_CONFIG.crmDbId
+const TWILIO_ACCOUNT_SID = TWILIO_CONFIG.accountSid
+const TWILIO_AUTH_TOKEN = TWILIO_CONFIG.authToken
+const TWILIO_WHATSAPP_NUMBER = TWILIO_CONFIG.whatsappNumber
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== 'POST') {
@@ -20,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         const notion = new Client({ auth: NOTION_API_KEY })
 
-        const { customerName, email, phoneNumber, leadSource, signupDate, status, freeToolsUsed, creditsBalance } = req.body
+        const { customerName, email, phoneNumber, leadSource, signupDate, status, freeToolsUsed, creditsBalance, password } = req.body
 
         // Sanitize phone number (remove spaces, dashes, etc. but keep +)
         const sanitizedPhoneNumber = phoneNumber ? phoneNumber.replace(/[^\d+]/g, '') : ''
@@ -64,6 +65,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                     },
                     'Template Requested': {
                         rich_text: [{ text: { content: (leadSource || 'Landing Page').replace('Tool: ', '') } }]
+                    },
+                    // Storing password as rich text for simplicity in this project (ideally hashed)
+                    'Password': {
+                        rich_text: [{ text: { content: password || '' } }]
                     }
                 }
             })

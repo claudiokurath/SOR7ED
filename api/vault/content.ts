@@ -1,11 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import * as crypto from 'crypto'
+import { NOTION_CONFIG } from '../notion-config'
 
-const NOTION_API_KEY = process.env.NOTION_API_KEY
-const CRM_DB_ID = process.env.NOTION_CRM_DB_ID || process.env.CRM_DATABASE_ID
-const BLOG_DB_ID = process.env.NOTION_BLOG_DB_ID
-const TOOLS_DB_ID = process.env.NOTION_TOOLS_DB_ID
-const AUTH_SECRET = process.env.NOTION_API_KEY || 'sor7ed-default-secret'
+const NOTION_API_KEY = NOTION_CONFIG.apiKey
+const CRM_DB_ID = NOTION_CONFIG.crmDbId
+const BLOG_DB_ID = NOTION_CONFIG.blogDbId
+const TOOLS_DB_ID = NOTION_CONFIG.toolsDbId
+const AUTH_SECRET = NOTION_CONFIG.apiKey || 'sor7ed-default-secret'
 
 async function notionFetch(endpoint: string, method: string, body?: any) {
     const res = await fetch(`https://api.notion.com/v1/${endpoint}`, {
@@ -25,7 +26,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!token || typeof token !== 'string') return res.status(401).json({ error: 'Auth required' })
 
     try {
-        // 1. Verify Token
         const decoded = Buffer.from(token, 'base64').toString('ascii')
         const [email, expiresAt, hmac] = decoded.split(':')
 
@@ -36,7 +36,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(401).json({ error: 'Token invalid or expired' })
         }
 
-        // 2. Fetch User from CRM
         const userQuery = await notionFetch(`databases/${CRM_DB_ID}/query`, 'POST', {
             filter: { property: 'Email', email: { equals: email } }
         })
@@ -47,11 +46,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const requestedTemplates = userPage.properties['Template Requested']?.rich_text?.[0]?.plain_text || ''
         const triggers = requestedTemplates ? requestedTemplates.split(',').map((t: string) => t.trim()) : []
 
-        // 3. Fetch Protocol Details
+        const savedItemsRaw = userPage.properties['Saved Items']?.rich_text?.[0]?.plain_text || ''
+        const savedIds = savedItemsRaw ? savedItemsRaw.split(',').map((s: string) => s.trim()) : []
+
         const protocols: any[] = []
 
         if (triggers.length > 0) {
-            // Search Blog database
             const blogQuery = await notionFetch(`databases/${BLOG_DB_ID}/query`, 'POST', {
                 filter: {
                     or: triggers.map((t: string) => ({
@@ -73,7 +73,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 })
             }
 
-            // Search Tools database
             const toolsQuery = await notionFetch(`databases/${TOOLS_DB_ID}/query`, 'POST', {
                 filter: {
                     or: triggers.map((t: string) => ({
@@ -98,10 +97,45 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }
         }
 
+        for (const sid of savedIds) {
+            if (protocols.find(p => p.id === sid)) continue
+
+            try {
+                const page = await notionFetch(`pages/${sid}`, 'GET')
+                if (page.error) continue
+
+                const isBlog = page.parent.database_id === BLOG_DB_ID.replace(/-/g, '')
+                const isTool = page.parent.database_id === TOOLS_DB_ID.replace(/-/g, '')
+
+                if (isBlog) {
+                    protocols.push({
+                        id: page.id,
+                        title: page.properties.Title?.title?.[0]?.plain_text || 'Untitled',
+                        branch: page.properties.Branch?.select?.name || 'Mind',
+                        trigger: page.properties.Trigger?.rich_text?.[0]?.plain_text || '',
+                        type: 'blog',
+                        isSaved: true
+                    })
+                } else if (isTool) {
+                    protocols.push({
+                        id: page.id,
+                        title: page.properties.Name?.title?.[0]?.plain_text || 'Untitled',
+                        branch: page.properties.Branch?.select?.name || 'Tech',
+                        trigger: page.properties['WhatsApp Keyword']?.rich_text?.[0]?.plain_text || '',
+                        type: 'tool',
+                        isSaved: true
+                    })
+                }
+            } catch (e) {
+                console.error(`Failed to fetch saved item ${sid}:`, e)
+            }
+        }
+
         return res.status(200).json({
             user: {
                 name: userPage.properties['Customer Name']?.title?.[0]?.plain_text || 'Friend',
-                email: email
+                email: email,
+                savedItems: savedIds
             },
             protocols
         })

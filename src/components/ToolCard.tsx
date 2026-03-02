@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useVaultSession } from '../hooks/useVaultSession'
+import { useVault } from '../context/VaultContext'
 
 interface Tool {
     id: string
@@ -17,7 +17,7 @@ interface ToolCardProps {
 
 const ToolCard = ({ tool }: ToolCardProps) => {
     const navigate = useNavigate()
-    const { isLoggedIn } = useVaultSession()
+    const { isLoggedIn } = useVault()
 
     const handleClick = () => {
         if (isLoggedIn) {
@@ -56,11 +56,11 @@ const ToolCard = ({ tool }: ToolCardProps) => {
                 <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-[0.3em] mb-2 opacity-60 group-hover:opacity-100 transition-opacity">
                     // {tool.category || 'LAB_PROTOCOL'}
                 </span>
-                <h3 className="text-3xl md:text-4xl font-anton font-normal text-white uppercase tracking-tighter leading-[0.9] group-hover:text-sor7ed-yellow transition-colors break-words">
+                <h3 className="text-white group-hover:text-sor7ed-yellow transition-colors break-words">
                     {tool.name}
                 </h3>
                 <div className="h-0 group-hover:h-8 overflow-hidden transition-all duration-500 opacity-0 group-hover:opacity-100 mt-2">
-                    <span className="text-[10px] font-mono-headline text-zinc-400 uppercase tracking-widest">
+                    <span className="text-[10px] font-mono-headline text-zinc-400 uppercase tracking-[0.15em]">
                         Initialize Connection →
                     </span>
                 </div>

@@ -53,7 +53,7 @@ export default function BodyDouble({ onDeploy }: BodyDoubleProps) {
 
     return (
         <div className="p-12 border border-sor7ed-yellow/20 bg-black/40 backdrop-blur-3xl rounded-sm relative overflow-hidden flex flex-col h-full justify-between">
-            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-zinc-600 uppercase tracking-widest">
+            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-zinc-600 uppercase tracking-[0.15em]">
                 / PRESENCE ENGINE v1.0
             </div>
 
@@ -63,10 +63,10 @@ export default function BodyDouble({ onDeploy }: BodyDoubleProps) {
                     <div className="absolute inset-0 rounded-full border border-sor7ed-yellow/20 animate-ping opacity-20" />
                     <span className="text-4xl">👀</span>
                 </div>
-                <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-2">
+                <h2 className="text-2xl font-black text-white uppercase tracking-[0.15em] mb-2">
                     VIRTUAL BODY DOUBLE
                 </h2>
-                <p className={`font-mono-headline text-[10px] tracking-widest uppercase ${isRunning ? 'text-sor7ed-yellow' : 'text-zinc-500'}`}>
+                <p className={`font-mono-headline text-[10px] tracking-[0.15em] uppercase ${isRunning ? 'text-sor7ed-yellow' : 'text-zinc-500'}`}>
                     {status}
                 </p>
             </div>
@@ -90,7 +90,7 @@ export default function BodyDouble({ onDeploy }: BodyDoubleProps) {
 
             {/* Timer Display */}
             <div className="flex justify-center mb-12">
-                <div className="text-[6rem] font-black text-white leading-none tracking-tighter tabular-nums text-center">
+                <div className="text-[6rem] font-black text-white  tracking-[0.15em] tabular-nums text-center">
                     {formatTime(timeLeft)}
                 </div>
             </div>
@@ -108,7 +108,7 @@ export default function BodyDouble({ onDeploy }: BodyDoubleProps) {
             <div className="grid grid-cols-2 gap-4">
                 <button
                     onClick={toggleTimer}
-                    className={`p-4 font-black uppercase tracking-widest transition-all ${isRunning
+                    className={`p-4 font-black uppercase tracking-[0.15em] transition-all ${isRunning
                         ? 'border border-red-500/50 text-red-500 hover:bg-red-500/10'
                         : 'bg-sor7ed-yellow text-black hover:scale-[1.02]'}`}
                 >
@@ -121,14 +121,14 @@ export default function BodyDouble({ onDeploy }: BodyDoubleProps) {
                         setTask("");
                         setStatus("Reset Complete.");
                     }}
-                    className="p-4 border border-white/10 text-zinc-500 hover:text-white hover:border-white/30 font-black uppercase tracking-widest transition-all"
+                    className="p-4 border border-white/10 text-zinc-500 hover:text-white hover:border-white/30 font-black uppercase tracking-[0.15em] transition-all"
                 >
                     RESET
                 </button>
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/5 flex justify-center">
-                <button onClick={onDeploy} className="text-[10px] font-mono-headline text-zinc-500 hover:text-sor7ed-yellow uppercase tracking-widest flex items-center gap-2">
+                <button onClick={onDeploy} className="text-[10px] font-mono-headline text-zinc-500 hover:text-sor7ed-yellow uppercase tracking-[0.15em] flex items-center gap-2">
                     <span>Need a text buddy?</span>
                     <span className="border-b border-sor7ed-yellow/50">Deploy to WhatsApp</span>
                 </button>

@@ -95,12 +95,12 @@ export default function SensoryFidget({ onDeploy }: SensoryFidgetProps) {
     return (
         <div className="space-y-12 py-8 flex flex-col items-center">
             <div className="text-center mb-12">
-                <h3 className="text-4xl font-black uppercase tracking-tighter text-sor7ed-yellow mb-2">Sensory Fidget</h3>
+                <h3 className="text-4xl font-black uppercase tracking-[0.15em] text-sor7ed-yellow mb-2">Sensory Fidget</h3>
                 <p className="text-zinc-500 font-mono-headline text-[10px]">Tactile regulation // Bubble Wrap Simulator</p>
             </div>
 
             <div className="relative group p-4 stealth-card border-white/5 bg-black/60 rounded-3xl backdrop-blur-xl">
-                <div className="absolute -top-4 -left-4 text-[10px] font-mono-headline text-zinc-800 uppercase tracking-widest -rotate-90 origin-bottom-left">
+                <div className="absolute -top-4 -left-4 text-[10px] font-mono-headline text-zinc-800 uppercase tracking-[0.15em] -rotate-90 origin-bottom-left">
                     / Physical_Input_Simulation
                 </div>
                 <canvas

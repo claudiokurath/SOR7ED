@@ -1,7 +1,11 @@
 import { parse } from 'node:querystring'
-// Build Sync: 2026-02-16T16:15:00Z
+import { NOTION_CONFIG } from './notion-config'
 
-// Taxonomy and Routing Logic from Master Document (v1)
+const NOTION_API_KEY = NOTION_CONFIG.apiKey
+const BLOG_DB_ID = NOTION_CONFIG.blogDbId
+const TOOLS_DB_ID = NOTION_CONFIG.toolsDbId
+const CRM_DB_ID = NOTION_CONFIG.crmDbId
+
 const UTILITY_RESPONSES: Record<string, string> = {
     'START': "Hey! Welcome to SOR7ED.\n\nI'm your ND-aware tool library, delivered right here in WhatsApp.\n\nNo apps. No overwhelm. Just practical tools that actually work.\n\nHere's what I can send you:\n\n📜 [DOPAMINE] → Personalized dopamine menu\n⚖️ [TRIAGE] → Sort your task overwhelm \n⏰ [TIMEWARP] → Fix time blindness\n🎯 [SENSORY] → Sensory environment audit\n❄️ [COOLOFF] → RSD emergency scripts\n💸 [ADHD-TAX] → Calculate hidden ADHD costs\n\nReply with any keyword to get started.\nOr text MENU to see all tools.",
     'HI': "Hey! Welcome to SOR7ED.\n\nI'm your ND-aware tool library, delivered right here in WhatsApp.\n\nNo apps. No overwhelm. Just practical tools that actually work.\n\nHere's what I can send you:\n\n📜 [DOPAMINE] → Personalized dopamine menu\n⚖️ [TRIAGE] → Sort your task overwhelm \n⏰ [TIMEWARP] → Fix time blindness\n🎯 [SENSORY] → Sensory environment audit\n❄️ [COOLOFF] → RSD emergency scripts\n💸 [ADHD-TAX] → Calculate hidden ADHD costs\n\nReply with any keyword to get started.\nOr text MENU to see all tools.",
@@ -40,39 +44,28 @@ export default async function handler(req: any, res: any) {
     }
 
     const { Body } = bodyData || {}
-    // Improved cleanup: remove leading numbers/dots (e.g. "1. COOLOFF" -> "COOLOFF")
     const rawTrigger = (Body || '').trim().toUpperCase().replace(/^[\d\.\s\-]+/, '')
-
-    // 1. Resolve Canonical Trigger
     const trigger = ALIAS_MAP[rawTrigger] || rawTrigger
 
-
-    // 2. Handle Global Utility Words
     if (UTILITY_RESPONSES[trigger]) {
         res.setHeader('Content-Type', 'text/xml')
         return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>${UTILITY_RESPONSES[trigger]}</Message></Response>`)
     }
 
-    const TOKEN = (process.env.NOTION_API_KEY || '').trim()
-    const BLOG_DB_ID = (process.env.NOTION_BLOG_DB_ID || '').trim()
-    const TOOLS_DB_ID = (process.env.NOTION_TOOLS_DB_ID || '').trim()
-    const CRM_DB_ID = (process.env.NOTION_CRM_DB_ID || '').trim()
-
     try {
-        if (!TOKEN) throw new Error("Vercel Config Error: Missing Notion Token.")
+        if (!NOTION_API_KEY) throw new Error("Vercel Config Error: Missing Notion Token.")
         if (!BLOG_DB_ID) throw new Error("Vercel Config Error: Missing Blog Database ID.")
         if (!CRM_DB_ID) throw new Error("Vercel Config Error: Missing CRM Database ID.")
 
         const { From } = bodyData || {}
         const userPhone = From || ''
 
-        // 3. User Resolution (CRM)
         let userPage: any = null
         if (userPhone) {
             const crmQuery = await fetch(`https://api.notion.com/v1/databases/${CRM_DB_ID}/query`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${TOKEN}`,
+                    'Authorization': `Bearer ${NOTION_API_KEY}`,
                     'Notion-Version': '2022-06-28',
                     'Content-Type': 'application/json'
                 },
@@ -83,12 +76,11 @@ export default async function handler(req: any, res: any) {
             const crmData = await crmQuery.json()
             userPage = crmData.results?.[0]
 
-            // Auto-create Trial User if not found
             if (!userPage && userPhone.includes('+')) {
                 const createRes = await fetch(`https://api.notion.com/v1/pages`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${TOKEN}`,
+                        'Authorization': `Bearer ${NOTION_API_KEY}`,
                         'Notion-Version': '2022-06-28',
                         'Content-Type': 'application/json'
                     },
@@ -114,11 +106,10 @@ export default async function handler(req: any, res: any) {
         let replyMessage = ""
         let match: any = null
 
-        // --- STEP A: Search Tools (Operational Layer - CHARGED) ---
         const toolsResponse = await fetch(`https://api.notion.com/v1/databases/${TOOLS_DB_ID}/query`, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${TOKEN}`,
+                'Authorization': `Bearer ${NOTION_API_KEY}`,
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json'
             },
@@ -131,7 +122,6 @@ export default async function handler(req: any, res: any) {
         match = toolsData.results?.[0]
 
         if (match) {
-            // AUTHORIZATION CHECK FOR TOOLS
             const isAuthorized = freeToolsUsed < 2 || credits > 0
             if (!isAuthorized) {
                 res.setHeader('Content-Type', 'text/xml')
@@ -153,7 +143,6 @@ export default async function handler(req: any, res: any) {
 
             replyMessage = `Reflected: You want the ${toolName}. Got it. [Branch: ${branch}]\n\n${template}\n\n${creditNotice}`
 
-            // CHARGE FOR TOOL
             const updates: any = {}
             if (freeToolsUsed < 2) {
                 updates['Free Tools Used'] = { number: freeToolsUsed + 1 }
@@ -175,17 +164,16 @@ export default async function handler(req: any, res: any) {
 
             await fetch(`https://api.notion.com/v1/pages/${userPage.id}`, {
                 method: 'PATCH',
-                headers: { 'Authorization': `Bearer ${TOKEN}`, 'Notion-Version': '2022-06-28', 'Content-Type': 'application/json' },
+                headers: { 'Authorization': `Bearer ${NOTION_API_KEY}`, 'Notion-Version': '2022-06-28', 'Content-Type': 'application/json' },
                 body: JSON.stringify({ properties: updates })
             })
         }
 
-        // --- STEP B: Search Blog/Articles (Content Layer - FREE) ---
         if (!replyMessage) {
             const blogResponse = await fetch(`https://api.notion.com/v1/databases/${BLOG_DB_ID}/query`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${TOKEN}`,
+                    'Authorization': `Bearer ${NOTION_API_KEY}`,
                     'Notion-Version': '2022-06-28',
                     'Content-Type': 'application/json'
                 },
@@ -209,7 +197,6 @@ export default async function handler(req: any, res: any) {
 
                 replyMessage = `Reflected: Opening "${postTitle}". [Branch: ${branch}]\n\n${template}\n\n🍀 Insight delivered [FREE]`
 
-                // LOG ACTIVITY IN CRM (No charge)
                 if (userPage) {
                     const updates: any = {}
                     updates['Last Active'] = { date: { start: new Date().toISOString() } }
@@ -225,7 +212,7 @@ export default async function handler(req: any, res: any) {
 
                     await fetch(`https://api.notion.com/v1/pages/${userPage.id}`, {
                         method: 'PATCH',
-                        headers: { 'Authorization': `Bearer ${TOKEN}`, 'Notion-Version': '2022-06-28', 'Content-Type': 'application/json' },
+                        headers: { 'Authorization': `Bearer ${NOTION_API_KEY}`, 'Notion-Version': '2022-06-28', 'Content-Type': 'application/json' },
                         body: JSON.stringify({ properties: updates })
                     })
                 }
@@ -238,7 +225,6 @@ export default async function handler(req: any, res: any) {
 
         res.setHeader('Content-Type', 'text/xml')
         return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response><Message>${replyMessage}</Message></Response>`)
-
 
     } catch (error: any) {
         res.setHeader('Content-Type', 'text/xml')

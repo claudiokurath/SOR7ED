@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 interface SignupFormData {
     name: string
     email: string
     phone: string
+    password: string
     leadSource: string
 }
 const SignupForm = () => {
@@ -10,6 +11,7 @@ const SignupForm = () => {
         name: '',
         email: '',
         phone: '',
+        password: '',
         leadSource: 'Direct'
     })
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -33,7 +35,8 @@ const SignupForm = () => {
                     signupDate: new Date().toISOString().split('T')[0],
                     status: 'Trial',
                     freeToolsUsed: 0,
-                    creditsBalance: 0
+                    creditsBalance: 0,
+                    password: formData.password
                 }),
             })
             if (response.ok) {
@@ -42,7 +45,7 @@ const SignupForm = () => {
                     text: 'Welcome! Check your phone for a WhatsApp message from us.'
                 })
                 // Reset form
-                setFormData({ name: '', email: '', phone: '', leadSource: 'Direct' })
+                setFormData({ name: '', email: '', phone: '', password: '', leadSource: 'Direct' })
             } else {
                 throw new Error('Signup failed')
             }
@@ -105,6 +108,21 @@ const SignupForm = () => {
                         placeholder="+44 7XXX XXXXXX"
                     />
                 </div>
+                {/* Password Field */}
+                <div>
+                    <label htmlFor="password" className="block text-sm font-semibold mb-2 text-gray-300">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        required
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        className="w-full bg-black border-2 border-gray-700 rounded-lg px-4 py-3 text-white focus:border-sor7ed-yellow focus:outline-none transition-colors"
+                        placeholder="Create a password"
+                    />
+                </div>
                 {/* Lead Source (hidden field with default value) */}
                 <input type="hidden" name="leadSource" value={formData.leadSource} />
                 {/* Submit Button */}
@@ -118,8 +136,8 @@ const SignupForm = () => {
                 {/* Success/Error Message */}
                 {message && (
                     <div className={`p-4 rounded-lg ${message.type === 'success'
-                            ? 'bg-green-900/30 border-2 border-green-500 text-green-400'
-                            : 'bg-red-900/30 border-2 border-red-500 text-red-400'
+                        ? 'bg-green-900/30 border-2 border-green-500 text-green-400'
+                        : 'bg-red-900/30 border-2 border-red-500 text-red-400'
                         }`}>
                         {message.text}
                     </div>

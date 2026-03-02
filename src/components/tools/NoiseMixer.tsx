@@ -109,12 +109,12 @@ export default function NoiseMixer({ onDeploy }: NoiseMixerProps) {
 
     return (
         <div className="p-10 border border-sor7ed-yellow/20 bg-black/40 backdrop-blur-3xl rounded-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-sor7ed-yellow/30 uppercase tracking-widest">
+            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-sor7ed-yellow/30 uppercase tracking-[0.15em]">
                 / Audio Synthesis v2.4
             </div>
 
             <header className="mb-12 border-b border-white/5 pb-10">
-                <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-4">Noise Control</h2>
+                <h2 className="text-4xl font-black text-white uppercase tracking-[0.15em] mb-4">Noise Control</h2>
                 <div className="flex items-center justify-between">
                     <p className="text-zinc-500 font-mono-headline text-[10px] tracking-[0.2em] uppercase">
                         Sensory Gating System
@@ -136,7 +136,7 @@ export default function NoiseMixer({ onDeploy }: NoiseMixerProps) {
                 ].map(channel => (
                     <div key={channel.type} className="group">
                         <div className="flex justify-between mb-4">
-                            <label className="text-[10px] font-mono-headline text-zinc-400 uppercase tracking-widest group-hover:text-sor7ed-yellow transition-colors">
+                            <label className="text-[10px] font-mono-headline text-zinc-400 uppercase tracking-[0.15em] group-hover:text-sor7ed-yellow transition-colors">
                                 {channel.label}
                             </label>
                             <span className="text-[10px] font-mono-headline text-zinc-600">
@@ -172,7 +172,7 @@ export default function NoiseMixer({ onDeploy }: NoiseMixerProps) {
             </div>
 
             <footer className="pt-8 border-t border-white/5 flex justify-between items-center">
-                <div className="text-[9px] text-zinc-600 font-mono-headline tracking-widest">
+                <div className="text-[9px] text-zinc-600 font-mono-headline tracking-[0.15em]">
                     SYSTEM: {isPlaying ? 'ONLINE' : 'STANDBY'}
                 </div>
                 <button onClick={onDeploy} className="btn-primary">

@@ -21,7 +21,7 @@ export function formatContent(raw: string): string {
         // Convert > blockquotes → TL;DR style
         .replace(/^> (.+)$/gm, (_, text) => `
             <blockquote class="border-l-4 border-sor7ed-yellow bg-sor7ed-yellow/5 p-10 my-16 rounded-r-3xl italic text-white/90 font-medium relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-[0.03] font-black text-8xl tracking-tighter select-none pointer-events-none">TL;DR</div>
+                <div class="absolute top-0 right-0 p-4 opacity-[0.03] font-black text-8xl tracking-[0.15em] select-none pointer-events-none">TL;DR</div>
                 <span class="relative z-10 block">TL;DR: ${text}</span>
             </blockquote>
         `)

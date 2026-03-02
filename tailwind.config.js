@@ -18,7 +18,7 @@ export default {
             },
             fontFamily: {
                 sans: ['Roboto', 'Inter', 'system-ui', 'sans-serif'],
-                'anton': ['Anton', 'sans-serif'],
+                'league-gothic': ['League Gothic', 'sans-serif'],
                 'roboto': ['Roboto', 'sans-serif'],
                 'mono-headline': ['Monaco', 'Menlo', 'monospace'],
                 'antarctican': ['antarctican-headline', 'sans-serif'],

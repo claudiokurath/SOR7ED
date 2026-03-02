@@ -64,12 +64,12 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
 
     return (
         <div className="p-12 border border-sor7ed-yellow/20 bg-black/40 backdrop-blur-3xl rounded-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-sor7ed-yellow/30 uppercase tracking-widest">
+            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-sor7ed-yellow/30 uppercase tracking-[0.15em]">
                 / Operational System v1.0
             </div>
 
             <header className="mb-12 border-b border-white/5 pb-12">
-                <h2 className="text-5xl font-black text-white uppercase tracking-tighter mb-4">{tool.name}</h2>
+                <h2 className="text-5xl font-black text-white uppercase tracking-[0.15em] mb-4">{tool.name}</h2>
                 <p className="text-zinc-500 font-mono-headline text-[10px] tracking-[0.3em] uppercase underline decoration-sor7ed-yellow/40 underline-offset-8">
                     {tool.slug.replace(/-/g, ' ')}
                 </p>
@@ -103,7 +103,7 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
 
                     <button
                         onClick={calculate}
-                        className="w-full p-6 border border-sor7ed-yellow text-sor7ed-yellow font-black uppercase tracking-widest hover:bg-sor7ed-yellow hover:text-black transition-all"
+                        className="w-full p-6 border border-sor7ed-yellow text-sor7ed-yellow font-black uppercase tracking-[0.15em] hover:bg-sor7ed-yellow hover:text-black transition-all"
                     >
                         Execute Analysis
                     </button>
@@ -112,10 +112,10 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
                 {/* Results & Guide */}
                 <div className="flex flex-col">
                     <div className="p-8 bg-sor7ed-yellow/5 border border-sor7ed-yellow/20 rounded-sm mb-12">
-                        <div className="text-[10px] font-mono-headline text-sor7ed-yellow/60 uppercase tracking-widest mb-6 border-b border-sor7ed-yellow/10 pb-4">
+                        <div className="text-[10px] font-mono-headline text-sor7ed-yellow/60 uppercase tracking-[0.15em] mb-6 border-b border-sor7ed-yellow/10 pb-4">
                             System Output Buffer
                         </div>
-                        <div className="text-6xl font-black text-white tracking-tighter py-6">
+                        <div className="text-6xl font-black text-white tracking-[0.15em] py-6">
                             {result !== null ? (
                                 <div className="animate-in slide-in-from-bottom-4 duration-500">
                                     {result} <span className="text-2xl text-sor7ed-yellow font-light tracking-normal opacity-60 ml-4">{config.unit}</span>
@@ -128,7 +128,7 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
 
                     <div className="bg-zinc-900/30 p-10 border border-white/5 relative overflow-hidden group">
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                            <span className="text-[120px] font-black leading-none select-none">07</span>
+                            <span className="text-[120px] font-black  select-none">07</span>
                         </div>
 
                         <div className="relative z-10">
@@ -150,14 +150,14 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
                 <div className="flex items-center space-x-12">
                     <button
                         onClick={() => window.print()}
-                        className="group flex items-center space-x-4 text-[10px] font-mono-headline text-zinc-500 hover:text-white uppercase tracking-widest transition-all"
+                        className="group flex items-center space-x-4 text-[10px] font-mono-headline text-zinc-500 hover:text-white uppercase tracking-[0.15em] transition-all"
                     >
                         <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-sor7ed-yellow group-hover:text-sor7ed-yellow transition-all">↓</span>
                         <span>[ EXPORT SYSTEM DOCUMENTATION • £{tool.price || 19} ]</span>
                     </button>
                 </div>
                 <div className="flex flex-col items-end gap-4">
-                    <span className="text-[8px] font-mono-headline text-zinc-700 uppercase tracking-widest">Immediate Deployment Required?</span>
+                    <span className="text-[8px] font-mono-headline text-zinc-700 uppercase tracking-[0.15em]">Immediate Deployment Required?</span>
                     <button onClick={() => onDeploy(tool.keyword)} className="btn-primary">
                         Deploy to WhatsApp
                     </button>

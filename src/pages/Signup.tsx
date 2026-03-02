@@ -14,7 +14,7 @@ const Signup = () => {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/5 blur-[120px] rounded-full" />
             </div>
 
-            <div className="relative z-10 py-32 px-6">
+            <div className="relative z-10 pt-40 pb-32 px-6">
                 <div className="container mx-auto max-w-6xl">
                     {/* Hero Section */}
                     <div className="text-center mb-24 animate-in fade-in">
@@ -36,7 +36,7 @@ const Signup = () => {
                         ].map((item, i) => (
                             <div key={i} className="stealth-card p-10 text-center group transition-all duration-500 hover:border-white/20 animate-in fade-in slide-in-from-bottom-20" style={{ animationDelay: `${i * 100}ms` }}>
                                 <div className="text-4xl mb-8 grayscale group-hover:grayscale-0 transition-all opacity-50 group-hover:opacity-100">{item.icon}</div>
-                                <h3 className="text-lg font-black uppercase tracking-widest text-white mb-4">{item.title}</h3>
+                                <h3 className="text-lg font-black uppercase tracking-[0.15em] text-white mb-4">{item.title}</h3>
                                 <p className="text-zinc-500 text-sm font-light leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
@@ -51,7 +51,7 @@ const Signup = () => {
                     <div className="mt-40 max-w-4xl mx-auto">
                         <div className="text-center mb-16">
                             <span className="text-[10px] font-mono-headline text-zinc-600 uppercase tracking-[0.4em] block mb-4">// LOGISTICS</span>
-                            <h2 className="text-4xl font-black text-white uppercase tracking-tighter">Quick Queries.</h2>
+                            <h2 className="text-4xl font-black text-white uppercase tracking-[0.15em]">Quick Queries.</h2>
                         </div>
                         <div className="grid md:grid-cols-2 gap-8">
                             {[
@@ -61,7 +61,7 @@ const Signup = () => {
                                 { q: "Is it secure?", a: "We use enterprise-grade encryption for all data and never sell your information." }
                             ].map((faq, i) => (
                                 <div key={i} className="stealth-card p-8">
-                                    <h3 className="text-sm font-black text-sor7ed-yellow uppercase tracking-widest mb-4">{faq.q}</h3>
+                                    <h3 className="text-sm font-black text-sor7ed-yellow uppercase tracking-[0.15em] mb-4">{faq.q}</h3>
                                     <p className="text-zinc-500 text-sm font-light leading-relaxed">{faq.a}</p>
                                 </div>
                             ))}

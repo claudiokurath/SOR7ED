@@ -72,7 +72,7 @@ export default function SocialSimulator({ onDeploy }: SocialSimulatorProps) {
     return (
         <div className="space-y-12 py-8 flex flex-col items-center">
             <div className="text-center mb-12">
-                <h3 className="text-4xl font-black uppercase tracking-tighter text-sor7ed-yellow mb-2">Social Simulator</h3>
+                <h3 className="text-4xl font-black uppercase tracking-[0.15em] text-sor7ed-yellow mb-2">Social Simulator</h3>
                 <p className="text-zinc-500 font-mono-headline text-[10px]">Interaction mapping // Scripted response practice</p>
             </div>
 
@@ -89,7 +89,7 @@ export default function SocialSimulator({ onDeploy }: SocialSimulatorProps) {
                             <button
                                 key={i}
                                 onClick={() => handleChoice(choice)}
-                                className="w-full p-4 stealth-card border-white/10 hover:border-sor7ed-yellow hover:bg-sor7ed-yellow/5 text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-white transition-all text-left"
+                                className="w-full p-4 stealth-card border-white/10 hover:border-sor7ed-yellow hover:bg-sor7ed-yellow/5 text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-400 hover:text-white transition-all text-left"
                             >
                                 <span className="text-sor7ed-yellow mr-4">{i + 1}.</span> {choice.text}
                             </button>
@@ -110,7 +110,7 @@ export default function SocialSimulator({ onDeploy }: SocialSimulatorProps) {
                     <div className="stealth-card p-6 bg-white/5 border-sor7ed-yellow/20 animate-in fade-in zoom-in duration-500">
                         <div className="flex items-center space-x-4">
                             <div className="w-2 h-2 bg-sor7ed-yellow rounded-full animate-pulse" />
-                            <p className="text-[10px] font-mono-headline text-zinc-400 uppercase tracking-widest">System Feedback: <span className="text-white">{feedback}</span></p>
+                            <p className="text-[10px] font-mono-headline text-zinc-400 uppercase tracking-[0.15em]">System Feedback: <span className="text-white">{feedback}</span></p>
                         </div>
                     </div>
                 )}

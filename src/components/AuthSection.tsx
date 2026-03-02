@@ -1,17 +1,18 @@
-import { useState } from 'react'
-import { useVaultSession } from '../hooks/useVaultSession'
+import React, { useState } from 'react'
+import { useVault } from '../context/VaultContext'
 
 const AuthSection = () => {
-    const { isLoggedIn } = useVaultSession()
+    const { isLoggedIn } = useVault()
     const [mode, setMode] = useState<'signup' | 'signin'>('signup')
     const [isLoading, setIsLoading] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
     // Signup State
-    const [signupData, setSignupData] = useState({ name: '', email: '', phone: '' })
+    const [signupData, setSignupData] = useState({ name: '', email: '', phone: '', password: '' })
 
     // Signin State
     const [signinEmail, setSigninEmail] = useState('')
+    const [signinPassword, setSigninPassword] = useState('')
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -25,6 +26,7 @@ const AuthSection = () => {
                     customerName: signupData.name,
                     email: signupData.email,
                     phoneNumber: signupData.phone,
+                    password: signupData.password,
                     leadSource: 'Landing Page',
                     signupDate: new Date().toISOString().split('T')[0],
                     status: 'Trial',
@@ -35,7 +37,7 @@ const AuthSection = () => {
             const data = await res.json()
             if (res.ok) {
                 setMessage({ type: 'success', text: 'Welcome to the Registry. Check your WhatsApp for initialization.' })
-                setSignupData({ name: '', email: '', phone: '' })
+                setSignupData({ name: '', email: '', phone: '', password: '' })
             } else {
                 setMessage({ type: 'error', text: data.message || data.error || 'Registration failed. Please try again.' })
             }
@@ -51,14 +53,16 @@ const AuthSection = () => {
         setIsLoading(true)
         setMessage(null)
         try {
-            const res = await fetch('/api/vault/send-link', {
+            const res = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: signinEmail })
+                body: JSON.stringify({ email: signinEmail, password: signinPassword })
             })
             const data = await res.json()
             if (res.ok) {
-                setMessage({ type: 'success', text: 'Check your WhatsApp for your secure access link.' })
+                localStorage.setItem('sor7ed_vault_token', data.token)
+                setMessage({ type: 'success', text: 'Authentication successful. Synchronizing...' })
+                setTimeout(() => window.location.href = '/vault', 1000)
             } else {
                 setMessage({ type: 'error', text: data.message || data.error || 'Authentication failed.' })
             }
@@ -78,19 +82,19 @@ const AuthSection = () => {
                     <div className="flex bg-zinc-900/50 p-1 rounded-full border border-white/10 mb-8 md:mb-12">
                         <button
                             onClick={() => { setMode('signup'); setMessage(null); }}
-                            className={`px-6 md:px-8 py-2 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono-headline uppercase tracking-widest transition-all ${mode === 'signup' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
+                            className={`px-6 md:px-8 py-2 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono-headline uppercase tracking-[0.15em] transition-all ${mode === 'signup' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
                         >
                             Join Registry
                         </button>
                         <button
                             onClick={() => { setMode('signin'); setMessage(null); }}
-                            className={`px-6 md:px-8 py-2 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono-headline uppercase tracking-widest transition-all ${mode === 'signin' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
+                            className={`px-6 md:px-8 py-2 md:py-3 rounded-full text-[9px] md:text-[10px] font-mono-headline uppercase tracking-[0.15em] transition-all ${mode === 'signin' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
                         >
                             Access Vault
                         </button>
                     </div>
 
-                    <h2 className="text-3xl md:text-6xl font-anton text-white uppercase text-center tracking-tighter mb-4 leading-none">
+                    <h2 className="text-3xl md:text-6xl font-league-gothic text-white uppercase text-center tracking-[0.15em] mb-4 ">
                         {mode === 'signup' ? 'ESTABLISH YOUR' : 'RETRIEVE YOUR'} <br />
                         <span className="text-sor7ed-yellow">{mode === 'signup' ? 'CONNECTION.' : 'PROTOCOL.'}</span>
                     </h2>
@@ -106,7 +110,7 @@ const AuthSection = () => {
                         {mode === 'signup' && (
                             <>
                                 <div>
-                                    <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-widest">// FULL_NAME</label>
+                                    <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-[0.15em]">// FULL_NAME</label>
                                     <input
                                         type="text"
                                         required
@@ -117,7 +121,7 @@ const AuthSection = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-widest">// WHATSAPP_NUMBER</label>
+                                    <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-[0.15em]">// WHATSAPP_NUMBER</label>
                                     <input
                                         type="tel"
                                         required
@@ -127,11 +131,22 @@ const AuthSection = () => {
                                         placeholder="+44 7XXX XXXXXX"
                                     />
                                 </div>
+                                <div>
+                                    <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-[0.15em]">// CREATE_PASSWORD</label>
+                                    <input
+                                        type="password"
+                                        required
+                                        value={signupData.password}
+                                        onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-sor7ed-yellow outline-none transition-all font-light"
+                                        placeholder="Secure password..."
+                                    />
+                                </div>
                             </>
                         )}
 
                         <div>
-                            <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-widest">
+                            <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-[0.15em]">
                                 // {mode === 'signup' ? 'REGISTRY_EMAIL' : 'IDENTIFICATION_EMAIL'}
                             </label>
                             <input
@@ -144,16 +159,30 @@ const AuthSection = () => {
                             />
                         </div>
 
+                        {mode === 'signin' && (
+                            <div>
+                                <label className="block text-[10px] font-mono-headline text-zinc-600 mb-3 uppercase tracking-[0.15em]">// SECURITY_CREDENTIAL</label>
+                                <input
+                                    type="password"
+                                    required
+                                    value={signinPassword}
+                                    onChange={(e) => setSigninPassword(e.target.value)}
+                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-sor7ed-yellow outline-none transition-all font-light"
+                                    placeholder="Enter password..."
+                                />
+                            </div>
+                        )}
+
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-white text-zinc-950 font-anton uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[14px] shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                            className="w-full bg-white text-zinc-950 font-league-gothic uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[14px] shadow-[0_0_30px_rgba(255,255,255,0.1)]"
                         >
                             {isLoading ? 'TRANSMITTING...' : (mode === 'signup' ? 'INITIALIZE CONNECTION' : 'REQUEST ACCESS')}
                         </button>
 
                         {message && (
-                            <div className={`p-6 rounded-xl text-[12px] font-anton uppercase tracking-widest text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
+                            <div className={`p-6 rounded-xl text-[12px] font-league-gothic uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
                                 ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                                 : 'bg-red-500/10 border border-red-500/20 text-red-500'
                                 }`}>

@@ -36,7 +36,7 @@ const Tools = () => {
 
                     {loading ? (
                         <div className="text-center py-20">
-                            <div className="text-xs font-mono-headline text-zinc-600 uppercase tracking-widest animate-pulse">Syncing with Registry...</div>
+                            <div className="text-xs font-mono-headline text-zinc-600 uppercase tracking-[0.15em] animate-pulse">Syncing with Registry...</div>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -49,13 +49,13 @@ const Tools = () => {
                             {/* Coming Soon Placeholders */}
                             <div className="stealth-card p-10 flex flex-col items-center justify-center border-dashed opacity-50 border-white/10 h-full min-h-[300px]">
                                 <span className="text-2xl mb-4 grayscale opacity-50">🛡️</span>
-                                <h3 className="text-base font-bold uppercase tracking-widest text-zinc-600 mb-2">Vaulted Tool</h3>
-                                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-widest">// COMING_THIS_MONTH</p>
+                                <h3 className="text-base font-bold uppercase tracking-[0.15em] text-zinc-600 mb-2">Vaulted Tool</h3>
+                                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-[0.15em]">// COMING_THIS_MONTH</p>
                             </div>
                             <div className="stealth-card p-10 flex flex-col items-center justify-center border-dashed opacity-30 border-white/10 h-full min-h-[300px]">
                                 <span className="text-2xl mb-4 grayscale opacity-50">📈</span>
-                                <h3 className="text-base font-bold uppercase tracking-widest text-zinc-600 mb-2">Market Engine</h3>
-                                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-widest">// IN_DEVELOPMENT</p>
+                                <h3 className="text-base font-bold uppercase tracking-[0.15em] text-zinc-600 mb-2">Market Engine</h3>
+                                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-[0.15em]">// IN_DEVELOPMENT</p>
                             </div>
                         </div>
                     )}

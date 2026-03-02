@@ -17,24 +17,20 @@
   }
 
   /* Increase generic heading sizes */
-  h1 {
-    @apply text-6xl md:text-8xl lg:text-9xl tracking-tighter;
-  }
-
-  h2 {
-    @apply text-5xl md:text-7xl lg:text-8xl tracking-tighter;
-  }
-
-  h3 {
-    @apply text-4xl md:text-5xl lg:text-6xl tracking-tighter;
-  }
-
-  h4 {
-    @apply text-3xl md:text-4xl lg:text-5xl tracking-tight;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'League Gothic', sans-serif !important;
+    text-transform: uppercase !important;
+    font-weight: 400 !important;
   }
 
   html {
     scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
   }
 
   h1,
@@ -43,10 +39,12 @@
   h4,
   h5,
   h6 {
-    font-family: 'Anton', sans-serif !important;
+    font-family: 'League Gothic', sans-serif !important;
     font-weight: 400 !important;
     font-style: normal !important;
     text-transform: uppercase !important;
+    letter-spacing: inherit;
+    /* Allow @apply tracking to work */
   }
 }
 
@@ -60,71 +58,71 @@
   }
 
   .section-title {
-    @apply text-6xl md:text-8xl lg:text-9xl mb-12 uppercase font-normal tracking-tighter;
-    font-family: 'Anton', sans-serif !important;
+    @apply text-6xl md:text-8xl lg:text-9xl mb-12 uppercase font-normal tracking-[0.15em] leading-[0.8];
+    font-family: 'League Gothic', sans-serif !important;
   }
+}
 
-  .card-hover {
-    @apply transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-sor7ed-yellow/20;
-  }
+.card-hover {
+  @apply transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-sor7ed-yellow/20;
+}
 
-  /* Stealth/Cyberpunk Design Classes */
-  .stealth-card {
-    @apply bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-[2rem] transition-all duration-700;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  }
+/* Stealth/Cyberpunk Design Classes */
+.stealth-card {
+  @apply bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-[2rem] transition-all duration-700;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
 
-  .stealth-card:hover {
-    @apply border-white/20 bg-zinc-800/40;
-    box-shadow: 0 0 50px rgba(245, 198, 20, 0.05);
-  }
+.stealth-card:hover {
+  @apply border-white/20 bg-zinc-800/40;
+  box-shadow: 0 0 50px rgba(245, 198, 20, 0.05);
+}
 
-  .title-white {
-    @apply text-white uppercase font-normal tracking-tighter leading-none;
-    font-family: 'Anton', sans-serif !important;
-  }
+.title-white {
+  @apply text-white uppercase font-normal tracking-[0.15em] leading-none;
+  font-family: 'League Gothic', sans-serif !important;
+}
 
-  .title-yellow {
-    @apply text-sor7ed-yellow uppercase font-normal tracking-tighter leading-none;
-    font-family: 'Anton', sans-serif !important;
-  }
+.title-yellow {
+  @apply text-sor7ed-yellow uppercase font-normal tracking-[0.15em] leading-none;
+  font-family: 'League Gothic', sans-serif !important;
+}
 
-  .bg-grid {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
 
-  .radial-gradient {
-    background: radial-gradient(circle at center, rgba(245, 198, 20, 0.03) 0%, transparent 70%);
-  }
+.radial-gradient {
+  background: radial-gradient(circle at center, rgba(245, 198, 20, 0.03) 0%, transparent 70%);
+}
 
-  /* Rendered Blog Content Styles */
-  .blog-content h2 {
-    @apply text-5xl md:text-7xl font-normal mt-20 mb-8 tracking-tighter uppercase text-white font-antarctican;
-  }
+/* Rendered Blog Content Styles */
+.blog-content h2 {
+  @apply text-5xl md:text-7xl font-normal mt-20 mb-8 tracking-[0.15em] uppercase text-white font-antarctican;
+}
 
-  .blog-content h3 {
-    @apply text-2xl font-normal mt-8 mb-3 tracking-tight uppercase text-zinc-100 font-antarctican;
-  }
+.blog-content h3 {
+  @apply text-2xl font-normal mt-8 mb-3 tracking-[0.15em] uppercase text-zinc-100 font-antarctican;
+}
 
-  .blog-content ul {
-    @apply space-y-3 my-6 list-none;
-  }
+.blog-content ul {
+  @apply space-y-3 my-6 list-none;
+}
 
-  .blog-content li {
-    @apply pl-6 relative text-zinc-400;
-  }
+.blog-content li {
+  @apply pl-6 relative text-zinc-400;
+}
 
-  .blog-content li::before {
-    content: "→";
-    @apply absolute left-0 text-sor7ed-yellow opacity-50;
-  }
+.blog-content li::before {
+  content: "→";
+  @apply absolute left-0 text-sor7ed-yellow opacity-50;
+}
 
-  .blog-content strong {
-    @apply text-white font-medium;
-  }
+.blog-content strong {
+  @apply text-white font-medium;
 }
 
 /* Custom Entrance Animations */

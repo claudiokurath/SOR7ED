@@ -1,0 +1,5 @@
+
+> sor7ed-website@1.0.0 build
+> vite build
+
+sh: vite: command not found

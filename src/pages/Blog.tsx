@@ -77,7 +77,7 @@ const Blog = () => {
                     {/* Articles Grid */}
                     {loading ? (
                         <div className="text-center py-20 w-full border border-dashed border-white/5 rounded-3xl">
-                            <div className="text-[10px] font-mono-headline text-zinc-600 uppercase tracking-widest animate-pulse">Syncing Repository...</div>
+                            <div className="text-[10px] font-mono-headline text-zinc-600 uppercase tracking-[0.15em] animate-pulse">Syncing Repository...</div>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">

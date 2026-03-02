@@ -28,7 +28,7 @@ export default function DopamineMenu({ onDeploy }: DopamineMenuProps) {
     return (
         <div className="space-y-12 py-8">
             <div className="text-center mb-12">
-                <h3 className="text-4xl font-black uppercase tracking-tighter text-sor7ed-yellow mb-2">The Dopamine Menu</h3>
+                <h3 className="text-4xl font-black uppercase tracking-[0.15em] text-sor7ed-yellow mb-2">The Dopamine Menu</h3>
                 <p className="text-zinc-500 font-mono-headline text-[10px]">Strategic stimulation for the ADHD brain</p>
             </div>
 
@@ -37,7 +37,7 @@ export default function DopamineMenu({ onDeploy }: DopamineMenuProps) {
                 <div className="stealth-card p-4 border-blue-500/30">
                     <div className="flex justify-between items-center mb-6">
                         <div>
-                            <h4 className="text-lg font-bold uppercase tracking-widest text-white">Starters</h4>
+                            <h4 className="text-lg font-bold uppercase tracking-[0.15em] text-white">Starters</h4>
                             <p className="text-[9px] text-blue-400 uppercase font-mono-headline">5 Minutes // Quick Hit</p>
                         </div>
                         <button onClick={addStarter} className="w-8 h-8 rounded-full border border-blue-500/30 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all">+</button>
@@ -55,7 +55,7 @@ export default function DopamineMenu({ onDeploy }: DopamineMenuProps) {
                 <div className="stealth-card p-4 border-emerald-500/30">
                     <div className="flex justify-between items-center mb-6">
                         <div>
-                            <h4 className="text-lg font-bold uppercase tracking-widest text-white">Mains</h4>
+                            <h4 className="text-lg font-bold uppercase tracking-[0.15em] text-white">Mains</h4>
                             <p className="text-[9px] text-emerald-400 uppercase font-mono-headline">30 Minutes // Deep Burn</p>
                         </div>
                         <button onClick={addMain} className="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all">+</button>
@@ -73,7 +73,7 @@ export default function DopamineMenu({ onDeploy }: DopamineMenuProps) {
                 <div className="stealth-card p-4 border-purple-500/30">
                     <div className="flex justify-between items-center mb-6">
                         <div>
-                            <h4 className="text-lg font-bold uppercase tracking-widest text-white">Desserts</h4>
+                            <h4 className="text-lg font-bold uppercase tracking-[0.15em] text-white">Desserts</h4>
                             <p className="text-[9px] text-purple-400 uppercase font-mono-headline">Rewards // End of Task</p>
                         </div>
                         <button onClick={addDessert} className="w-8 h-8 rounded-full border border-purple-500/30 flex items-center justify-center text-purple-500 hover:bg-purple-500 hover:text-white transition-all">+</button>

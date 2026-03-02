@@ -82,7 +82,7 @@ export default function MoodTracker({ onDeploy }: MoodTrackerProps) {
     return (
         <div className="space-y-12 py-8 flex flex-col items-center">
             <div className="text-center mb-12">
-                <h3 className="text-4xl font-black uppercase tracking-tighter text-sor7ed-yellow mb-2">Biometric Tracker</h3>
+                <h3 className="text-4xl font-black uppercase tracking-[0.15em] text-sor7ed-yellow mb-2">Biometric Tracker</h3>
                 <p className="text-zinc-500 font-mono-headline text-[10px]">Internal state monitoring // Energy mapping</p>
             </div>
 
@@ -102,7 +102,7 @@ export default function MoodTracker({ onDeploy }: MoodTrackerProps) {
                     </div>
 
                     <div className="space-y-4">
-                        <div className="flex justify-between text-[10px] font-mono-headline uppercase tracking-widest text-zinc-500">
+                        <div className="flex justify-between text-[10px] font-mono-headline uppercase tracking-[0.15em] text-zinc-500">
                             <span>Depleted</span>
                             <span>Peak Energy: {energy}</span>
                         </div>
@@ -117,14 +117,14 @@ export default function MoodTracker({ onDeploy }: MoodTrackerProps) {
                 </div>
 
                 <div className="stealth-card p-4 border-white/5 bg-black/40 relative">
-                    <div className="absolute top-4 left-4 text-[8px] font-mono-headline text-zinc-700 uppercase tracking-widest">/ History_Visualizer</div>
+                    <div className="absolute top-4 left-4 text-[8px] font-mono-headline text-zinc-700 uppercase tracking-[0.15em]">/ History_Visualizer</div>
                     <canvas
                         ref={canvasRef}
                         width={600}
                         height={200}
                         className="w-full h-auto mt-8"
                     />
-                    <div className="flex justify-center space-x-8 mt-4 text-[9px] font-mono-headline uppercase tracking-widest">
+                    <div className="flex justify-center space-x-8 mt-4 text-[9px] font-mono-headline uppercase tracking-[0.15em]">
                         <div className="flex items-center space-x-2">
                             <span className="w-2 h-0.5 bg-sor7ed-yellow" />
                             <span className="text-zinc-500">Energy Level</span>

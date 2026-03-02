@@ -22,7 +22,7 @@ export default function Testimonials() {
             <div className="container mx-auto px-6 max-w-7xl">
                 <div className="text-center mb-16">
                     <span className="text-[10px] font-mono-headline text-sor7ed-yellow uppercase tracking-[0.4em] block mb-4">// SOCIAL_PROOF</span>
-                    <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">BETA <span className="text-sor7ed-yellow">TESTIMONIALS.</span></h2>
+                    <h2 className="text-4xl md:text-6xl font-black uppercase tracking-[0.15em]">BETA <span className="text-sor7ed-yellow">TESTIMONIALS.</span></h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -32,8 +32,8 @@ export default function Testimonials() {
                                 "{t.quote}"
                             </p>
                             <div>
-                                <p className="text-white font-black uppercase tracking-widest text-xs">{t.author}</p>
-                                <p className="text-zinc-600 text-[10px] uppercase tracking-widest mt-1">{t.role}</p>
+                                <p className="text-white font-black uppercase tracking-[0.15em] text-xs">{t.author}</p>
+                                <p className="text-zinc-600 text-[10px] uppercase tracking-[0.15em] mt-1">{t.role}</p>
                             </div>
                         </div>
                     ))}

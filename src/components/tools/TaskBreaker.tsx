@@ -53,7 +53,7 @@ export default function TaskBreaker({ onDeploy }: TaskBreakerProps) {
     return (
         <div className="space-y-12 py-8 flex flex-col items-center">
             <div className="text-center mb-12">
-                <h3 className="text-4xl font-black uppercase tracking-tighter text-sor7ed-yellow mb-2">Task Deconstructor</h3>
+                <h3 className="text-4xl font-black uppercase tracking-[0.15em] text-sor7ed-yellow mb-2">Task Deconstructor</h3>
                 <p className="text-zinc-500 font-mono-headline text-[10px]">Overwhelming objective // Atomic breakdown</p>
             </div>
 
@@ -66,7 +66,7 @@ export default function TaskBreaker({ onDeploy }: TaskBreakerProps) {
                             onChange={(e) => setBigTask(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && breakTask()}
                             placeholder="Enter a complex task..."
-                            className="flex-grow bg-white/5 border border-white/10 rounded-sm p-4 text-white focus:border-sor7ed-yellow transition-colors outline-none font-mono-headline text-xs tracking-widest"
+                            className="flex-grow bg-white/5 border border-white/10 rounded-sm p-4 text-white focus:border-sor7ed-yellow transition-colors outline-none font-mono-headline text-xs tracking-[0.15em]"
                         />
                         <button
                             onClick={breakTask}

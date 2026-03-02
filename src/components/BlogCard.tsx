@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import FavoriteButton from './FavoriteButton'
 
 interface Article {
     id: string
@@ -33,7 +34,7 @@ const BlogCard = ({ article }: BlogCardProps) => {
                     />
                 ) : (
                     <div className="w-full h-full bg-zinc-900/50 flex items-center justify-center">
-                        <span className="text-zinc-800 font-mono-headline text-[10px] uppercase tracking-widest">// NO_DATA_STREAM</span>
+                        <span className="text-zinc-800 font-mono-headline text-[10px] uppercase tracking-[0.15em]">// NO_DATA_STREAM</span>
                     </div>
                 )}
             </div>
@@ -41,16 +42,21 @@ const BlogCard = ({ article }: BlogCardProps) => {
             {/* Cinematic Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700" />
 
+            {/* Favorite Button Overlay */}
+            <div className="absolute top-4 right-4 z-20">
+                <FavoriteButton itemId={article.id} itemType="blog" />
+            </div>
+
             {/* Title & Branch Overlay */}
             <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-20 pointer-events-none">
                 <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-[0.4em] mb-3">
                     {article.branch}
                 </span>
-                <h3 className="text-3xl md:text-5xl font-anton font-normal text-white group-hover:text-sor7ed-yellow transition-colors uppercase tracking-tighter mb-4 leading-[0.9] break-words">
+                <h3 className="text-white group-hover:text-sor7ed-yellow transition-colors break-words mb-4">
                     {article.title}
                 </h3>
                 <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                    <span className="text-[9px] font-mono-headline text-zinc-400 uppercase tracking-widest">{article.readTime}</span>
+                    <span className="text-[9px] font-mono-headline text-zinc-400 uppercase tracking-[0.15em]">{article.readTime}</span>
                     <span className="text-sor7ed-yellow text-lg">→</span>
                 </div>
             </div>

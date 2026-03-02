@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { NOTION_CONFIG } from './notion-config'
 
-const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
-const TOOLS_DB_ID = (process.env.NOTION_TOOLS_DB_ID || "08ac767d313845ca91886ce45c379b99").trim()
+const NOTION_API_KEY = NOTION_CONFIG.apiKey
+const TOOLS_DB_ID = NOTION_CONFIG.toolsDbId
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
     try {

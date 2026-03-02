@@ -17,7 +17,7 @@ export default function EmailCapture() {
         return (
             <div className="stealth-card p-12 text-center border-sor7ed-yellow/20">
                 <span className="text-4xl mb-6 block">⚡</span>
-                <h3 className="text-2xl font-black uppercase tracking-tighter text-white mb-4">You're in the Loop.</h3>
+                <h3 className="text-2xl font-black uppercase tracking-[0.15em] text-white mb-4">You're in the Loop.</h3>
                 <p className="text-zinc-500 text-sm max-w-xs mx-auto">Check your inbox for the "Neuro-Architect's Handbook" (PDF).</p>
             </div>
         )
@@ -27,7 +27,7 @@ export default function EmailCapture() {
         <section className="py-24 bg-sor7ed-yellow/[0.02] border-y border-white/5">
             <div className="container mx-auto px-6 max-w-xl text-center">
                 <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4">// FOLLOW_UP</span>
-                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-8">GET THE <span className="text-sor7ed-yellow">HACKS.</span></h2>
+                <h2 className="text-3xl md:text-5xl font-black uppercase tracking-[0.15em] mb-8">GET THE <span className="text-sor7ed-yellow">HACKS.</span></h2>
                 <p className="text-zinc-500 font-light leading-relaxed mb-10">
                     Not ready for WhatsApp? Get weekly ADHD protocols and a free copy of the <strong>5 ADHD Hacks That Actually Work</strong> PDF.
                 </p>

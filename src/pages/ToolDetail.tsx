@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useVaultSession } from '../hooks/useVaultSession'
+import { useVault } from '../context/VaultContext'
 import { useNotionData } from '../hooks/useNotionData'
 import { fallbackTools } from '../data/fallbackTools'
 import { useEffect, useState } from 'react'
+import FavoriteButton from '../components/FavoriteButton'
 
 // Import all interactive tools
 import FocusTimer from '../components/tools/FocusTimer'
@@ -16,7 +17,7 @@ import DynamicTool from '../components/tools/DynamicTool'
 const ToolDetail = () => {
     const { keyword } = useParams<{ keyword: string }>()
     const navigate = useNavigate()
-    const { isLoggedIn, isLoading: sessionLoading } = useVaultSession()
+    const { isLoggedIn, isLoading: sessionLoading } = useVault()
     const { data: apiTools, loading: toolsLoading } = useNotionData<any>('/api/tools')
     const [tool, setTool] = useState<any>(null)
 
@@ -46,8 +47,8 @@ const ToolDetail = () => {
     if (!tool) {
         return (
             <div className="bg-[#050505] min-h-screen flex flex-col items-center justify-center px-6">
-                <h1 className="text-4xl font-anton text-white uppercase mb-4">Tool Not Found</h1>
-                <button onClick={() => navigate('/tools')} className="text-sor7ed-yellow uppercase tracking-widest text-xs">Return to Lab</button>
+                <h1 className="text-4xl font-league-gothic text-white uppercase mb-4">Tool Not Found</h1>
+                <button onClick={() => navigate('/tools')} className="text-sor7ed-yellow uppercase tracking-[0.15em] text-xs">Return to Lab</button>
             </div>
         )
     }
@@ -83,12 +84,12 @@ const ToolDetail = () => {
                 return (
                     <div className="stealth-card p-12 text-center max-w-2xl mx-auto border-dashed border-white/10 opacity-80">
                         <div className="text-5xl mb-8 grayscale opacity-50">{tool.emoji || '⚙️'}</div>
-                        <h2 className="text-4xl font-anton text-white uppercase mb-4">{tool.name}</h2>
+                        <h2 className="text-4xl font-league-gothic text-white uppercase mb-4">{tool.name}</h2>
                         <p className="text-zinc-500 font-light leading-relaxed mb-12">{tool.description}</p>
                         <button onClick={handleDeploy} className="btn-primary">
                             Deploy to WhatsApp
                         </button>
-                        <p className="text-[10px] font-mono-headline text-zinc-700 uppercase tracking-widest mt-8">
+                        <p className="text-[10px] font-mono-headline text-zinc-700 uppercase tracking-[0.15em] mt-8">
                              // WEB_INTERFACE_IN_DEVELOPMENT
                         </p>
                     </div>
@@ -103,13 +104,14 @@ const ToolDetail = () => {
             </div>
 
             <div className="relative z-10 pt-32 pb-40 px-6 container mx-auto max-w-7xl">
-                <div className="mb-12">
+                <div className="mb-12 flex justify-between items-center">
                     <button
                         onClick={() => navigate(-1)}
-                        className="text-zinc-500 hover:text-white transition-colors flex items-center gap-4 text-[10px] font-mono-headline uppercase tracking-widest"
+                        className="text-zinc-500 hover:text-white transition-colors flex items-center gap-4 text-[10px] font-mono-headline uppercase tracking-[0.15em]"
                     >
                         <span>← Back</span>
                     </button>
+                    {tool && <FavoriteButton itemId={tool.id} itemType="tool" />}
                 </div>
 
                 <div className="animate-in fade-in slide-in-from-bottom-20 duration-1000">

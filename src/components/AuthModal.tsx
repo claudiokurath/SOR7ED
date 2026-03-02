@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { useVaultSession } from '../hooks/useVaultSession'
+import React, { useState, useEffect } from 'react'
+import { useVault } from '../context/VaultContext'
 
 interface AuthModalProps {
     isOpen: boolean
@@ -8,7 +8,7 @@ interface AuthModalProps {
 }
 
 const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) => {
-    const { isLoggedIn } = useVaultSession()
+    const { isLoggedIn } = useVault()
     const [mode, setMode] = useState<'signup' | 'signin'>(initialMode)
     const [isLoading, setIsLoading] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
@@ -20,10 +20,11 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
     }, [initialMode, isOpen])
 
     // Signup State
-    const [signupData, setSignupData] = useState({ name: '', email: '', phone: '' })
+    const [signupData, setSignupData] = useState({ name: '', email: '', phone: '', password: '' })
 
     // Signin State
     const [signinEmail, setSigninEmail] = useState('')
+    const [signinPassword, setSigninPassword] = useState('')
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -37,6 +38,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                     customerName: signupData.name,
                     email: signupData.email,
                     phoneNumber: signupData.phone,
+                    password: signupData.password,
                     leadSource: 'Landing Page',
                     signupDate: new Date().toISOString().split('T')[0],
                     status: 'Trial',
@@ -47,7 +49,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
             const data = await res.json()
             if (res.ok) {
                 setMessage({ type: 'success', text: 'Welcome to the Registry. Check your WhatsApp for initialization.' })
-                setSignupData({ name: '', email: '', phone: '' })
+                setSignupData({ name: '', email: '', phone: '', password: '' })
             } else {
                 setMessage({ type: 'error', text: data.message || data.error || 'Registration failed. Please try again.' })
             }
@@ -63,14 +65,16 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
         setIsLoading(true)
         setMessage(null)
         try {
-            const res = await fetch('/api/vault/send-link', {
+            const res = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: signinEmail })
+                body: JSON.stringify({ email: signinEmail, password: signinPassword })
             })
             const data = await res.json()
             if (res.ok) {
-                setMessage({ type: 'success', text: 'Check your WhatsApp for your secure access link.' })
+                localStorage.setItem('sor7ed_vault_token', data.token)
+                setMessage({ type: 'success', text: 'Authentication successful. Synchronizing...' })
+                setTimeout(() => window.location.href = '/vault', 1000)
             } else {
                 setMessage({ type: 'error', text: data.message || data.error || 'Authentication failed.' })
             }
@@ -84,7 +88,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
     if (!isOpen || (isLoggedIn && mode === 'signup')) return null
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 overflow-y-auto py-20">
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/90 backdrop-blur-md animate-in fade-in duration-300"
@@ -108,20 +112,20 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                         <div className="flex bg-zinc-950 p-1 rounded-full border border-white/5 mb-8 w-fit mx-auto">
                             <button
                                 onClick={() => { setMode('signup'); setMessage(null); }}
-                                className={`px-6 py-2 rounded-full text-[9px] font-anton uppercase tracking-widest transition-all ${mode === 'signup' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
+                                className={`px-6 py-2 rounded-full text-[9px] font-league-gothic uppercase tracking-[0.15em] transition-all ${mode === 'signup' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
                             >
                                 Join Registry
                             </button>
                             <button
                                 onClick={() => { setMode('signin'); setMessage(null); }}
-                                className={`px-6 py-2 rounded-full text-[9px] font-anton uppercase tracking-widest transition-all ${mode === 'signin' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
+                                className={`px-6 py-2 rounded-full text-[9px] font-league-gothic uppercase tracking-[0.15em] transition-all ${mode === 'signin' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
                             >
                                 Access Vault
                             </button>
                         </div>
 
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl md:text-5xl font-anton text-white uppercase tracking-tighter mb-4 leading-none">
+                            <h2 className="text-3xl md:text-5xl font-league-gothic text-white uppercase tracking-[0.15em] mb-4 ">
                                 {mode === 'signup' ? 'ESTABLISH' : 'RETRIEVE'} <br />
                                 <span className="text-sor7ed-yellow">{mode === 'signup' ? 'CONNECTION.' : 'PROTOCOL.'}</span>
                             </h2>
@@ -136,7 +140,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                             {mode === 'signup' && (
                                 <>
                                     <div className="space-y-2">
-                                        <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-widest">// FULL_NAME</label>
+                                        <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-[0.15em]">// FULL_NAME</label>
                                         <input
                                             type="text"
                                             required
@@ -147,7 +151,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-widest">// WHATSAPP_NUMBER</label>
+                                        <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-[0.15em]">// WHATSAPP_NUMBER</label>
                                         <input
                                             type="tel"
                                             required
@@ -157,11 +161,22 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                                             placeholder="+44 7XXX XXXXXX"
                                         />
                                     </div>
+                                    <div className="space-y-2">
+                                        <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-[0.15em]">// CREATE_PASSWORD</label>
+                                        <input
+                                            type="password"
+                                            required
+                                            value={signupData.password}
+                                            onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-sor7ed-yellow outline-none transition-all font-light text-sm"
+                                            placeholder="New password..."
+                                        />
+                                    </div>
                                 </>
                             )}
 
                             <div className="space-y-2">
-                                <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-widest">
+                                <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-[0.15em]">
                                     // {mode === 'signup' ? 'REGISTRY_EMAIL' : 'IDENTIFICATION_EMAIL'}
                                 </label>
                                 <input
@@ -174,16 +189,30 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                                 />
                             </div>
 
+                            {mode === 'signin' && (
+                                <div className="space-y-2">
+                                    <label className="block text-[10px] font-mono-headline text-zinc-600 uppercase tracking-[0.15em]">// SECURITY_CREDENTIAL</label>
+                                    <input
+                                        type="password"
+                                        required
+                                        value={signinPassword}
+                                        onChange={(e) => setSigninPassword(e.target.value)}
+                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-sor7ed-yellow outline-none transition-all font-light text-sm"
+                                        placeholder="Enter password..."
+                                    />
+                                </div>
+                            )}
+
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-white text-zinc-950 font-anton uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[13px] shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+                                className="w-full bg-white text-zinc-950 font-league-gothic uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[13px] shadow-[0_0_30px_rgba(255,255,255,0.05)]"
                             >
                                 {isLoading ? 'TRANSMITTING...' : (mode === 'signup' ? 'INITIALIZE CONNECTION' : 'REQUEST ACCESS')}
                             </button>
 
                             {message && (
-                                <div className={`p-5 rounded-xl text-[11px] font-anton uppercase tracking-widest text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
+                                <div className={`p-5 rounded-xl text-[11px] font-league-gothic uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
                                     ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                                     : 'bg-red-500/10 border border-red-500/20 text-red-500'
                                     }`}>

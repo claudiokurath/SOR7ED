@@ -39,12 +39,12 @@ export default function CommunicationBridge({ onDeploy }: CommunicationBridgePro
 
     return (
         <div className="p-12 border border-sor7ed-yellow/20 bg-black/40 backdrop-blur-3xl rounded-sm relative overflow-hidden flex flex-col justify-between h-full">
-            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-zinc-600 uppercase tracking-widest">
+            <div className="absolute top-0 right-0 p-4 font-mono-headline text-[8px] text-zinc-600 uppercase tracking-[0.15em]">
                 / Email Shield v3.1
             </div>
 
             <header className="mb-10 border-b border-white/5 pb-8">
-                <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">Communication Bridge</h2>
+                <h2 className="text-3xl font-black text-white uppercase tracking-[0.15em] mb-2">Communication Bridge</h2>
                 <p className="text-zinc-500 font-mono-headline text-[10px] tracking-[0.2em] uppercase">
                     Raw Thought → Corporate Safe
                 </p>
@@ -53,7 +53,7 @@ export default function CommunicationBridge({ onDeploy }: CommunicationBridgePro
             <div className="flex-1 flex flex-col gap-8">
                 {/* Input Area */}
                 <div className="relative group">
-                    <label className="text-[10px] font-mono-headline text-red-400 uppercase tracking-widest mb-2 block group-hover:text-red-300 transition-colors">
+                    <label className="text-[10px] font-mono-headline text-red-400 uppercase tracking-[0.15em] mb-2 block group-hover:text-red-300 transition-colors">
                         [ RAW EMOTIONAL INPUT ]
                     </label>
                     <textarea
@@ -77,13 +77,13 @@ export default function CommunicationBridge({ onDeploy }: CommunicationBridgePro
 
                 {/* Output Area */}
                 <div className="relative group flex-1">
-                    <label className="text-[10px] font-mono-headline text-green-400 uppercase tracking-widest mb-2 block group-hover:text-green-300 transition-colors">
+                    <label className="text-[10px] font-mono-headline text-green-400 uppercase tracking-[0.15em] mb-2 block group-hover:text-green-300 transition-colors">
                         [ SCALPEL-CLEAN OUTPUT ]
                     </label>
                     <div className={`w-full bg-green-900/10 border border-green-500/20 p-6 h-40 rounded-sm relative transition-all ${output ? 'opacity-100' : 'opacity-50'}`}>
                         {loading ? (
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="font-mono-headline text-green-500 animate-pulse text-xs tracking-widest">SANITIZING...</span>
+                                <span className="font-mono-headline text-green-500 animate-pulse text-xs tracking-[0.15em]">SANITIZING...</span>
                             </div>
                         ) : (
                             <textarea
@@ -97,7 +97,7 @@ export default function CommunicationBridge({ onDeploy }: CommunicationBridgePro
                         {output && (
                             <button
                                 onClick={() => { navigator.clipboard.writeText(output); alert("Copied!"); }}
-                                className="absolute bottom-4 right-4 text-[10px] font-mono-headline text-green-500 hover:text-white uppercase tracking-widest border border-green-500/30 px-3 py-1 rounded hover:bg-green-500/20 transition-all"
+                                className="absolute bottom-4 right-4 text-[10px] font-mono-headline text-green-500 hover:text-white uppercase tracking-[0.15em] border border-green-500/30 px-3 py-1 rounded hover:bg-green-500/20 transition-all"
                             >
                                 COPY
                             </button>
@@ -107,7 +107,7 @@ export default function CommunicationBridge({ onDeploy }: CommunicationBridgePro
             </div>
 
             <footer className="mt-10 pt-8 border-t border-white/5 flex justify-between items-center">
-                <div className="text-[9px] text-zinc-600 font-mono-headline tracking-widest flex items-center gap-2">
+                <div className="text-[9px] text-zinc-600 font-mono-headline tracking-[0.15em] flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                     FILTER ACTIVE
                 </div>
