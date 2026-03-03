@@ -1,12 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import * as crypto from 'crypto'
-import { NOTION_CONFIG } from '../notion-config'
-
-const NOTION_API_KEY = NOTION_CONFIG.apiKey
-const CRM_DB_ID = NOTION_CONFIG.crmDbId
-const BLOG_DB_ID = NOTION_CONFIG.blogDbId
-const TOOLS_DB_ID = NOTION_CONFIG.toolsDbId
-const AUTH_SECRET = NOTION_CONFIG.apiKey || 'sor7ed-default-secret'
+const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
+const CRM_DB_ID = (process.env.NOTION_CRM_DB_ID || "2e90d6014acc80c0b603ffa9e74f7f7d").trim()
+const BLOG_DB_ID = (process.env.NOTION_BLOG_DB_ID || "db668e4687ed455498357b8d11d2c714").trim()
+const TOOLS_DB_ID = (process.env.NOTION_TOOLS_DB_ID || "08ac767d313845ca91886ce45c379b99").trim()
+const AUTH_SECRET = NOTION_API_KEY || 'sor7ed-default-secret'
 
 async function notionFetch(endpoint: string, method: string, body?: any) {
     const res = await fetch(`https://api.notion.com/v1/${endpoint}`, {

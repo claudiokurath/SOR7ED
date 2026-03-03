@@ -34,7 +34,7 @@ const FavoriteButton = ({ itemId, itemType, className = '' }: FavoriteButtonProp
                 } ${className}`}
         >
             <span className="text-sm">{saved ? '★' : '☆'}</span>
-            <span className="text-[9px] font-league-gothic uppercase tracking-[0.15em]">
+            <span className="text-[9px] font-fuel-decay uppercase tracking-[0.15em]">
                 {isProcessing ? 'Updating...' : saved ? 'Added to Vault' : 'Add to Vault'}
             </span>
         </button>

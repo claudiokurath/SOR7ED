@@ -1,11 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import * as crypto from 'crypto'
 import { Client } from '@notionhq/client'
-import { NOTION_CONFIG } from '../notion-config'
-
-const NOTION_API_KEY = NOTION_CONFIG.apiKey
-const CRM_DB_ID = NOTION_CONFIG.crmDbId
-const AUTH_SECRET = NOTION_CONFIG.apiKey || 'sor7ed-default-secret'
+const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
+const CRM_DB_ID = (process.env.NOTION_CRM_DB_ID || "2e90d6014acc80c0b603ffa9e74f7f7d").trim()
+const AUTH_SECRET = NOTION_API_KEY || 'sor7ed-default-secret'
 
 const notion = new Client({ auth: NOTION_API_KEY })
 

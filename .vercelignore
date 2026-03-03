@@ -1,25 +1,25 @@
-# Exclude the video to stay under 100MB limit
-public/Intro.mp4
-
-# Local caches and build artifacts
+# Exclude system files and local caches
+.DS_Store
+.git
+.claude
+.vercel
 node_modules
 dist
 .npm-cache*
-.vercel
 
-# System and tooling
-.git
-.claude
-.DS_Store
+# Local environment
+.env
+.env.local
+.env.*
 
-# Ensure vital build files are ALWAYS included
+# Exclude large assets if needed
+public/Intro.mp4
+
+# Include project structure
 !package.json
 !package-lock.json
 !vercel.json
-!*.config.js
-!*.config.ts
 !vite.config.*
-!api/
-!src/
-!public/
-!*.json
+!api
+!src
+!public

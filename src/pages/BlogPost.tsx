@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNotionData } from '../hooks/useNotionData'
 import { formatContent } from '../utils/formatContent'
 import FavoriteButton from '../components/FavoriteButton'
+import DeployModal from '../components/DeployModal'
 
 interface Article {
     id: string
@@ -23,6 +24,7 @@ export default function BlogPost() {
     const navigate = useNavigate()
     const { data: articles, loading } = useNotionData<Article>('/api/articles')
     const [article, setArticle] = useState<Article | null>(null)
+    const [isDeployModalOpen, setIsDeployModalOpen] = useState(false)
 
     useEffect(() => {
         if (articles.length > 0 && title) {
@@ -105,7 +107,7 @@ export default function BlogPost() {
 
                         {/* Article Header (Inside content area as requested) */}
                         <div className="mb-20">
-                            <h1 className="text-6xl md:text-8xl lg:font-league-gothic text-white ">
+                            <h1 className="text-6xl md:text-8xl lg:font-fuel-decay text-white ">
                                 {article.title}
                             </h1>
                         </div>
@@ -133,14 +135,12 @@ export default function BlogPost() {
                                 <p className="text-zinc-500 font-light leading-relaxed max-w-lg mx-auto">
                                     Initialize the operational protocol on your primary device. No friction. Just help.
                                 </p>
-                                <a
-                                    href={`https://wa.me/447360277713?text=${encodeURIComponent(article.whatsappKeyword || article.title)}`}
-                                    target="_blank"
-                                    rel="noreferrer"
+                                <button
+                                    onClick={() => setIsDeployModalOpen(true)}
                                     className="btn-primary"
                                 >
                                     Initialize Protocol
-                                </a>
+                                </button>
                                 <div className="text-[9px] font-mono-headline text-zinc-600 uppercase tracking-[0.15em]">
                                     // Deployment via WhatsApp Secure Node
                                 </div>
@@ -149,6 +149,13 @@ export default function BlogPost() {
                     </article>
                 </div>
             </div>
+
+            <DeployModal
+                isOpen={isDeployModalOpen}
+                onClose={() => setIsDeployModalOpen(false)}
+                keyword={article.whatsappKeyword || article.title}
+                title={article.title}
+            />
         </div>
     )
 }

@@ -36,13 +36,13 @@ export default function Home({ onOpenAuth }: HomeProps) {
             </div>
 
             {/* Hero Section */}
-            <section id="hero" className="relative min-h-screen flex items-center justify-center z-20 px-4 md:px-6 text-center snap-start">
+            <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center z-20 px-4 md:px-6 text-center snap-start">
                 <div className="animate-in fade-in zoom-in duration-1000 mb-6 md:mb-12">
                     <img src="/logo.png" alt="SOR7ED" className="w-64 md:w-[640px] h-auto object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.08)] opacity-95" />
                 </div>
 
                 <div className="max-w-6xl mx-auto space-y-6 md:space-y-10 animate-in slide-in-from-bottom-20 duration-1000 delay-300 fill-mode-both">
-                    <h1 className="text-[clamp(2.5rem,10vw,8rem)] font-bold tracking-[0.15em] leading-[0.85] text-white mb-6">
+                    <h1 className="text-[clamp(2.5rem,10vw,8rem)] font-normal tracking-[0.16em] leading-[0.85] text-white mb-6">
                         ADHD-FRIENDLY TOOLS — <br />
                         <span className="text-sor7ed-yellow">DELIVERED TO YOUR PHONE.</span>
                     </h1>
@@ -57,21 +57,21 @@ export default function Home({ onOpenAuth }: HomeProps) {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
                             <div className="stealth-card p-5 md:p-6 space-y-3 bg-white/[0.03] border-white/5 backdrop-blur-md">
                                 <div className="text-sor7ed-yellow text-[8px] font-mono-headline uppercase tracking-[0.15em]">// STEP_01</div>
-                                <h3 className="text-base md:text-lg font-league-gothic uppercase text-white ">Daily Micro-Tools</h3>
+                                <h3 className="text-base md:text-lg font-fuel-decay uppercase text-white ">Daily Micro-Tools</h3>
                                 <p className="text-zinc-500 text-[10px] md:text-xs font-light leading-relaxed">
                                     Functional support for executive function and neural regulation.
                                 </p>
                             </div>
                             <div className="stealth-card p-5 md:p-6 space-y-3 bg-white/[0.03] border-white/5 backdrop-blur-md">
                                 <div className="text-sor7ed-yellow text-[8px] font-mono-headline uppercase tracking-[0.15em]">// STEP_02</div>
-                                <h3 className="text-base md:text-lg font-league-gothic uppercase text-white ">No Apps. Just WhatsApp.</h3>
+                                <h3 className="text-base md:text-lg font-fuel-decay uppercase text-white ">No Apps. Just WhatsApp.</h3>
                                 <p className="text-zinc-500 text-[10px] md:text-xs font-light leading-relaxed">
                                     Respond directly to helpful prompts. No complex dashboards.
                                 </p>
                             </div>
                             <div className="stealth-card p-5 md:p-6 space-y-3 bg-white/[0.03] border-white/5 backdrop-blur-md">
                                 <div className="text-sor7ed-yellow text-[8px] font-mono-headline uppercase tracking-[0.15em]">// STEP_03</div>
-                                <h3 className="text-base md:text-lg font-league-gothic uppercase text-white ">Neural Scaffolding</h3>
+                                <h3 className="text-base md:text-lg font-fuel-decay uppercase text-white ">Neural Scaffolding</h3>
                                 <p className="text-zinc-500 text-[10px] md:text-xs font-light leading-relaxed">
                                     Designed to bypass friction and keep you operating at peak capacity.
                                 </p>
@@ -82,12 +82,38 @@ export default function Home({ onOpenAuth }: HomeProps) {
             </section>
 
             <div className="relative z-10">
+                {/* About Section */}
+                <section id="about" className="relative w-full z-[21] px-4 md:px-6 py-32 bg-black snap-start border-t border-white/5">
+                    <div className="container mx-auto max-w-4xl">
+                        <div className="stealth-card p-8 md:p-12 space-y-6">
+                            <h2 className="text-3xl md:text-5xl font-fuel-decay text-white tracking-[0.1em] mb-6">
+                                <span className="text-sor7ed-yellow">SOR7ED</span> IS A SHAME-FREE PLATFORM BUILT FOR NEURODIVERGENT AND BUSY MINDS
+                            </h2>
+                            <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                                — people with ADHD, autism, dyslexia, RSD, and related experiences who are tired of productivity advice that doesn't work for them.
+                            </p>
+                            <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                                We publish practical articles three times a week and deliver <strong className="text-white font-medium">free templates via WhatsApp</strong> — no new apps, no downloads, just the app you already use.
+                            </p>
+                            <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                                <strong className="text-white font-medium">We're not therapy, medicine, or a crisis service.</strong> We're a content platform that gives you templates, scripts, and tools to handle the life admin that feels impossible.
+                            </p>
+                            <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                                SOR7ED was built by neurodivergent people who got tired of advice that never worked for their brains — so built something that does.
+                            </p>
+                            <p className="text-sor7ed-yellow font-fuel-decay uppercase tracking-[0.1em] text-lg md:text-xl pt-4">
+                                Templates are free. Forever.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
                 {/* 7 Vectors (Branches) - Combined with Why Different */}
                 <section id="vectors" className="relative min-h-screen w-full z-[21] px-4 md:px-6 border-t border-white/5 py-48 bg-black snap-start scroll-mt-24">
                     <div className="container mx-auto max-w-7xl">
                         <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
                             <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_ARCHITECTURE</span>
-                            <h2 className="text-4xl md:text-8xl font-bold tracking-[0.1em] leading-[0.95] mb-6 md:mb-4 text-white">
+                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-4 text-white">
                                 THE <span className="text-sor7ed-yellow">ARCHITECTURE.</span>
                             </h2>
                             <p className="text-zinc-500 font-light leading-relaxed text-sm md:text-sm">
@@ -111,7 +137,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
 
                         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 border-t border-white/5 pt-16 mt-16">
                             <div className="space-y-4">
-                                <h4 className="text-zinc-600 font-league-gothic uppercase text-xl tracking-[0.1em] flex items-center gap-3">
+                                <h4 className="text-zinc-600 font-fuel-decay uppercase text-xl tracking-[0.1em] flex items-center gap-3">
                                     <span className="text-red-500/30">🗙</span> Traditional Apps
                                 </h4>
                                 <p className="text-zinc-500 text-sm font-light leading-relaxed">
@@ -119,7 +145,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                                 </p>
                             </div>
                             <div className="space-y-4">
-                                <h4 className="text-sor7ed-yellow font-league-gothic uppercase text-xl tracking-[0.1em] flex items-center gap-3">
+                                <h4 className="text-sor7ed-yellow font-fuel-decay uppercase text-xl tracking-[0.1em] flex items-center gap-3">
                                     <span className="text-sor7ed-yellow">✔</span> The SOR7ED System
                                 </h4>
                                 <p className="text-zinc-400 text-sm font-light leading-relaxed">
@@ -135,7 +161,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                     <div className="container mx-auto max-w-7xl">
                         <div className="text-center mb-12 md:mb-16">
                             <h2 className="section-title justify-center gap-4 flex mb-6">
-                                <span className="title-white">THE</span> <span className="title-yellow">LAB.</span>
+                                <span className="title-white">THE</span> <span className="title-yellow">TOOLS.</span>
                             </h2>
                             <p className="text-zinc-500 font-light leading-relaxed max-w-xl mx-auto text-base">
                                 Functional micro-tools designed for immediate relief. From dopamine regulation to impulse filtering.
@@ -144,7 +170,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                             {toolsLoading ? (
                                 <p className="col-span-full text-center text-zinc-500 animate-pulse uppercase tracking-[0.5em] text-xs py-20">Accessing Toolkits...</p>
-                            ) : dynamicTools.slice(0, 6).map((tool: any) => (
+                            ) : dynamicTools.slice(0, 10).map((tool: any) => (
                                 <ToolCard key={tool.id} tool={tool} />
                             ))}
                         </div>
@@ -155,12 +181,12 @@ export default function Home({ onOpenAuth }: HomeProps) {
                 <section id="blog" className="relative min-h-screen w-full z-[23] px-4 md:px-6 py-48 bg-black snap-start scroll-mt-24">
                     <div className="container mx-auto max-w-7xl">
                         <h2 className="section-title text-center mb-16 md:mb-24">
-                            <span className="title-white">THE</span> <span className="title-yellow">INSIGHTS.</span>
+                            <span className="title-white">THE</span> <span className="title-yellow">BLOG.</span>
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                             {articlesLoading ? (
                                 <p className="col-span-full text-center text-zinc-500 animate-pulse uppercase tracking-[0.5em] text-xs py-20">Syncing Knowledge Base...</p>
-                            ) : dynamicArticles.slice(0, 6).map((post: any) => (
+                            ) : dynamicArticles.slice(0, 10).map((post: any) => (
                                 <BlogCard key={post.id} article={post} />
                             ))}
                         </div>
@@ -180,7 +206,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                                         onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                                         className="w-full text-left p-6 md:p-10 flex justify-between items-center group"
                                     >
-                                        <span className={`text-sm md:text-base font-league-gothic uppercase tracking-[0.15em] transition-colors ${activeFaq === i ? 'text-sor7ed-yellow' : 'text-zinc-400 group-hover:text-white'}`}>
+                                        <span className={`text-sm md:text-base font-fuel-decay uppercase tracking-[0.15em] transition-colors ${activeFaq === i ? 'text-sor7ed-yellow' : 'text-zinc-400 group-hover:text-white'}`}>
                                             {faq.q}
                                         </span>
                                         <span className={`text-xl transition-transform ${activeFaq === i ? 'rotate-45 text-sor7ed-yellow' : 'text-zinc-500'}`}>+</span>
@@ -204,14 +230,19 @@ export default function Home({ onOpenAuth }: HomeProps) {
                         </h2>
                         <div className="flex flex-col items-center space-y-8">
                             <button
-                                onClick={() => onOpenAuth('signup')}
-                                className="inline-block bg-sor7ed-yellow text-black font-league-gothic font-normal uppercase tracking-[0.3em] text-[10px] md:text-xs py-6 md:py-8 px-16 md:px-24 rounded-full hover:bg-yellow-400 hover:scale-110 transition-all duration-500 shadow-[0_0_50px_rgba(245,198,20,0.3)]"
+                                onClick={() => {
+                                    // If we had isLoggedIn from VaultContext here, we could redirect to /vault
+                                    // But since Home doesn't import useVault currently, we'll keep the design
+                                    // where it opens AuthModal (which hides signup if logged in, or the Header handles it)
+                                    onOpenAuth('signup')
+                                }}
+                                className="inline-block bg-sor7ed-yellow text-black font-fuel-decay font-normal uppercase tracking-[0.3em] text-[10px] md:text-xs py-6 md:py-8 px-16 md:px-24 rounded-full hover:bg-yellow-400 hover:scale-110 transition-all duration-500 shadow-[0_0_50px_rgba(245,198,20,0.3)]"
                             >
                                 Initialize Connection
                             </button>
                             <button
                                 onClick={() => onOpenAuth('signin')}
-                                className="text-[10px] font-league-gothic uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
+                                className="text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
                             >
                                 Already a member? Sign in
                             </button>

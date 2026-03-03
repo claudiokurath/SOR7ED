@@ -18,10 +18,10 @@ export default {
             },
             fontFamily: {
                 sans: ['Roboto', 'Inter', 'system-ui', 'sans-serif'],
-                'league-gothic': ['League Gothic', 'sans-serif'],
+                'fuel-decay': ['"League Gothic"', 'sans-serif'],
                 'roboto': ['Roboto', 'sans-serif'],
                 'mono-headline': ['Monaco', 'Menlo', 'monospace'],
-                'antarctican': ['antarctican-headline', 'sans-serif'],
+                'antarctican': ['"League Gothic"', 'sans-serif'],
             },
             animation: {
                 'stealth-glow': 'pulse 8s ease-in-out infinite',

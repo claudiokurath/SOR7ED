@@ -11,13 +11,14 @@ interface Tool {
     coverImage?: string
 }
 
-import { fallbackTools } from '../data/fallbackTools'
+
+
 
 const Tools = () => {
     const { data: apiTools, loading } = useNotionData<Tool>('/api/tools')
 
     // Combine API tools with fallbacks, ensuring unique IDs and never empty
-    const tools = apiTools.length > 0 ? apiTools : fallbackTools
+    const tools = apiTools
 
     return (
         <div className="bg-black min-h-screen bg-grid relative overflow-hidden text-white font-roboto">

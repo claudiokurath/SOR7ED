@@ -56,7 +56,7 @@ const ToolCard = ({ tool }: ToolCardProps) => {
                 <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-[0.3em] mb-2 opacity-60 group-hover:opacity-100 transition-opacity">
                     // {tool.category || 'LAB_PROTOCOL'}
                 </span>
-                <h3 className="text-white group-hover:text-sor7ed-yellow transition-colors break-words">
+                <h3 className="text-xl md:text-2xl font-fuel-decay uppercase tracking-[0.1em] text-white group-hover:text-sor7ed-yellow transition-colors break-words">
                     {tool.name}
                 </h3>
                 <div className="h-0 group-hover:h-8 overflow-hidden transition-all duration-500 opacity-0 group-hover:opacity-100 mt-2">

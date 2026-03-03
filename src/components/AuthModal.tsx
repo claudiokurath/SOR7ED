@@ -112,20 +112,20 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                         <div className="flex bg-zinc-950 p-1 rounded-full border border-white/5 mb-8 w-fit mx-auto">
                             <button
                                 onClick={() => { setMode('signup'); setMessage(null); }}
-                                className={`px-6 py-2 rounded-full text-[9px] font-league-gothic uppercase tracking-[0.15em] transition-all ${mode === 'signup' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
+                                className={`px-6 py-2 rounded-full text-[9px] font-fuel-decay uppercase tracking-[0.15em] transition-all ${mode === 'signup' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
                             >
                                 Join Registry
                             </button>
                             <button
                                 onClick={() => { setMode('signin'); setMessage(null); }}
-                                className={`px-6 py-2 rounded-full text-[9px] font-league-gothic uppercase tracking-[0.15em] transition-all ${mode === 'signin' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
+                                className={`px-6 py-2 rounded-full text-[9px] font-fuel-decay uppercase tracking-[0.15em] transition-all ${mode === 'signin' ? 'bg-sor7ed-yellow text-black' : 'text-zinc-500 hover:text-white'}`}
                             >
                                 Access Vault
                             </button>
                         </div>
 
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl md:text-5xl font-league-gothic text-white uppercase tracking-[0.15em] mb-4 ">
+                            <h2 className="text-3xl md:text-5xl font-fuel-decay text-white uppercase tracking-[0.15em] mb-4 ">
                                 {mode === 'signup' ? 'ESTABLISH' : 'RETRIEVE'} <br />
                                 <span className="text-sor7ed-yellow">{mode === 'signup' ? 'CONNECTION.' : 'PROTOCOL.'}</span>
                             </h2>
@@ -206,13 +206,13 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-white text-zinc-950 font-league-gothic uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[13px] shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+                                className="w-full bg-white text-zinc-950 font-fuel-decay uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[13px] shadow-[0_0_30px_rgba(255,255,255,0.05)]"
                             >
                                 {isLoading ? 'TRANSMITTING...' : (mode === 'signup' ? 'INITIALIZE CONNECTION' : 'REQUEST ACCESS')}
                             </button>
 
                             {message && (
-                                <div className={`p-5 rounded-xl text-[11px] font-league-gothic uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
+                                <div className={`p-5 rounded-xl text-[11px] font-fuel-decay uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
                                     ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                                     : 'bg-red-500/10 border border-red-500/20 text-red-500'
                                     }`}>

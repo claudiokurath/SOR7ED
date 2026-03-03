@@ -13,6 +13,12 @@ import BlogPost from './pages/BlogPost'
 import Vault from './pages/Vault'
 import ToolDetail from './pages/ToolDetail'
 import { VaultProvider } from './context/VaultContext'
+import { useDocumentTitle } from './hooks/useDocumentTitle'
+
+function AppInner() {
+    useDocumentTitle()
+    return null
+}
 
 function App() {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
@@ -26,6 +32,7 @@ function App() {
     return (
         <VaultProvider>
             <Router>
+                <AppInner />
                 <div className="min-h-screen bg-black flex flex-col">
                     <Header onOpenAuth={openAuth} />
                     <AuthModal

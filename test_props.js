@@ -13,8 +13,9 @@ async function test() {
         });
 
         const data = await response.json();
-        const statuses = [...new Set(data.results.map(r => r.properties.Status?.status?.name))];
-        console.log('Unique Tool Statuses:', statuses);
+        if (data.results.length > 0) {
+            console.log(JSON.stringify(data.results[0].properties, null, 2));
+        }
     } catch (error) {
         console.error('Error:', error.message);
     }

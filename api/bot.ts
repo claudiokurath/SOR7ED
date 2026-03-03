@@ -1,10 +1,8 @@
 import { parse } from 'node:querystring'
-import { NOTION_CONFIG } from './notion-config'
-
-const NOTION_API_KEY = NOTION_CONFIG.apiKey
-const BLOG_DB_ID = NOTION_CONFIG.blogDbId
-const TOOLS_DB_ID = NOTION_CONFIG.toolsDbId
-const CRM_DB_ID = NOTION_CONFIG.crmDbId
+const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
+const BLOG_DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || "db668e4687ed455498357b8d11d2c714").trim()
+const TOOLS_DB_ID = (process.env.NOTION_TOOLS_DATABASE_ID || "08ac767d313845ca91886ce45c379b99").trim()
+const CRM_DB_ID = (process.env.NOTION_CRM_DB_ID || "2e90d6014acc80c0b603ffa9e74f7f7d").trim()
 
 const UTILITY_RESPONSES: Record<string, string> = {
     'START': "Hey! Welcome to SOR7ED.\n\nI'm your ND-aware tool library, delivered right here in WhatsApp.\n\nNo apps. No overwhelm. Just practical tools that actually work.\n\nHere's what I can send you:\n\n📜 [DOPAMINE] → Personalized dopamine menu\n⚖️ [TRIAGE] → Sort your task overwhelm \n⏰ [TIMEWARP] → Fix time blindness\n🎯 [SENSORY] → Sensory environment audit\n❄️ [COOLOFF] → RSD emergency scripts\n💸 [ADHD-TAX] → Calculate hidden ADHD costs\n\nReply with any keyword to get started.\nOr text MENU to see all tools.",

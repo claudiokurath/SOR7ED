@@ -6,7 +6,8 @@ interface DynamicToolProps {
         slug: string
         desc: string
         template: string
-        keyword: string
+        whatsappKeyword: string
+        keyword?: string
         price?: number
     }
     onDeploy: (keyword: string) => void
@@ -55,7 +56,7 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
                 <div className="text-zinc-400 font-light leading-relaxed whitespace-pre-wrap mb-12">
                     {tool.desc}
                 </div>
-                <button onClick={() => onDeploy(tool.keyword)} className="btn-primary">
+                <button onClick={() => onDeploy(tool.whatsappKeyword || tool.keyword || '')} className="btn-primary">
                     Deploy Protocol to WhatsApp
                 </button>
             </div>
@@ -158,7 +159,7 @@ export default function DynamicTool({ tool, onDeploy }: DynamicToolProps) {
                 </div>
                 <div className="flex flex-col items-end gap-4">
                     <span className="text-[8px] font-mono-headline text-zinc-700 uppercase tracking-[0.15em]">Immediate Deployment Required?</span>
-                    <button onClick={() => onDeploy(tool.keyword)} className="btn-primary">
+                    <button onClick={() => onDeploy(tool.whatsappKeyword || tool.keyword || '')} className="btn-primary">
                         Deploy to WhatsApp
                     </button>
                 </div>

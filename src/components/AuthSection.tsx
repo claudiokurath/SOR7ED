@@ -94,7 +94,7 @@ const AuthSection = () => {
                         </button>
                     </div>
 
-                    <h2 className="text-3xl md:text-6xl font-league-gothic text-white uppercase text-center tracking-[0.15em] mb-4 ">
+                    <h2 className="text-3xl md:text-6xl font-fuel-decay text-white uppercase text-center tracking-[0.15em] mb-4 ">
                         {mode === 'signup' ? 'ESTABLISH YOUR' : 'RETRIEVE YOUR'} <br />
                         <span className="text-sor7ed-yellow">{mode === 'signup' ? 'CONNECTION.' : 'PROTOCOL.'}</span>
                     </h2>
@@ -176,13 +176,13 @@ const AuthSection = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-white text-zinc-950 font-league-gothic uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[14px] shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                            className="w-full bg-white text-zinc-950 font-fuel-decay uppercase py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 tracking-[0.2em] text-[14px] shadow-[0_0_30px_rgba(255,255,255,0.1)]"
                         >
                             {isLoading ? 'TRANSMITTING...' : (mode === 'signup' ? 'INITIALIZE CONNECTION' : 'REQUEST ACCESS')}
                         </button>
 
                         {message && (
-                            <div className={`p-6 rounded-xl text-[12px] font-league-gothic uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
+                            <div className={`p-6 rounded-xl text-[12px] font-fuel-decay uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
                                 ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                                 : 'bg-red-500/10 border border-red-500/20 text-red-500'
                                 }`}>

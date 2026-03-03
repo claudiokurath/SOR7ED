@@ -39,15 +39,7 @@ const Blog = () => {
 
             <div className="relative z-10 pt-32 pb-20 px-6">
                 <div className="container mx-auto max-w-7xl flex flex-col items-center">
-                    <div className="max-w-3xl mb-24 text-center">
-                        <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 animate-in slide-in-from-bottom-20">// REPOSITORY_CONTENT</span>
-                        <h1 className="section-title justify-center flex gap-4 animate-in slide-in-from-bottom-20 delay-100">
-                            <span className="title-white">THE</span> <span className="title-yellow">INSIGHTS.</span>
-                        </h1>
-                        <p className="text-zinc-500 font-light leading-relaxed max-w-xl mx-auto animate-in slide-in-from-bottom-20 delay-200">
-                            A curated feed of strategies, neuro-architecture research, and architectural guides for the neurodivergent brain.
-                        </p>
-                    </div>
+                    {/* Content Header removed per user request: 'dont repeat the title when on that specific tab' */}
 
                     {/* Branch Filter */}
                     <div className="flex flex-wrap gap-4 justify-center mb-24 animate-in fade-in delay-300">

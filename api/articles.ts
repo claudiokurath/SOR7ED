@@ -1,8 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { NOTION_CONFIG } from './notion-config'
 
-const NOTION_API_KEY = NOTION_CONFIG.apiKey
-const BLOG_DB_ID = NOTION_CONFIG.blogDbId
+const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
+const BLOG_DB_ID = (process.env.NOTION_BLOG_DATABASE_ID || "db668e4687ed455498357b8d11d2c714").trim()
 
 const BRANCH_COLORS: Record<string, string> = {
     MIND: '#9B59B6',
@@ -17,7 +16,7 @@ const BRANCH_COLORS: Record<string, string> = {
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
     try {
         if (!NOTION_API_KEY || !BLOG_DB_ID) {
-            console.error('Missing Notion Configuration: NOTION_API_KEY or NOTION_BLOG_DB_ID')
+            console.error('Missing Notion Configuration: NOTION_API_KEY or NOTION_BLOG_DATABASE_ID')
             return res.status(500).json({ error: 'System configuration error' })
         }
 

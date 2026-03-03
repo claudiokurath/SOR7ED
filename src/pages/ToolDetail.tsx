@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useVault } from '../context/VaultContext'
 import { useNotionData } from '../hooks/useNotionData'
-import { fallbackTools } from '../data/fallbackTools'
 import { useEffect, useState } from 'react'
 import FavoriteButton from '../components/FavoriteButton'
+import DeployModal from '../components/DeployModal'
 
 // Import all interactive tools
 import FocusTimer from '../components/tools/FocusTimer'
@@ -20,6 +20,7 @@ const ToolDetail = () => {
     const { isLoggedIn, isLoading: sessionLoading } = useVault()
     const { data: apiTools, loading: toolsLoading } = useNotionData<any>('/api/tools')
     const [tool, setTool] = useState<any>(null)
+    const [isDeployModalOpen, setIsDeployModalOpen] = useState(false)
 
     useEffect(() => {
         if (!sessionLoading && !isLoggedIn) {
@@ -28,7 +29,7 @@ const ToolDetail = () => {
     }, [isLoggedIn, sessionLoading, navigate])
 
     useEffect(() => {
-        const allTools = [...apiTools, ...fallbackTools]
+        const allTools = apiTools
         const found = allTools.find(t =>
             t.whatsappKeyword?.toLowerCase() === keyword?.toLowerCase() ||
             t.name?.toLowerCase().replace(/\s+/g, '-') === keyword?.toLowerCase()
@@ -47,15 +48,14 @@ const ToolDetail = () => {
     if (!tool) {
         return (
             <div className="bg-[#050505] min-h-screen flex flex-col items-center justify-center px-6">
-                <h1 className="text-4xl font-league-gothic text-white uppercase mb-4">Tool Not Found</h1>
+                <h1 className="text-4xl font-fuel-decay text-white uppercase mb-4">Tool Not Found</h1>
                 <button onClick={() => navigate('/tools')} className="text-sor7ed-yellow uppercase tracking-[0.15em] text-xs">Return to Lab</button>
             </div>
         )
     }
 
     const handleDeploy = () => {
-        const whatsappUrl = `https://wa.me/447360277713?text=${encodeURIComponent(tool.whatsappKeyword || tool.name)}`
-        window.open(whatsappUrl, '_blank')
+        setIsDeployModalOpen(true)
     }
 
     // Mapping keyword to specialized interactive components
@@ -84,7 +84,7 @@ const ToolDetail = () => {
                 return (
                     <div className="stealth-card p-12 text-center max-w-2xl mx-auto border-dashed border-white/10 opacity-80">
                         <div className="text-5xl mb-8 grayscale opacity-50">{tool.emoji || '⚙️'}</div>
-                        <h2 className="text-4xl font-league-gothic text-white uppercase mb-4">{tool.name}</h2>
+                        <h2 className="text-4xl font-fuel-decay text-white uppercase mb-4">{tool.name}</h2>
                         <p className="text-zinc-500 font-light leading-relaxed mb-12">{tool.description}</p>
                         <button onClick={handleDeploy} className="btn-primary">
                             Deploy to WhatsApp
@@ -118,6 +118,13 @@ const ToolDetail = () => {
                     {renderInteractiveTool()}
                 </div>
             </div>
+
+            <DeployModal
+                isOpen={isDeployModalOpen}
+                onClose={() => setIsDeployModalOpen(false)}
+                keyword={tool.whatsappKeyword || tool.name}
+                title={tool.name}
+            />
         </div>
     )
 }

@@ -1,12 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Client } from '@notionhq/client'
-import { NOTION_CONFIG, TWILIO_CONFIG } from './notion-config'
-
-const NOTION_API_KEY = NOTION_CONFIG.apiKey
-const CRM_DB_ID = NOTION_CONFIG.crmDbId
-const TWILIO_ACCOUNT_SID = TWILIO_CONFIG.accountSid
-const TWILIO_AUTH_TOKEN = TWILIO_CONFIG.authToken
-const TWILIO_WHATSAPP_NUMBER = TWILIO_CONFIG.whatsappNumber
+const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
+const CRM_DB_ID = (process.env.NOTION_CRM_DB_ID || "2e90d6014acc80c0b603ffa9e74f7f7d").trim()
+const TWILIO_ACCOUNT_SID = (process.env.TWILIO_ACCOUNT_SID || "ACd0b71f7f267952855cb3ce0fb950505680ca7ff6e58205").trim()
+const TWILIO_AUTH_TOKEN = (process.env.TWILIO_AUTH_TOKEN || "fb562143e370be7264").trim()
+const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_WHATSAPP_NUMBER || '+447360277713'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== 'POST') {
@@ -31,8 +29,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         console.log(`Processing signup for ${customerName} (${sanitizedPhoneNumber})`)
 
-        // 1. Create entry in Notion CRM
+        // 1. Check for existing entry in Notion CRM to prevent duplicates
         try {
+            const existingQuery = await notion.databases.query({
+                database_id: CRM_DB_ID,
+                filter: {
+                    or: [
+                        { property: 'Email', email: { equals: email } },
+                        { property: 'Phone Number', phone_number: { equals: sanitizedPhoneNumber } }
+                    ]
+                }
+            })
+
+            if (existingQuery.results.length > 0) {
+                // User already exists! Return without creating a duplicate.
+                return res.status(200).json({
+                    success: false,
+                    message: "Account already exists! Please click 'Access Vault' instead of 'Join Registry'."
+                })
+            }
+
+            // Create new entry since they do not exist
             await notion.pages.create({
                 parent: { database_id: CRM_DB_ID },
                 properties: {
@@ -81,7 +98,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         // 2. Send welcome message via Twilio WhatsApp API
-        const welcomeMessage = `Hey ${customerName || 'there'}! 👋\n\nWelcome to SOR7ED. You've got 2 free tool requests waiting.\n\nTry texting:\n• DOPAMINE - Create your dopamine menu\n• TRIAGE - Sort overwhelming tasks\n• TIME - Time blindness calculator\n• SENSORY - Sensory audit\n• RSD - RSD response generator\n\nJust text the keyword and I'll send it over.\n\n— SOR7ED\nworry less, live more.`
+        const welcomeMessage = `Hey ${customerName || 'there'}! 👋 Welcome to SOR7ED.
+
+To ensure the system is always ready when your brain needs it most, please follow these 2 quick steps:
+
+📌 **STEP 1:** Save this number to your contacts as "SOR7ED Bot".
+📌 **STEP 2:** Pin this chat to the top of your WhatsApp.
+
+You've got 2 free tool requests waiting to be used! 
+
+To get your first tool, simply reply with a keyword. Try:
+▹ DOPAMINE (Creates a dopamine menu)
+▹ TRIAGE (Sorts overwhelming tasks)
+▹ TIME (Time blindness calculator)
+
+Just text the keyword, and I'll send the tool right over.
+— SOR7ED`
 
         const authHeader = 'Basic ' + Buffer.from(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`).toString('base64')
 

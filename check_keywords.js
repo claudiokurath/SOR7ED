@@ -13,8 +13,14 @@ async function test() {
         });
 
         const data = await response.json();
-        const statuses = [...new Set(data.results.map(r => r.properties.Status?.status?.name))];
-        console.log('Unique Tool Statuses:', statuses);
+        data.results.forEach(r => {
+            const props = r.properties;
+            const hasTemplate = props.Template?.rich_text?.length > 0;
+            const name = props.Name?.title?.[0]?.plain_text;
+            const rawWA = props['WhatsApp Keyword'];
+            const waKeyword = rawWA?.rich_text?.[0]?.plain_text || '';
+            console.log(`Tool: ${name} | Template: ${hasTemplate} | WhatsApp Keyword: "${waKeyword}"`);
+        });
     } catch (error) {
         console.error('Error:', error.message);
     }

@@ -93,12 +93,12 @@ const Vault = () => {
           <header className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 animate-in fade-in">
             <div>
               <span className="text-[10px] font-mono-headline text-sor7ed-yellow uppercase tracking-[0.4em] block mb-4">// VAULT_ACCESS_GRANTED</span>
-              <h1 className="text-white ">Welcome, <span className="text-sor7ed-yellow">{user.name}</span></h1>
+              <h1 className="text-5xl md:text-8xl font-fuel-decay text-white uppercase tracking-[0.16em] leading-tight">Welcome, <span className="text-sor7ed-yellow">{user.name}</span></h1>
               <p className="text-zinc-500 mt-4 font-light tracking-wide max-w-xl text-sm md:text-base">Your secure repository of neural protocols and architectural frameworks.</p>
             </div>
             <button
               onClick={logout}
-              className="px-8 py-3 text-[10px] font-league-gothic text-zinc-500 hover:text-white uppercase tracking-[0.2em] border border-white/5 bg-white/[0.03] rounded-full transition-all"
+              className="px-8 py-3 text-[10px] font-fuel-decay text-zinc-500 hover:text-white uppercase tracking-[0.2em] border border-white/5 bg-white/[0.03] rounded-full transition-all"
             >
               De-authorize Session
             </button>
@@ -112,7 +112,7 @@ const Vault = () => {
               return (
                 <section key={branch} className="animate-in fade-in slide-in-from-bottom-10">
                   <div className="flex items-center gap-6 mb-12">
-                    <h2 className="text-white">{branch}</h2>
+                    <h2 className="text-2xl md:text-3xl font-fuel-decay text-white uppercase tracking-[0.15em]">{branch}</h2>
                     <div className="h-px flex-1 bg-white/5"></div>
                     <span className="text-[10px] font-mono text-zinc-700 tracking-[0.5em]">// {branchProtocols.length} NODES</span>
                   </div>
@@ -127,26 +127,26 @@ const Vault = () => {
                                 'bg-sor7ed-yellow/20 group-hover:bg-sor7ed-yellow/40'
                             } transition-colors`}></div>
                         </div>
-                        <h3 className="text-white mb-8 group-hover:text-sor7ed-yellow transition-colors ">
+                        <h3 className="text-3xl md:text-4xl font-fuel-decay text-white uppercase mb-8 group-hover:text-sor7ed-yellow transition-colors tracking-wide leading-none">
                           {protocol.title}
                         </h3>
                         <div className="space-y-4">
                           <Link
                             to={protocol.type === 'blog' ? `/blog/${encodeURIComponent(protocol.title)}` : `/tool/${protocol.trigger.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="block w-full text-center border border-white/5 bg-white/[0.02] text-white py-4 rounded-xl hover:bg-white/[0.05] transition-all text-[10px] font-league-gothic uppercase tracking-[0.15em]"
+                            className="block w-full text-center border border-white/5 bg-white/[0.02] text-white py-4 rounded-xl hover:bg-white/[0.05] transition-all text-[10px] font-fuel-decay uppercase tracking-[0.15em]"
                           >
                             Access Module
                           </Link>
                           <div className="flex gap-2">
                             <button
                               onClick={() => toggleSave(protocol.id, protocol.type)}
-                              className="flex-1 text-center border border-white/5 bg-white/[0.01] text-zinc-600 py-3 rounded-lg hover:text-red-500 hover:border-red-500/20 transition-all text-[8px] font-league-gothic uppercase tracking-[0.15em]"
+                              className="flex-1 text-center border border-white/5 bg-white/[0.01] text-zinc-600 py-3 rounded-lg hover:text-red-500 hover:border-red-500/20 transition-all text-[8px] font-fuel-decay uppercase tracking-[0.15em]"
                             >
                               Remove
                             </button>
                             <button
                               onClick={() => window.open(`https://wa.me/447360277713?text=${encodeURIComponent(protocol.trigger)}`, '_blank')}
-                              className="flex-[2] text-center border border-sor7ed-yellow/10 text-sor7ed-yellow py-3 rounded-lg hover:bg-sor7ed-yellow/5 transition-all text-[8px] font-league-gothic uppercase tracking-[0.15em]"
+                              className="flex-[2] text-center border border-sor7ed-yellow/10 text-sor7ed-yellow py-3 rounded-lg hover:bg-sor7ed-yellow/5 transition-all text-[8px] font-fuel-decay uppercase tracking-[0.15em]"
                             >
                               WhatsApp Deploy
                             </button>
@@ -163,14 +163,14 @@ const Vault = () => {
               <section className="animate-in fade-in">
                 {/* Uncategorized items */}
                 <div className="flex items-center gap-6 mb-12">
-                  <h2 className="text-2xl font-league-gothic text-white uppercase tracking-[0.15em]">Other</h2>
+                  <h2 className="text-2xl font-fuel-decay text-white uppercase tracking-[0.15em]">Other</h2>
                   <div className="h-px flex-1 bg-white/5"></div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {protocols.filter(p => !['Mind', 'Wealth', 'Body', 'Tech'].includes(p.branch)).map((protocol, i) => (
                     <div key={protocol.id} className="stealth-card p-10 group">
                       {/* ... similar card content ... */}
-                      <h3 className="text-3xl font-league-gothic text-white uppercase mb-8">{protocol.title}</h3>
+                      <h3 className="text-3xl font-fuel-decay text-white uppercase mb-8">{protocol.title}</h3>
                       <Link to={protocol.type === 'blog' ? `/blog/${encodeURIComponent(protocol.title)}` : `/tool/${protocol.trigger.toLowerCase().replace(/\s+/g, '-')}`} className="btn-primary w-full block text-center">Open</Link>
                     </div>
                   ))}
@@ -183,10 +183,10 @@ const Vault = () => {
             <div className="stealth-card p-10 md:p-16 border-white/5 bg-black">
               <div className="flex flex-col md:flex-row items-center justify-between gap-12">
                 <div className="max-w-xl text-center md:text-left">
-                  <h2 className="text-3xl md:text-4xl font-league-gothic text-white uppercase tracking-[0.15em] mb-4 ">The Evolution Continues.</h2>
+                  <h2 className="text-3xl md:text-4xl font-fuel-decay text-white uppercase tracking-[0.15em] mb-4 ">The Evolution Continues.</h2>
                   <p className="text-zinc-500 font-light leading-relaxed text-sm md:text-base">Our interactive lab tools are migrating into a high-performance neural dashboard. Beta access is active.</p>
                 </div>
-                <Link to="/tools" className="bg-sor7ed-yellow text-black px-10 py-4 rounded-full font-league-gothic uppercase text-[10px] tracking-[0.15em] hover:scale-110 transition-transform whitespace-nowrap">Explore Beta Tools</Link>
+                <Link to="/tools" className="bg-sor7ed-yellow text-black px-10 py-4 rounded-full font-fuel-decay uppercase text-[10px] tracking-[0.15em] hover:scale-110 transition-transform whitespace-nowrap">Explore Beta Tools</Link>
               </div>
             </div>
           </section>
@@ -196,7 +196,7 @@ const Vault = () => {
           <div className="w-full max-w-md animate-in zoom-in duration-500">
             <div className="text-center mb-12">
               <img src="/logo.png" className="w-40 mx-auto mb-8 opacity-90" alt="SOR7ED" />
-              <h1 className="text-3xl font-league-gothic text-white uppercase tracking-[0.15em] mb-2 ">The Vault</h1>
+              <h1 className="text-3xl font-fuel-decay text-white uppercase tracking-[0.15em] mb-2 ">The Vault</h1>
               <p className="text-zinc-500 font-mono-headline text-[10px] uppercase tracking-[0.3em]">Authentication Required</p>
             </div>
 
@@ -229,13 +229,13 @@ const Vault = () => {
                 <button
                   type="submit"
                   disabled={isAuthenticating}
-                  className="w-full bg-white text-zinc-950 font-league-gothic py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 uppercase tracking-[0.2em] text-xs shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+                  className="w-full bg-white text-zinc-950 font-fuel-decay py-6 rounded-xl hover:bg-sor7ed-yellow hover:text-black transition-all disabled:opacity-50 uppercase tracking-[0.2em] text-xs shadow-[0_0_30px_rgba(255,255,255,0.1)]"
                 >
                   {isAuthenticating ? 'Authenticating...' : 'Authorize Session'}
                 </button>
 
                 {message && (
-                  <div className={`p-6 rounded-xl text-[10px] font-league-gothic uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
+                  <div className={`p-6 rounded-xl text-[10px] font-fuel-decay uppercase tracking-[0.15em] text-center animate-in fade-in slide-in-from-bottom-2 ${message.type === 'success'
                     ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                     : 'bg-red-500/10 border border-red-500/20 text-red-500'
                     }`}>
@@ -256,7 +256,7 @@ const Vault = () => {
                   <div key={i} className="flex items-center justify-between p-5 bg-white/[0.01] border border-white/5 rounded-2xl opacity-40 blur-[0.5px]">
                     <div>
                       <p className="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.15em]">{p.branch}</p>
-                      <p className="text-xs font-league-gothic text-white uppercase tracking-[0.15em]">{p.title}</p>
+                      <p className="text-xs font-fuel-decay text-white uppercase tracking-[0.15em]">{p.title}</p>
                     </div>
                     <span className="text-[8px] font-mono text-zinc-800 border border-zinc-800 px-2 py-1 rounded uppercase tracking-[0.2em]">{p.status}</span>
                   </div>
@@ -271,7 +271,7 @@ const Vault = () => {
             </div>
 
             <div className="mt-12 text-center">
-              <Link to="/" className="text-[10px] font-league-gothic uppercase tracking-[0.15em] text-zinc-500 hover:text-white transition-colors decoration-sor7ed-yellow/20 underline-offset-8 hover:underline">Return to Surface</Link>
+              <Link to="/" className="text-[10px] font-fuel-decay uppercase tracking-[0.15em] text-zinc-500 hover:text-white transition-colors decoration-sor7ed-yellow/20 underline-offset-8 hover:underline">Return to Surface</Link>
             </div>
           </div>
         </div>

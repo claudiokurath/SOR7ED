@@ -52,7 +52,7 @@ const BlogCard = ({ article }: BlogCardProps) => {
                 <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-[0.4em] mb-3">
                     {article.branch}
                 </span>
-                <h3 className="text-white group-hover:text-sor7ed-yellow transition-colors break-words mb-4">
+                <h3 className="text-xl md:text-2xl font-fuel-decay uppercase tracking-[0.1em] text-white group-hover:text-sor7ed-yellow transition-colors break-words mb-4">
                     {article.title}
                 </h3>
                 <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">

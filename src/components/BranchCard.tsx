@@ -21,7 +21,7 @@ export default function BranchCard({ branch, delay = 0, className = "" }: Branch
             <div>
                 <div className="mb-4">
                     <p className="text-[10px] font-mono-headline text-black/40 uppercase tracking-[0.15em] mb-1 md:mb-2">// THE_PROBLEM</p>
-                    <p className="text-black font-league-gothic font-normal text-lg md:text-xl uppercase ">{branch.problem}</p>
+                    <p className="text-black font-fuel-decay font-normal text-lg md:text-xl uppercase ">{branch.problem}</p>
                 </div>
                 <div>
                     <p className="text-[10px] font-mono-headline text-black/40 uppercase tracking-[0.15em] mb-1 md:mb-2">// THE_FIX</p>
