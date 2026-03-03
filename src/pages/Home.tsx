@@ -159,11 +159,12 @@ export default function Home({ onOpenAuth }: HomeProps) {
                 {/* Labs (Tools) */}
                 <section id="lab" className="relative min-h-screen w-full z-[22] px-4 md:px-6 py-48 bg-black border-y border-white/5 snap-start scroll-mt-24">
                     <div className="container mx-auto max-w-7xl">
-                        <div className="text-center mb-12 md:mb-16">
-                            <h2 className="section-title justify-center gap-4 flex mb-6">
-                                <span className="title-white">THE</span> <span className="title-yellow">TOOLS.</span>
+                        <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
+                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_LAB</span>
+                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-4 text-white">
+                                THE <span className="text-sor7ed-yellow">TOOLS.</span>
                             </h2>
-                            <p className="text-zinc-500 font-light leading-relaxed max-w-xl mx-auto text-base">
+                            <p className="text-zinc-500 font-light leading-relaxed text-sm md:text-sm">
                                 Functional micro-tools designed for immediate relief. From dopamine regulation to impulse filtering.
                             </p>
                         </div>
@@ -180,9 +181,12 @@ export default function Home({ onOpenAuth }: HomeProps) {
                 {/* Insights (Articles) */}
                 <section id="blog" className="relative min-h-screen w-full z-[23] px-4 md:px-6 py-48 bg-black snap-start scroll-mt-24">
                     <div className="container mx-auto max-w-7xl">
-                        <h2 className="section-title text-center mb-16 md:mb-24">
-                            <span className="title-white">THE</span> <span className="title-yellow">BLOG.</span>
-                        </h2>
+                        <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
+                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_BLOG</span>
+                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-12 text-white">
+                                THE <span className="text-sor7ed-yellow">BLOG.</span>
+                            </h2>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                             {articlesLoading ? (
                                 <p className="col-span-full text-center text-zinc-500 animate-pulse uppercase tracking-[0.5em] text-xs py-20">Syncing Knowledge Base...</p>
@@ -196,9 +200,12 @@ export default function Home({ onOpenAuth }: HomeProps) {
                 {/* FAQ */}
                 <section id="faq" className="relative min-h-screen w-full z-[24] px-4 md:px-6 border-t border-white/5 bg-black snap-start py-48 scroll-mt-24">
                     <div className="container mx-auto max-w-4xl">
-                        <h2 className="section-title text-center mb-12 md:mb-16">
-                            <span className="title-white">SYSTEM</span> <span className="title-yellow">FAQ.</span>
-                        </h2>
+                        <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
+                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_FAQ</span>
+                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-12 text-white">
+                                SYSTEM <span className="text-sor7ed-yellow">FAQ.</span>
+                            </h2>
+                        </div>
                         <div className="space-y-6">
                             {faqs.map((faq, i) => (
                                 <div key={i} className={`stealth-card overflow-hidden transition-all duration-300 ${activeFaq === i ? 'border-sor7ed-yellow shadow-[0_0_30px_rgba(245,198,20,0.1)]' : 'border-white/5'}`}>
@@ -225,7 +232,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                 {/* Footer CTA */}
                 <section className="relative min-h-screen w-full z-[25] px-4 md:px-6 border-t border-sor7ed-yellow/10 bg-black snap-start py-48 scroll-mt-24">
                     <div className="container mx-auto max-w-7xl">
-                        <h2 className="text-4xl md:text-8xl font-bold tracking-tight leading-[0.9] mb-12 md:mb-16">
+                        <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-12 md:mb-16 text-center text-white">
                             STOP STRUGGLING. <br /><span className="text-sor7ed-yellow">START OPERATING.</span>
                         </h2>
                         <div className="flex flex-col items-center space-y-8">
