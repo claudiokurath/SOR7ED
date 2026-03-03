@@ -54,21 +54,10 @@ export default function DeployModal({ isOpen, onClose, keyword, title }: DeployM
                     // TARGET: {title}
                 </div>
 
-                <div className="space-y-6 mb-10">
-                    <div className="flex gap-4 items-start">
-                        <div className="w-8 h-8 rounded-full border border-sor7ed-yellow/30 flex items-center justify-center flex-shrink-0 text-sor7ed-yellow font-mono text-xs mt-1">1</div>
-                        <div>
-                            <h3 className="text-sm font-bold text-white mb-1 uppercase tracking-wider">Device Preparation</h3>
-                            <p className="text-zinc-400 text-xs leading-relaxed">Ensure you have WhatsApp installed and ready on your device. The system will bridge directly to secure messaging.</p>
-                        </div>
-                    </div>
-                    <div className="flex gap-4 items-start">
-                        <div className="w-8 h-8 rounded-full border border-sor7ed-yellow/30 flex items-center justify-center flex-shrink-0 text-sor7ed-yellow font-mono text-xs mt-1">2</div>
-                        <div>
-                            <h3 className="text-sm font-bold text-white mb-1 uppercase tracking-wider">Signal Transmission</h3>
-                            <p className="text-zinc-400 text-xs leading-relaxed">Once connected, you must hit **Send** on the pre-filled message `<span className="text-sor7ed-yellow">{keyword}</span>` to trigger the automated delivery sequence.</p>
-                        </div>
-                    </div>
+                <div className="space-y-6 mb-10 text-center">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
+                        Complete the connection process to receive detailed instructions on how to use this tool, along with a direct link to the app, straight to your WhatsApp.
+                    </p>
                 </div>
 
                 <button
