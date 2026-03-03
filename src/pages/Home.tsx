@@ -168,7 +168,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                                 Functional micro-tools designed for immediate relief. From dopamine regulation to impulse filtering.
                             </p>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
                             {toolsLoading ? (
                                 <p className="col-span-full text-center text-zinc-500 animate-pulse uppercase tracking-[0.5em] text-xs py-20">Accessing Toolkits...</p>
                             ) : dynamicTools.slice(0, 6).map((tool: any) => (
@@ -187,7 +187,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                                 THE <span className="text-sor7ed-yellow">BLOG.</span>
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
                             {articlesLoading ? (
                                 <p className="col-span-full text-center text-zinc-500 animate-pulse uppercase tracking-[0.5em] text-xs py-20">Syncing Knowledge Base...</p>
                             ) : dynamicArticles.slice(0, 6).map((post: any) => (

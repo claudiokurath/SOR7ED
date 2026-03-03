@@ -73,7 +73,7 @@
 
 /* Stealth/Cyberpunk Design Classes */
 .stealth-card {
-  @apply bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-[2rem] transition-all duration-700;
+  @apply bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-2xl transition-all duration-700;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
