@@ -41,7 +41,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                     password: signupData.password,
                     leadSource: 'Landing Page',
                     signupDate: new Date().toISOString().split('T')[0],
-                    status: 'Trial',
+                    status: 'Active',
                     freeToolsUsed: 0,
                     creditsBalance: 0
                 })
@@ -131,7 +131,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'signup' }: AuthModalProps) 
                             </h2>
                             <p className="text-zinc-500 font-light text-[11px] md:text-xs tracking-wide uppercase max-w-xs mx-auto">
                                 {mode === 'signup'
-                                    ? "Start trial. Get 2 tool requests delivered to your phone immediately."
+                                    ? "Completely free. Unlimited tools. Connect your WhatsApp to begin."
                                     : "Enter your email to receive a secure login link via WhatsApp."}
                             </p>
                         </div>

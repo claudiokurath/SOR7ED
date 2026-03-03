@@ -37,8 +37,8 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
         const tools = data.results.map((page: any) => {
             const props = page.properties
 
-            // Extract text from rich_text arrays
-            const getText = (prop: any) => prop?.rich_text?.[0]?.plain_text || ''
+            // Extract full text from rich_text arrays
+            const getText = (prop: any) => prop?.rich_text?.map((t: any) => t.plain_text).join('') || ''
 
             return {
                 id: page.id,
@@ -53,6 +53,10 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
                     props['Cover Image']?.files?.[0]?.external?.url ||
                     props['Image']?.files?.[0]?.file?.url ||
                     props['Image']?.files?.[0]?.external?.url || '',
+                problemStatement: getText(props['Problem Statement']),
+                howItWorks: getText(props['How It Works']),
+                whatYouGet: getText(props['What You Get']),
+                whoItsFor: getText(props["Who It's For"]),
             }
         })
 

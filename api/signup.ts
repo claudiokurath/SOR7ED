@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { Client } from '@notionhq/client'
+
 const NOTION_API_KEY = (process.env.NOTION_API_KEY || "ntn_t3590408908aUz0vVi2pdJGWtgrNspZczTJJQWqdlTsgVQ").trim()
 const CRM_DB_ID = (process.env.NOTION_CRM_DB_ID || "2e90d6014acc80c0b603ffa9e74f7f7d").trim()
 const TWILIO_ACCOUNT_SID = (process.env.TWILIO_ACCOUNT_SID || "ACd0b71f7f267952855cb3ce0fb950505680ca7ff6e58205").trim()
@@ -17,7 +17,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(500).json({ error: 'System Configuration Error', message: 'One or more required credentials (Notion/Twilio) are missing even after fallbacks.' })
         }
 
-        const notion = new Client({ auth: NOTION_API_KEY })
+        async function notionFetch(endpoint: string, method: string, body?: any) {
+            const res = await fetch(`https://api.notion.com/v1/${endpoint}`, {
+                method,
+                headers: {
+                    'Authorization': `Bearer ${NOTION_API_KEY}`,
+                    'Notion-Version': '2022-06-28',
+                    'Content-Type': 'application/json'
+                },
+                body: body ? JSON.stringify(body) : undefined
+            })
+            if (!res.ok) {
+                const text = await res.text()
+                throw new Error(text)
+            }
+            return res.json()
+        }
 
         const { customerName, email, phoneNumber, leadSource, signupDate, status, freeToolsUsed, creditsBalance, password } = req.body
 
@@ -31,8 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         // 1. Check for existing entry in Notion CRM to prevent duplicates
         try {
-            const existingQuery = await notion.databases.query({
-                database_id: CRM_DB_ID,
+            const existingQuery = await notionFetch(`databases/${CRM_DB_ID}/query`, 'POST', {
                 filter: {
                     or: [
                         { property: 'Email', email: { equals: email } },
@@ -50,7 +64,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }
 
             // Create new entry since they do not exist
-            await notion.pages.create({
+            await notionFetch(`pages`, 'POST', {
                 parent: { database_id: CRM_DB_ID },
                 properties: {
                     'Customer Name': {
@@ -69,7 +83,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                         date: { start: signupDate || new Date().toISOString().split('T')[0] }
                     },
                     'Status': {
-                        select: { name: status || 'Trial' }
+                        select: { name: status || 'Active' }
                     },
                     'Free Tools Used': {
                         number: freeToolsUsed ?? 0
@@ -105,7 +119,7 @@ To ensure the system is always ready when your brain needs it most, please follo
 📌 **STEP 1:** Save this number to your contacts as "SOR7ED Bot".
 📌 **STEP 2:** Pin this chat to the top of your WhatsApp.
 
-You've got 2 free tool requests waiting to be used! 
+Your account is active and you have unlimited free access to our tools! 
 
 To get your first tool, simply reply with a keyword. Try:
 ▹ DOPAMINE (Creates a dopamine menu)

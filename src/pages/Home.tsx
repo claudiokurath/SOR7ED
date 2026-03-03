@@ -98,24 +98,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                             })}
                         </div>
 
-                        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 border-t border-white/5 pt-16 mt-16">
-                            <div className="space-y-4">
-                                <h4 className="text-zinc-600 font-fuel-decay uppercase text-xl tracking-[0.1em] flex items-center gap-3">
-                                    <span className="text-red-500/30">🗙</span> Traditional Apps
-                                </h4>
-                                <p className="text-zinc-500 text-sm font-light leading-relaxed">
-                                    Setup required. Daily manual entry. High friction. Often forgotten in 48 hours.
-                                </p>
-                            </div>
-                            <div className="space-y-4">
-                                <h4 className="text-sor7ed-yellow font-fuel-decay uppercase text-xl tracking-[0.1em] flex items-center gap-3">
-                                    <span className="text-sor7ed-yellow">✔</span> The SOR7ED System
-                                </h4>
-                                <p className="text-zinc-400 text-sm font-light leading-relaxed">
-                                    Zero-friction. Responds directly to you via WhatsApp. Tools find you exactly when needed.
-                                </p>
-                            </div>
-                        </div>
+
                     </div>
                 </section>
 
