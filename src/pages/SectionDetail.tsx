@@ -27,17 +27,31 @@ export default function SectionDetail() {
                 />
             </div>
 
-            <div className="relative z-10 px-6 container mx-auto max-w-7xl animate-in fade-in slide-in-from-bottom-10">
-                <div className="mb-16 md:mb-24 text-center">
+            <div className="relative w-full h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden mb-16 md:mb-24">
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src={section.image}
+                        alt={section.name}
+                        className="w-full h-full object-cover"
+                    />
+                    <div
+                        className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20 mix-blend-multiply"
+                        style={{ backgroundColor: `${section.color}30` }}
+                    />
+                    <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent" />
+                </div>
 
-                    <h1 className="text-5xl md:text-8xl font-black font-fuel-decay uppercase tracking-[0.15em] mb-6" style={{ color: section.color }}>
+                <div className="relative z-10 px-6 container mx-auto max-w-7xl animate-in fade-in slide-in-from-bottom-10 text-center">
+                    <h1 className="text-6xl md:text-9xl font-black font-fuel-decay uppercase tracking-[0.15em] mb-6 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]" style={{ color: section.color }}>
                         {section.name}
                     </h1>
-                    <p className="max-w-2xl mx-auto text-zinc-400 text-lg md:text-xl font-light leading-relaxed">
+                    <p className="max-w-2xl mx-auto text-white/90 text-xl md:text-2xl font-light leading-relaxed drop-shadow-md bg-black/40 p-4 rounded-xl backdrop-blur-sm border border-white/10">
                         {section.description}
                     </p>
                 </div>
+            </div>
 
+            <div className="relative z-10 px-6 container mx-auto max-w-7xl">
                 <div className="space-y-32">
                     {/* Tools Section */}
                     <div className="min-h-[300px]">
