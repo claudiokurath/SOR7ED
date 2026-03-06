@@ -16,15 +16,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                filter: {
-                    or: [
-                        { property: 'Status', select: { equals: 'Done' } },
-                        { property: 'Status', select: { equals: 'Published' } },
-                        { property: 'Status', select: { equals: 'Live' } }
-                    ]
-                }
-            })
+            body: JSON.stringify({})
         })
 
         if (!response.ok) {
