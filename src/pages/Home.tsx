@@ -37,18 +37,14 @@ export default function Home({ onOpenAuth }: HomeProps) {
 
             {/* Hero Section */}
             <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center z-20 px-4 md:px-6 text-center snap-start overflow-hidden">
-                {/* Background Video */}
+                {/* Background Image */}
                 <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
+                    <img
+                        src="/Untitled-1.png"
+                        alt=""
                         className="w-full h-full object-cover opacity-60 mix-blend-lighten"
-                    >
-                        <source src="/hero-background.mp4" type="video/mp4" />
-                    </video>
-                    {/* Gradient to blend video with the rest of the dark site */}
+                    />
+                    {/* Gradient to blend image with the rest of the dark site */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/80 to-black pointer-events-none" />
                 </div>
 
