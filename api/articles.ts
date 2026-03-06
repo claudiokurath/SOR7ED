@@ -30,7 +30,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
             body: JSON.stringify({
                 filter: {
                     property: 'Status',
-                    status: { equals: 'Published' }
+                    select: { equals: 'Published' }
                 },
                 sorts: [{ property: 'Publish Date', direction: 'descending' }]
             })
@@ -50,6 +50,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
         const articles = data.results.map((page: any) => {
             const props = page.properties
             const branch = props.Branch?.select?.name || ''
+            const section = props.Section?.select?.name || ''
             const publishDate = props['Publish Date']?.date?.start || ''
 
             const contentRichText = props['Content']?.rich_text || []
@@ -74,6 +75,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
                     props['Image']?.files?.[0]?.file?.url ||
                     props['Image']?.files?.[0]?.external?.url || '',
                 branch,
+                section,
                 branchColor: BRANCH_COLORS[branch.toUpperCase()] || '#F5C614',
                 readTime: props['Read Time']?.rich_text?.[0]?.plain_text || '',
                 date: publishDate

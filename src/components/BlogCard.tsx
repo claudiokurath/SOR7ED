@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import FavoriteButton from './FavoriteButton'
+import { resolveSection } from '../utils/sectionMapper'
 
 interface Article {
     id: string
@@ -47,10 +48,10 @@ const BlogCard = ({ article }: BlogCardProps) => {
                 <FavoriteButton itemId={article.id} itemType="blog" />
             </div>
 
-            {/* Title & Branch Overlay */}
+            {/* Title & Section Overlay */}
             <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-20 pointer-events-none">
                 <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-[0.4em] mb-3">
-                    {article.branch}
+                    {resolveSection(article)}
                 </span>
                 <h3 className="text-4xl md:text-5xl font-fuel-decay uppercase tracking-[0.1em] text-white group-hover:text-sor7ed-yellow transition-colors break-words mb-4">
                     {article.title}

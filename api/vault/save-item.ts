@@ -28,8 +28,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(401).json({ error: 'Token invalid or expired' })
         }
 
-        const userQuery = await notion.databases.query({
-            database_id: CRM_DB_ID,
+        const userQuery = await notion.dataSources.query({
+            data_source_id: CRM_DB_ID,
             filter: { property: 'Email', email: { equals: email } }
         })
 

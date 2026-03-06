@@ -17,7 +17,7 @@ export default async function handler(req: any, res: any) {
             body: JSON.stringify({
                 filter: {
                     property: 'Status',
-                    status: { equals: 'Published' }
+                    select: { equals: 'Published' }
                 },
                 sorts: [{
                     property: 'Publish Date',
@@ -48,6 +48,7 @@ export default async function handler(req: any, res: any) {
                 title: props.Title?.title[0]?.plain_text || 'Untitled',
                 date: props['Publish Date']?.date?.start || '',
                 category: props.Branch?.select?.name || 'Mind',
+                section: props.Section?.select?.name || '',
                 readTime: '5 min',
                 image: imageUrl,
                 excerpt: excerpt,

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { branches } from '../data/branches'
+import { sections } from '../data/sections'
 import { useNotionData } from '../hooks/useNotionData'
-import BranchCard from '../components/BranchCard'
+import SectionCard from '../components/SectionCard'
 import ToolCard from '../components/ToolCard'
 import BlogCard from '../components/BlogCard'
 
@@ -36,12 +36,27 @@ export default function Home({ onOpenAuth }: HomeProps) {
             </div>
 
             {/* Hero Section */}
-            <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center z-20 px-4 md:px-6 text-center snap-start">
-                <div className="animate-in fade-in zoom-in duration-1000 mb-6 md:mb-12">
+            <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center z-20 px-4 md:px-6 text-center snap-start overflow-hidden">
+                {/* Background Video */}
+                <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover opacity-60 mix-blend-lighten"
+                    >
+                        <source src="/hero-background.mp4" type="video/mp4" />
+                    </video>
+                    {/* Gradient to blend video with the rest of the dark site */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/80 to-black pointer-events-none" />
+                </div>
+
+                <div className="relative z-10 animate-in fade-in zoom-in duration-1000 mb-6 md:mb-12">
                     <img src="/logo.png" alt="SOR7ED" className="w-64 md:w-[640px] h-auto object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.08)] opacity-95" />
                 </div>
 
-                <div className="max-w-6xl mx-auto space-y-6 md:space-y-10 animate-in slide-in-from-bottom-20 duration-1000 delay-300 fill-mode-both">
+                <div className="relative z-10 max-w-6xl mx-auto space-y-6 md:space-y-10 animate-in slide-in-from-bottom-20 duration-1000 delay-300 fill-mode-both">
                     <h1 className="text-[clamp(2.5rem,6vw,5.5rem)] font-normal tracking-[0.16em] leading-[0.85] text-white mb-6 uppercase">
                         <span className="text-sor7ed-yellow">SOR7ED</span> IS A SHAME-FREE PLATFORM BUILT FOR NEURODIVERGENT AND BUSY MINDS
                     </h1>
@@ -71,7 +86,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
             <div className="relative z-10">
                 {/* About Section Removed (Moved to Hero) */}
 
-                {/* 7 Vectors (Branches) - Combined with Why Different */}
+                {/* 7 Sections */}
                 <section id="vectors" className="relative min-h-screen w-full z-[21] px-4 md:px-6 border-t border-white/5 py-48 bg-black snap-start scroll-mt-24">
                     <div className="container mx-auto max-w-7xl">
                         <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
@@ -80,19 +95,19 @@ export default function Home({ onOpenAuth }: HomeProps) {
                                 THE <span className="text-sor7ed-yellow">ARCHITECTURE.</span>
                             </h2>
                             <p className="text-zinc-500 font-light leading-relaxed text-sm md:text-sm">
-                                We build a behavioural scaffold. Each vector addresses a core friction point in the neurodivergent experience.
+                                We map the 7 core domains of neurodivergent life.
                             </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 mb-16 md:mb-12 text-left">
-                            {branches.map((branch, i) => {
+                            {sections.map((section, i) => {
                                 // Better distribution for 7 items
-                                let span = 'md:col-span-3' // Default for 4-in-a-row (Mind, Wealth, Body, Tech)
-                                if (i >= 4) span = 'md:col-span-4' // Last row of 3 (Connection, Impression, Growth)
+                                let span = 'md:col-span-3' // Default for 4-in-a-row (Think, Care, Spend, Connect)
+                                if (i >= 4) span = 'md:col-span-4' // Last row of 3 (File, Live, Grow)
 
                                 return (
-                                    <div key={branch.name} className={`${span}`}>
-                                        <BranchCard branch={branch} />
+                                    <div key={section.name} className={`${span}`}>
+                                        <SectionCard section={section} />
                                     </div>
                                 )
                             })}

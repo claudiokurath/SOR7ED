@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import ToolCard from '../components/ToolCard'
 import { useNotionData } from '../hooks/useNotionData'
+import { sections } from '../data/sections'
+import { resolveSection } from '../utils/sectionMapper'
 
 interface Tool {
     id: string
@@ -8,17 +11,18 @@ interface Tool {
     description: string
     whatsappKeyword: string
     category: string
+    section?: string
+    branch?: string
     coverImage?: string
 }
 
-
-
-
 const Tools = () => {
     const { data: apiTools, loading } = useNotionData<Tool>('/api/tools')
+    const [activeSection, setActiveSection] = useState<string | null>(null)
 
-    // Combine API tools with fallbacks, ensuring unique IDs and never empty
-    const tools = apiTools
+    const filteredTools = activeSection
+        ? apiTools.filter(tool => resolveSection(tool).toLowerCase() === activeSection.toLowerCase())
+        : apiTools
 
     return (
         <div className="bg-black min-h-screen bg-grid relative overflow-hidden text-white font-roboto">
@@ -34,6 +38,33 @@ const Tools = () => {
 
             <div className="relative z-10 pt-32 pb-20 px-6">
                 <div className="container mx-auto max-w-7xl">
+                    <div className="mb-12 text-center md:text-left">
+                        <h1 className="text-4xl md:text-6xl font-black font-fuel-decay uppercase tracking-[0.15em] mb-4">
+                            The Tools
+                        </h1>
+                        <p className="text-zinc-500 font-light max-w-2xl mb-8">
+                            Functional micro-tools designed for immediate relief. Filter by domain.
+                        </p>
+
+                        <div className="flex flex-wrap gap-2 md:gap-4 justify-center md:justify-start">
+                            <button
+                                onClick={() => setActiveSection(null)}
+                                className={`px-4 py-2 rounded-full border text-xs md:text-sm font-fuel-decay uppercase tracking-[0.1em] transition-all ${!activeSection ? 'bg-white text-black border-white' : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-500'}`}
+                            >
+                                All
+                            </button>
+                            {sections.map(sec => (
+                                <button
+                                    key={sec.id}
+                                    onClick={() => setActiveSection(sec.name)}
+                                    className={`px-4 py-2 rounded-full border text-xs md:text-sm font-fuel-decay uppercase tracking-[0.1em] transition-all flex items-center gap-2 ${activeSection === sec.name ? 'text-black border-transparent shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'bg-transparent text-zinc-500 border-zinc-800 hover:border-zinc-500'}`}
+                                    style={activeSection === sec.name ? { backgroundColor: sec.color } : {}}
+                                >
+                                    <span>{sec.emoji}</span> {sec.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
 
                     {loading ? (
                         <div className="text-center py-20">
@@ -41,23 +72,27 @@ const Tools = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {tools.map((tool, i) => (
+                            {filteredTools.map((tool, i) => (
                                 <div key={tool.id} className="animate-in fade-in slide-in-from-bottom-20" style={{ animationDelay: `${i * 100}ms` }}>
                                     <ToolCard tool={tool} />
                                 </div>
                             ))}
 
-                            {/* Coming Soon Placeholders */}
-                            <div className="stealth-card p-10 flex flex-col items-center justify-center border-dashed opacity-50 border-white/10 h-full min-h-[300px]">
-                                <span className="text-2xl mb-4 grayscale opacity-50">🛡️</span>
-                                <h3 className="text-base font-bold uppercase tracking-[0.15em] text-zinc-600 mb-2">Vaulted Tool</h3>
-                                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-[0.15em]">// COMING_THIS_MONTH</p>
-                            </div>
-                            <div className="stealth-card p-10 flex flex-col items-center justify-center border-dashed opacity-30 border-white/10 h-full min-h-[300px]">
-                                <span className="text-2xl mb-4 grayscale opacity-50">📈</span>
-                                <h3 className="text-base font-bold uppercase tracking-[0.15em] text-zinc-600 mb-2">Market Engine</h3>
-                                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-[0.15em]">// IN_DEVELOPMENT</p>
-                            </div>
+                            {/* Coming Soon Placeholders - only visible when showing all */}
+                            {!activeSection && (
+                                <>
+                                    <div className="stealth-card p-10 flex flex-col items-center justify-center border-dashed opacity-50 border-white/10 h-full min-h-[300px]">
+                                        <span className="text-2xl mb-4 grayscale opacity-50">🛡️</span>
+                                        <h3 className="text-base font-bold uppercase tracking-[0.15em] text-zinc-600 mb-2">Vaulted Tool</h3>
+                                        <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-[0.15em]">// COMING_THIS_MONTH</p>
+                                    </div>
+                                    <div className="stealth-card p-10 flex flex-col items-center justify-center border-dashed opacity-30 border-white/10 h-full min-h-[300px]">
+                                        <span className="text-2xl mb-4 grayscale opacity-50">📈</span>
+                                        <h3 className="text-base font-bold uppercase tracking-[0.15em] text-zinc-600 mb-2">Market Engine</h3>
+                                        <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-[0.15em]">// IN_DEVELOPMENT</p>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     )}
                 </div>

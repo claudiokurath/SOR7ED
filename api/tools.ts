@@ -19,9 +19,9 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
             body: JSON.stringify({
                 filter: {
                     or: [
-                        { property: 'Status', status: { equals: 'Done' } },
-                        { property: 'Status', status: { equals: 'Published' } },
-                        { property: 'Status', status: { equals: 'Live' } }
+                        { property: 'Status', select: { equals: 'Done' } },
+                        { property: 'Status', select: { equals: 'Published' } },
+                        { property: 'Status', select: { equals: 'Live' } }
                     ]
                 }
             })
@@ -47,6 +47,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
                 description: getText(props.Description),
                 whatsappKeyword: getText(props['WhatsApp Keyword']) || getText(props.Keyword) || '',
                 branch: props.Branch?.select?.name || '',
+                section: props.Section?.select?.name || '',
                 coverImage: page.cover?.external?.url ||
                     page.cover?.file?.url ||
                     props['Cover Image']?.files?.[0]?.file?.url ||

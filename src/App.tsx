@@ -12,6 +12,7 @@ import AuthModal from './components/AuthModal'
 import BlogPost from './pages/BlogPost'
 import Vault from './pages/Vault'
 import ToolDetail from './pages/ToolDetail'
+import SectionDetail from './pages/SectionDetail'
 import { VaultProvider } from './context/VaultContext'
 import { useDocumentTitle } from './hooks/useDocumentTitle'
 
@@ -43,6 +44,7 @@ function App() {
                     <main className="flex-grow">
                         <Routes>
                             <Route path="/" element={<Home onOpenAuth={openAuth} />} />
+                            <Route path="/section/:id" element={<SectionDetail />} />
                             <Route path="/tools" element={<Tools />} />
                             <Route path="/tool/:keyword" element={<ToolDetail />} />
                             <Route path="/blog" element={<Blog />} />

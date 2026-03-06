@@ -65,6 +65,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                         id: page.id,
                         title: page.properties.Title?.title?.[0]?.plain_text || 'Untitled',
                         branch: page.properties.Branch?.select?.name || 'Mind',
+                        section: page.properties.Section?.select?.name || '',
                         trigger: page.properties.Trigger?.rich_text?.[0]?.plain_text || '',
                         type: 'blog'
                     })
@@ -87,6 +88,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                             id: page.id,
                             title: page.properties.Name?.title?.[0]?.plain_text || 'Untitled',
                             branch: page.properties.Branch?.select?.name || 'Tech',
+                            section: page.properties.Section?.select?.name || '',
                             trigger: page.properties['WhatsApp Keyword']?.rich_text?.[0]?.plain_text || '',
                             type: 'tool'
                         })
@@ -110,6 +112,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                         id: page.id,
                         title: page.properties.Title?.title?.[0]?.plain_text || 'Untitled',
                         branch: page.properties.Branch?.select?.name || 'Mind',
+                        section: page.properties.Section?.select?.name || '',
                         trigger: page.properties.Trigger?.rich_text?.[0]?.plain_text || '',
                         type: 'blog',
                         isSaved: true
@@ -119,6 +122,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                         id: page.id,
                         title: page.properties.Name?.title?.[0]?.plain_text || 'Untitled',
                         branch: page.properties.Branch?.select?.name || 'Tech',
+                        section: page.properties.Section?.select?.name || '',
                         trigger: page.properties['WhatsApp Keyword']?.rich_text?.[0]?.plain_text || '',
                         type: 'tool',
                         isSaved: true

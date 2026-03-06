@@ -23,27 +23,18 @@ const Header = ({ onOpenAuth }: HeaderProps) => {
                         <Link to="/" className="text-white text-xl font-black font-fuel-decay tracking-[0.15em] hover:text-sor7ed-yellow transition-colors mr-2">
                             SOR7ED
                         </Link>
-                        {location.pathname !== '/' && (
-                            <Link to="/" className="hidden md:block text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors">
-                                Home
-                            </Link>
-                        )}
-                        {location.pathname !== '/tools' && (
-                            <Link to="/tools" className="hidden md:block text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors">
-                                Tools
-                            </Link>
-                        )}
-                        {location.pathname !== '/blog' && (
-                            <Link to="/blog" className="hidden md:block text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors">
-                                Blog
-                            </Link>
-                        )}
-                        {location.pathname !== '/about' && (
-                            <Link to="/about" className="hidden md:block text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors">
-                                About
-                            </Link>
-                        )}
-                        <Link to="/vault" className="text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-400 hover:text-sor7ed-yellow transition-colors border border-white/5 bg-white/[0.03] px-3 md:px-4 py-2 rounded-lg">
+                        <div className="hidden md:flex space-x-4">
+                            {['Think', 'Care', 'Spend', 'Connect', 'File', 'Live', 'Grow'].map((sec) => (
+                                <Link
+                                    key={sec}
+                                    to={`/section/${sec.toLowerCase()}`}
+                                    className="text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
+                                >
+                                    {sec}
+                                </Link>
+                            ))}
+                        </div>
+                        <Link to="/vault" className="text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-400 hover:text-sor7ed-yellow transition-colors border border-white/5 bg-white/[0.03] px-3 md:px-4 py-2 rounded-lg ml-4">
                             Vault
                         </Link>
                     </div>

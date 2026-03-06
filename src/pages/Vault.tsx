@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useVault } from '../context/VaultContext'
+import { sections } from '../data/sections'
+import { resolveSection } from '../utils/sectionMapper'
 
 interface Protocol {
   id: string
   title: string
   branch: string
+  section?: string
   trigger: string
   type: 'blog' | 'tool'
 }
@@ -105,27 +108,25 @@ const Vault = () => {
           </header>
 
           <div className="space-y-24">
-            {['Mind', 'Wealth', 'Body', 'Tech'].map(branch => {
-              const branchProtocols = protocols.filter(p => p.branch === branch)
-              if (branchProtocols.length === 0) return null
+            {sections.map(section => {
+              const sectionProtocols = protocols.filter(p => resolveSection(p).toLowerCase() === section.name.toLowerCase())
+              if (sectionProtocols.length === 0) return null
 
               return (
-                <section key={branch} className="animate-in fade-in slide-in-from-bottom-10">
+                <section key={section.id} className="animate-in fade-in slide-in-from-bottom-10">
                   <div className="flex items-center gap-6 mb-12">
-                    <h2 className="text-2xl md:text-3xl font-fuel-decay text-white uppercase tracking-[0.15em]">{branch}</h2>
+                    <h2 className="text-2xl md:text-3xl font-fuel-decay text-white uppercase tracking-[0.15em] flex items-center gap-3">
+                      <span>{section.emoji}</span> {section.name}
+                    </h2>
                     <div className="h-px flex-1 bg-white/5"></div>
-                    <span className="text-[10px] font-mono text-zinc-700 tracking-[0.5em]">// {branchProtocols.length} NODES</span>
+                    <span className="text-[10px] font-mono text-zinc-700 tracking-[0.5em]">// {sectionProtocols.length} NODES</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {branchProtocols.map((protocol, i) => (
+                    {sectionProtocols.map((protocol, i) => (
                       <div key={protocol.id} className="stealth-card p-10 group transition-all duration-500 hover:border-white/20">
                         <div className="flex justify-between items-start mb-8">
                           <span className="text-[9px] font-mono-headline text-zinc-600 uppercase tracking-[0.3em] font-bold tracking-[0.4em]">// {protocol.type.toUpperCase()}</span>
-                          <div className={`w-10 h-1 rounded-full ${branch === 'Mind' ? 'bg-purple-500/20 group-hover:bg-purple-500/40' :
-                            branch === 'Wealth' ? 'bg-green-500/20 group-hover:bg-green-500/40' :
-                              branch === 'Body' ? 'bg-red-500/20 group-hover:bg-red-500/40' :
-                                'bg-sor7ed-yellow/20 group-hover:bg-sor7ed-yellow/40'
-                            } transition-colors`}></div>
+                          <div className={`w-10 h-1 rounded-full bg-white/20 transition-colors`} style={{ backgroundColor: section.color }}></div>
                         </div>
                         <h3 className="text-3xl md:text-4xl font-fuel-decay text-white uppercase mb-8 group-hover:text-sor7ed-yellow transition-colors tracking-wide leading-none">
                           {protocol.title}
@@ -159,7 +160,7 @@ const Vault = () => {
               )
             })}
 
-            {protocols.filter(p => !['Mind', 'Wealth', 'Body', 'Tech'].includes(p.branch)).length > 0 && (
+            {protocols.filter(p => !sections.find(s => s.name.toLowerCase() === resolveSection(p).toLowerCase())).length > 0 && (
               <section className="animate-in fade-in">
                 {/* Uncategorized items */}
                 <div className="flex items-center gap-6 mb-12">
@@ -167,7 +168,7 @@ const Vault = () => {
                   <div className="h-px flex-1 bg-white/5"></div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {protocols.filter(p => !['Mind', 'Wealth', 'Body', 'Tech'].includes(p.branch)).map((protocol, i) => (
+                  {protocols.filter(p => !sections.find(s => s.name.toLowerCase() === resolveSection(p).toLowerCase())).map((protocol, i) => (
                     <div key={protocol.id} className="stealth-card p-10 group">
                       {/* ... similar card content ... */}
                       <h3 className="text-3xl font-fuel-decay text-white uppercase mb-8">{protocol.title}</h3>
@@ -249,13 +250,13 @@ const Vault = () => {
               <p className="text-[10px] font-mono-headline text-zinc-700 uppercase tracking-[0.15em] text-center mb-8">// REGISTRY_PREVIEW</p>
               <div className="grid grid-cols-1 gap-3">
                 {[
-                  { title: 'Dopamine Fasting V4', branch: 'Mind', status: 'Locked' },
-                  { title: 'Impulse Shield', branch: 'Wealth', status: 'Locked' },
-                  { title: 'Circadian Sync', branch: 'Body', status: 'Locked' }
+                  { title: 'Dopamine Fasting V4', section: 'Think', status: 'Locked' },
+                  { title: 'Impulse Shield', section: 'Spend', status: 'Locked' },
+                  { title: 'Circadian Sync', section: 'Care', status: 'Locked' }
                 ].map((p, i) => (
                   <div key={i} className="flex items-center justify-between p-5 bg-white/[0.01] border border-white/5 rounded-2xl opacity-40 blur-[0.5px]">
                     <div>
-                      <p className="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.15em]">{p.branch}</p>
+                      <p className="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.15em]">{p.section}</p>
                       <p className="text-xs font-fuel-decay text-white uppercase tracking-[0.15em]">{p.title}</p>
                     </div>
                     <span className="text-[8px] font-mono text-zinc-800 border border-zinc-800 px-2 py-1 rounded uppercase tracking-[0.2em]">{p.status}</span>
