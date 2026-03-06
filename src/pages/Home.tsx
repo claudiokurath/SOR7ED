@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { sections } from '../data/sections'
-import { useNotionData } from '../hooks/useNotionData'
+// Removed tools and blog per user request
 import SectionCard from '../components/SectionCard'
-import ToolCard from '../components/ToolCard'
-import BlogCard from '../components/BlogCard'
 
 interface HomeProps {
     onOpenAuth: (mode?: 'signup' | 'signin') => void
@@ -12,9 +10,7 @@ interface HomeProps {
 export default function Home({ onOpenAuth }: HomeProps) {
     const [activeFaq, setActiveFaq] = useState<number | null>(null)
 
-    // Fetch tools and articles from API routes
-    const { data: dynamicTools, loading: toolsLoading } = useNotionData<any>('/api/tools')
-    const { data: dynamicArticles, loading: articlesLoading } = useNotionData<any>('/api/articles')
+    // Removed distinct tools/articles fetching per user request
     const faqs = [
         { q: "Is this an app?", a: "No. SOR7ED is a web-based system that connects directly to WhatsApp. No downloads, no updates, no friction." },
         { q: "Is it tailored for ADHD?", a: "Yes. Every tool is built on neuro-architecture principles designed specifically for executive dysfunction, time blindness, and sensory overload." },
@@ -113,46 +109,7 @@ export default function Home({ onOpenAuth }: HomeProps) {
                     </div>
                 </section>
 
-                {/* Labs (Tools) */}
-                <section id="lab" className="relative min-h-screen w-full z-[22] px-4 md:px-6 py-48 bg-black border-y border-white/5 snap-start scroll-mt-24">
-                    <div className="container mx-auto max-w-7xl">
-                        <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
-                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_LAB</span>
-                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-4 text-white">
-                                THE <span className="text-sor7ed-yellow">TOOLS.</span>
-                            </h2>
-                            <p className="text-zinc-500 font-light leading-relaxed text-sm md:text-sm">
-                                Functional micro-tools designed for immediate relief. From dopamine regulation to impulse filtering.
-                            </p>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
-                            {toolsLoading ? (
-                                <p className="col-span-full text-center text-zinc-500 animate-pulse uppercase tracking-[0.5em] text-xs py-20">Accessing Toolkits...</p>
-                            ) : dynamicTools.slice(0, 6).map((tool: any) => (
-                                <ToolCard key={tool.id} tool={tool} />
-                            ))}
-                        </div>
-                    </div>
-                </section>
 
-                {/* Insights (Articles) */}
-                <section id="blog" className="relative min-h-screen w-full z-[23] px-4 md:px-6 py-48 bg-black snap-start scroll-mt-24">
-                    <div className="container mx-auto max-w-7xl">
-                        <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
-                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_BLOG</span>
-                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-12 text-white">
-                                THE <span className="text-sor7ed-yellow">BLOG.</span>
-                            </h2>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4">
-                            {articlesLoading ? (
-                                <p className="col-span-full text-center text-zinc-500 animate-pulse uppercase tracking-[0.5em] text-xs py-20">Syncing Knowledge Base...</p>
-                            ) : dynamicArticles.slice(0, 6).map((post: any) => (
-                                <BlogCard key={post.id} article={post} />
-                            ))}
-                        </div>
-                    </div>
-                </section>
 
                 {/* FAQ */}
                 <section id="faq" className="relative min-h-screen w-full z-[24] px-4 md:px-6 border-t border-white/5 bg-black snap-start py-48 scroll-mt-24">
