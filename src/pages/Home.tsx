@@ -50,9 +50,9 @@ export default function Home() {
             {/* Full-Screen Background Image */}
             <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
                 <img
-                    src="/hero-background.png"
+                    src="/hero-background.jpg"
                     alt="Hero Background"
-                    className="w-full h-full object-cover opacity-40 filter grayscale scale-105"
+                    className="w-full h-full object-cover opacity-60 filter grayscale-50 scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black/95" />
             </div>
