@@ -26,14 +26,13 @@ const Header = ({ onOpenAuth }: HeaderProps) => {
                     </div>
 
                     <div className="flex items-center space-x-4 md:space-x-8">
-                        <div className="hidden md:flex space-x-4">
-                            <Link to="/vault" className="text-[12px] font-mono-headline uppercase tracking-[0.2em] text-white hover:text-sor7ed-yellow transition-colors border border-white/20 bg-white/[0.03] px-6 py-3 rounded-full">
-                                Vault
-                            </Link>
-                        </div>
-
                         {isLoggedIn ? (
                             <>
+                                <div className="hidden md:flex space-x-4">
+                                    <Link to="/vault" className="text-[12px] font-mono-headline uppercase tracking-[0.2em] text-white hover:text-sor7ed-yellow transition-colors border border-white/20 bg-white/[0.03] px-6 py-3 rounded-full">
+                                        Vault
+                                    </Link>
+                                </div>
                                 <span className="hidden md:inline text-[10px] font-fuel-decay text-sor7ed-yellow uppercase tracking-[0.2em]">
                                     // {user?.name || 'OPERATOR'}
                                 </span>
@@ -46,13 +45,6 @@ const Header = ({ onOpenAuth }: HeaderProps) => {
                             </>
                         ) : (
                             <>
-                                <button
-                                    onClick={() => onOpenAuth('signup')}
-                                    className="bg-sor7ed-yellow text-black px-6 md:px-8 py-3 rounded-full font-mono-headline uppercase text-[10px] md:text-[12px] tracking-[0.2em] hover:bg-yellow-400 hover:scale-105 transition-all shadow-[0_0_20px_rgba(245,198,20,0.1)] font-bold"
-                                >
-                                    <span className="md:hidden">Start</span>
-                                    <span className="hidden md:inline">CONTINUE AS GUEST</span>
-                                </button>
                                 <button
                                     onClick={() => onOpenAuth('signin')}
                                     className="text-[10px] font-mono-headline uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
