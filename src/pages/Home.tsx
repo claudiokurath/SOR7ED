@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { sections } from '../data/sections'
-// Removed tools and blog per user request
 import SectionCard from '../components/SectionCard'
 
 interface HomeProps {
@@ -10,7 +9,6 @@ interface HomeProps {
 export default function Home({ onOpenAuth }: HomeProps) {
     const [activeFaq, setActiveFaq] = useState<number | null>(null)
 
-    // Removed distinct tools/articles fetching per user request
     const faqs = [
         { q: "Is this an app?", a: "No. SOR7ED is a web-based system that connects directly to WhatsApp. No downloads, no updates, no friction." },
         { q: "Is it tailored for ADHD?", a: "Yes. Every tool is built on neuro-architecture principles designed specifically for executive dysfunction, time blindness, and sensory overload." },
@@ -19,80 +17,76 @@ export default function Home({ onOpenAuth }: HomeProps) {
         { q: "Can I use it with medication?", a: "Absolutely. SOR7ED is a behavioural scaffold that complements medication, therapy, or coaching." }
     ]
 
-
-
     return (
-        <div className="bg-black text-white font-roboto w-full relative">
-            {/* Background elements (Fixed) */}
-            <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
-                <div className="absolute inset-0 bg-grid opacity-20" />
-                <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-900/10 to-black" />
+        <div className="bg-[#050505] min-h-screen bg-grid relative overflow-hidden text-white font-sans">
+            {/* Full-Screen Background Image */}
+            <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+                <img
+                    src="/hero-background.jpg"
+                    alt="Hero Background"
+                    className="w-full h-full object-cover opacity-80 scale-105 transition-all duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/70 to-[#050505]" />
+            </div>
+
+            {/* Dynamic Background Glows */}
+            <div className="absolute top-0 left-0 w-full h-screen pointer-events-none z-1">
                 <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-sor7ed-yellow/5 blur-[150px] animate-stealth-glow rounded-full" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/5 blur-[120px] rounded-full" />
             </div>
 
             {/* Hero Section */}
-            <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center z-20 px-4 md:px-6 text-center snap-start overflow-hidden">
-                {/* Background Image */}
-                <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-                    <img
-                        src="/hero-background.jpg"
-                        alt=""
-                        className="w-full h-full object-cover opacity-90"
-                    />
-                    {/* Gradient to blend image with the rest of the dark site */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050505] pointer-events-none" />
+            <section id="hero" className="relative h-screen flex flex-col justify-center items-center z-20 transition-all duration-1000">
+                <div className="animate-in fade-in zoom-in duration-1000 mb-12 text-center px-6">
+                    <h1 className="text-6xl md:text-9xl font-black uppercase tracking-tighter text-white mb-6">SOR7ED <span className="text-sor7ed-yellow">LAB.</span></h1>
+                    <p className="text-xl md:text-2xl text-zinc-300 font-light max-w-2xl mx-auto">
+                        Your behavioral scaffold. Designed for immediate relief, from dopamine regulation to impulse filtering.
+                    </p>
                 </div>
 
-                <div className="relative z-10 animate-in fade-in zoom-in duration-1000 mb-6 md:mb-12">
-                    <img src="/logo.png" alt="SOR7ED" className="w-64 md:w-[640px] h-auto object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.08)] opacity-95" />
-                </div>
-
-                <div className="relative z-10 max-w-6xl mx-auto space-y-6 md:space-y-10 animate-in slide-in-from-bottom-20 duration-1000 delay-300 fill-mode-both">
-                    <h1 className="text-[clamp(2.5rem,6vw,5.5rem)] font-normal tracking-[0.16em] leading-[0.85] text-white mb-6 uppercase">
-                        <span className="text-sor7ed-yellow">SOR7ED</span> IS A SHAME-FREE PLATFORM BUILT FOR NEURODIVERGENT AND BUSY MINDS
-                    </h1>
-
-                    <div className="text-zinc-400 text-sm md:text-lg font-light leading-relaxed max-w-3xl mx-auto space-y-4 md:space-y-6 text-left md:text-center">
-                        <p>
-                            We publish practical articles three times a week and deliver <strong className="text-white font-medium">free templates via WhatsApp</strong> — no new apps, no downloads, just the app you already use.
-                        </p>
-                        <p>
-                            <strong className="text-white font-medium">We're not therapy, medicine, or a crisis service.</strong> We're a content platform that gives you templates, scripts, and tools to handle the life admin that feels impossible.
-                        </p>
-                        <p>
-                            SOR7ED was built by neurodivergent people who got tired of advice that never worked for their brains — so built something that does.
-                        </p>
-                        <p className="text-sor7ed-yellow font-fuel-decay uppercase tracking-[0.1em] text-xl md:text-3xl pt-2 text-center text-shadow-glow">
-                            TEMPLATES ARE FREE. FOREVER.
-                        </p>
-                    </div>
-
-
+                <div className="mt-8 flex flex-col md:flex-row items-center gap-6 justify-center">
+                    <button
+                        onClick={() => onOpenAuth('signin')}
+                        className="bg-sor7ed-yellow text-black font-black uppercase tracking-[0.3em] text-[11px] py-5 px-16 rounded-full hover:bg-yellow-400 hover:scale-105 transition-all duration-500 animate-in fade-in duration-1000 delay-500 fill-mode-both shadow-[0_0_40px_rgba(245,198,20,0.2)]"
+                    >
+                        Sign In
+                    </button>
+                    <button
+                        onClick={() => document.getElementById('vectors')?.scrollIntoView({ behavior: 'smooth' })}
+                        className="bg-transparent border border-white/20 text-white font-black uppercase tracking-[0.3em] text-[11px] py-5 px-16 rounded-full hover:bg-white/10 hover:scale-105 transition-all duration-500 animate-in fade-in duration-1000 delay-500 fill-mode-both"
+                    >
+                        Continue as a Guest
+                    </button>
                 </div>
             </section>
 
-            <div className="relative z-10">
-                {/* About Section Removed (Moved to Hero) */}
-
-                {/* 7 Sections */}
-                <section id="vectors" className="relative min-h-screen w-full z-[21] px-4 md:px-6 border-t border-white/5 py-48 bg-black snap-start scroll-mt-24">
-                    <div className="container mx-auto max-w-7xl">
-                        <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
-                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_ARCHITECTURE</span>
-                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-4 text-white">
+            <main className="relative z-10 animate-in fade-in slide-in-from-bottom-20 duration-1000 fill-mode-both">
+                {/* 7 Vectors (Branches) — first thing after hero */}
+                <section id="vectors" className="py-12 md:py-24 flex flex-col items-center min-h-[90vh] justify-center scroll-mt-24">
+                    <div className="container mx-auto px-6 max-w-7xl">
+                        <div className="text-center mb-12 max-w-4xl mx-auto">
+                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 animate-in slide-in-from-bottom-20">// THE_ARCHITECTURE</span>
+                            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6">
                                 THE <span className="text-sor7ed-yellow">ARCHITECTURE.</span>
                             </h2>
-                            <p className="text-zinc-500 font-light leading-relaxed text-sm md:text-sm">
-                                We map the 7 core domains of neurodivergent life.
+                            <p className="text-zinc-500 font-light leading-relaxed mb-4">
+                                SOR7ED is your comprehensive life management system. We've broken down every aspect of living into 7 core vectors to help you build a solid scaffolding.
+                            </p>
+                            <p className="text-zinc-500 font-light leading-relaxed">
+                                Your mission is simple: Pick an area where you need clarity, dive into the tools, and start optimizing. Whether you need immediate action or long-term planning, we've got you sorted. Select a section below to explore it.
                             </p>
                         </div>
-
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 mb-16 md:mb-12 text-left">
                             {sections.map((section, i) => {
-                                // Better distribution for 7 items
-                                let span = 'md:col-span-3' // Default for 4-in-a-row (Think, Care, Spend, Connect)
-                                if (i >= 4) span = 'md:col-span-4' // Last row of 3 (File, Live, Grow)
+                                // 2:3:2 masonry style across 12 cols
+                                let span = ''
+
+                                // Row 1 (2 items): col-span-6 each
+                                if (i === 0 || i === 1) span = 'md:col-span-6'
+                                // Row 2 (3 items): col-span-4 each
+                                else if (i >= 2 && i <= 4) span = 'md:col-span-4'
+                                // Row 3 (2 items): col-span-6 each
+                                else span = 'md:col-span-6'
 
                                 return (
                                     <div key={section.name} className={`${span}`}>
@@ -101,36 +95,29 @@ export default function Home({ onOpenAuth }: HomeProps) {
                                 )
                             })}
                         </div>
-
-
                     </div>
                 </section>
 
-
-
                 {/* FAQ */}
-                <section id="faq" className="relative min-h-screen w-full z-[24] px-4 md:px-6 border-t border-white/5 bg-black snap-start py-48 scroll-mt-24">
-                    <div className="container mx-auto max-w-4xl">
-                        <div className="text-center mb-10 md:mb-10 max-w-3xl mx-auto">
-                            <span className="text-[10px] font-mono-headline text-zinc-500 uppercase tracking-[0.4em] block mb-4 md:mb-5 animate-in slide-in-from-bottom-20">// THE_FAQ</span>
-                            <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-6 md:mb-12 text-white">
-                                SYSTEM <span className="text-sor7ed-yellow">FAQ.</span>
-                            </h2>
-                        </div>
+                <section id="faq" className="py-24 md:py-40 border-t border-white/5">
+                    <div className="container mx-auto max-w-4xl px-6">
+                        <h2 className="section-title text-center mb-12 md:mb-24">
+                            <span className="title-white">SYSTEM</span> <span className="title-yellow">FAQ.</span>
+                        </h2>
                         <div className="space-y-6">
                             {faqs.map((faq, i) => (
-                                <div key={i} className={`stealth-card overflow-hidden transition-all duration-300 ${activeFaq === i ? 'border-sor7ed-yellow shadow-[0_0_30px_rgba(245,198,20,0.1)]' : 'border-white/5'}`}>
+                                <div key={i} className="bg-sor7ed-yellow text-black rounded-3xl overflow-hidden shadow-[0_10px_30px_-10px_rgba(245,198,20,0.3)] transition-all duration-300">
                                     <button
                                         onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                                        className="w-full text-left p-6 md:p-10 flex justify-between items-center group"
+                                        className="w-full text-left p-6 md:p-8 flex justify-between items-center group"
                                     >
-                                        <span className={`text-sm md:text-base font-fuel-decay uppercase tracking-[0.15em] transition-colors ${activeFaq === i ? 'text-sor7ed-yellow' : 'text-zinc-400 group-hover:text-white'}`}>
+                                        <span className={`text-[12px] md:text-sm font-black uppercase tracking-[0.2em] transition-colors ${activeFaq === i ? 'text-black' : 'text-black/70 group-hover:text-black'}`}>
                                             {faq.q}
                                         </span>
-                                        <span className={`text-xl transition-transform ${activeFaq === i ? 'rotate-45 text-sor7ed-yellow' : 'text-zinc-500'}`}>+</span>
+                                        <span className="text-2xl font-light">{activeFaq === i ? '−' : '+'}</span>
                                     </button>
                                     {activeFaq === i && (
-                                        <div className="px-6 md:px-10 pb-6 md:pb-8 text-zinc-400 text-xs md:text-sm leading-relaxed font-light border-t border-white/5 pt-6 animate-in fade-in duration-500">
+                                        <div className="px-6 md:px-8 pb-6 md:pb-8 text-black/80 text-sm leading-relaxed font-normal border-t border-black/10 pt-6 animate-in fade-in duration-500">
                                             {faq.a}
                                         </div>
                                     )}
@@ -140,46 +127,8 @@ export default function Home({ onOpenAuth }: HomeProps) {
                     </div>
                 </section>
 
-                {/* Footer CTA */}
-                <section className="relative min-h-screen w-full z-[25] px-4 md:px-6 border-t border-sor7ed-yellow/10 bg-black snap-start py-48 scroll-mt-24">
-                    <div className="container mx-auto max-w-7xl">
-                        <h2 className="text-4xl md:text-8xl font-normal tracking-[0.16em] leading-[0.95] mb-12 md:mb-16 text-center text-white">
-                            STOP STRUGGLING. <br /><span className="text-sor7ed-yellow">START OPERATING.</span>
-                        </h2>
-                        <div className="flex flex-col items-center space-y-8">
-                            <button
-                                onClick={() => {
-                                    // If we had isLoggedIn from VaultContext here, we could redirect to /vault
-                                    // But since Home doesn't import useVault currently, we'll keep the design
-                                    // where it opens AuthModal (which hides signup if logged in, or the Header handles it)
-                                    onOpenAuth('signup')
-                                }}
-                                className="inline-block bg-sor7ed-yellow text-black font-fuel-decay font-normal uppercase tracking-[0.3em] text-[10px] md:text-xs py-6 md:py-8 px-16 md:px-24 rounded-full hover:bg-yellow-400 hover:scale-110 transition-all duration-500 shadow-[0_0_50px_rgba(245,198,20,0.3)]"
-                            >
-                                Initialize Connection
-                            </button>
-                            <button
-                                onClick={() => onOpenAuth('signin')}
-                                className="text-[10px] font-fuel-decay uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
-                            >
-                                Already a member? Sign in
-                            </button>
-                        </div>
-
-                        <div className="mt-32 pt-24 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-16 text-zinc-600 font-mono-headline text-[10px] uppercase tracking-[0.4em]">
-                            <div className="space-y-6">
-                                <p>// DIRECT_LINE</p>
-                                <a href="tel:+447360277713" className="text-zinc-400 hover:text-sor7ed-yellow transition-colors text-xs">+44 7360 277713</a>
-                            </div>
-                            <div className="space-y-6">
-                                <p>// SECURE_CHANNEL</p>
-                                <a href="mailto:hello@sor7ed.com" className="text-zinc-400 hover:text-sor7ed-yellow transition-colors text-xs">HELLO@SOR7ED.COM</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+                <div className="pb-40"></div>
+            </main>
         </div>
     )
 }
-
