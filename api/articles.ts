@@ -2,15 +2,6 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const NOTION_API_KEY = (process.env.NOTION_API_KEY || '').trim()
 const BLOG_DB_ID = (process.env.NOTION_BLOG_DB_ID || '').trim()
-const BRANCH_COLORS: Record<string, string> = {
-    MIND: '#9B59B6',
-    WEALTH: '#27AE60',
-    BODY: '#E74C3C',
-    TECH: '#3498DB',
-    CONNECTION: '#E67E22',
-    IMPRESSION: '#F39C12',
-    GROWTH: '#16A085',
-}
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
     try {
@@ -74,7 +65,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
                 cta,
                 coverImage: page.cover?.external?.url || page.cover?.file?.url || props['Cover Image URL']?.rich_text?.[0]?.plain_text || props['Files & media']?.files?.[0]?.file?.url || props['Files & media']?.files?.[0]?.external?.url || '',
                 branch,
-                branchColor: BRANCH_COLORS[branch.toUpperCase()] || '#F5C614',
+                branchColor: '#F5C614',
                 readTime: props['Read Time']?.rich_text?.[0]?.plain_text || '',
                 date: publishDate
                     ? new Date(publishDate).toLocaleDateString('en-GB', {
