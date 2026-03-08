@@ -21,7 +21,6 @@ const Header = ({ onOpenAuth }: HeaderProps) => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center">
                         <Link to="/" className="text-white text-[2rem] md:text-[2.5rem] font-normal tracking-[0.15em] hover:text-sor7ed-yellow transition-colors mr-2">
-                            <span className="text-sor7ed-yellow">SOR7ED</span>
                         </Link>
                     </div>
 
