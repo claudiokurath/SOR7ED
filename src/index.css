@@ -56,7 +56,7 @@
   }
 
   .btn-secondary {
-    @apply inline-block bg-transparent border-2 border-sor7ed-yellow text-sor7ed-yellow px-8 py-4 rounded-lg text-lg font-bold hover:bg-sor7ed-yellow hover:text-black transition-all duration-300;
+    @apply inline-block bg-sor7ed-yellow border-2 border-sor7ed-yellow text-black px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-400 transition-all duration-300;
   }
 
   .section-title {
@@ -73,13 +73,13 @@
 
 /* Stealth/Cyberpunk Design Classes */
 .stealth-card {
-  @apply bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-2xl transition-all duration-700;
+  @apply bg-zinc-900/40 backdrop-blur-xl border border-sor7ed-yellow rounded-2xl transition-all duration-700;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .stealth-card:hover {
-  @apply border-white/20 bg-zinc-800/40;
-  box-shadow: 0 0 50px rgba(245, 198, 20, 0.05);
+  @apply border-sor7ed-yellow bg-zinc-800/40;
+  box-shadow: 0 0 50px rgba(245, 198, 20, 0.2);
 }
 
 .title-white {

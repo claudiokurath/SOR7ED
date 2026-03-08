@@ -46,8 +46,8 @@ const Blog = () => {
                         <button
                             onClick={() => setSelectedSection(null)}
                             className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 border ${selectedSection === null
-                                ? 'bg-sor7ed-yellow border-sor7ed-yellow text-black'
-                                : 'bg-transparent border-white/10 text-zinc-500 hover:text-white hover:border-white/30'
+                                ? 'bg-yellow-500 border-yellow-500 text-black shadow-[0_0_20px_rgba(245,198,20,0.4)]'
+                                : 'bg-sor7ed-yellow border-sor7ed-yellow text-black hover:bg-yellow-400 hover:border-yellow-400'
                                 }`}
                         >
                             ALL
@@ -57,8 +57,8 @@ const Blog = () => {
                                 key={section.id}
                                 onClick={() => setSelectedSection(section.name)}
                                 className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 border ${selectedSection === section.name
-                                    ? 'bg-sor7ed-yellow border-sor7ed-yellow text-black'
-                                    : 'bg-transparent border-white/10 text-zinc-500 hover:text-white hover:border-white/30'
+                                    ? 'bg-yellow-500 border-yellow-500 text-black shadow-[0_0_20px_rgba(245,198,20,0.4)]'
+                                    : 'bg-sor7ed-yellow border-sor7ed-yellow text-black hover:bg-yellow-400 hover:border-yellow-400'
                                     }`}
                             >
                                 {section.name}
