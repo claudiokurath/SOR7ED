@@ -36,12 +36,12 @@ export default function Home({ onOpenAuth }: HomeProps) {
                 {/* Background Image */}
                 <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
                     <img
-                        src="/Untitled-1.png"
+                        src="/hero-background.jpg"
                         alt=""
-                        className="w-full h-full object-cover opacity-60 mix-blend-lighten"
+                        className="w-full h-full object-cover opacity-90"
                     />
                     {/* Gradient to blend image with the rest of the dark site */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/80 to-black pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-[#050505] pointer-events-none" />
                 </div>
 
                 <div className="relative z-10 animate-in fade-in zoom-in duration-1000 mb-6 md:mb-12">
