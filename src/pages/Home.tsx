@@ -48,11 +48,11 @@ export default function Home() {
     return (
         <div className="bg-[#050505] min-h-screen bg-grid relative overflow-hidden text-white font-sans">
             {/* Full-Screen Background Image */}
-            <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+            <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none flex items-center justify-center bg-black">
                 <img
                     src="/hero-background.jpg"
                     alt="Hero Background"
-                    className="w-full h-full object-cover opacity-80 scale-105 transition-all duration-1000"
+                    className="w-full h-full object-contain opacity-80 transition-all duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-[#050505]" />
             </div>
