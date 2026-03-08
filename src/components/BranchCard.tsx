@@ -19,14 +19,9 @@ export default function BranchCard({ branch, delay = 0, className = "" }: Branch
                 </h3>
             </div>
             <div>
-                <div className="mb-4">
-                    <p className="text-[10px] font-mono-headline text-black/40 uppercase tracking-[0.15em] mb-1 md:mb-2">// THE_PROBLEM</p>
-                    <p className="text-black font-fuel-decay font-normal text-lg md:text-xl uppercase ">{branch.problem}</p>
-                </div>
-                <div>
-                    <p className="text-[10px] font-mono-headline text-black/40 uppercase tracking-[0.15em] mb-1 md:mb-2">// THE_FIX</p>
-                    <p className="text-black font-roboto font-normal text-xs md:text-sm  opacity-80">{branch.description}</p>
-                </div>
+                <p className="text-black font-roboto font-normal text-sm md:text-base opacity-80 leading-relaxed">
+                    {branch.description}
+                </p>
             </div>
         </div>
     )
