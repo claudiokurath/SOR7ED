@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { branches } from '../data/branches'
+import { sections } from '../data/sections'
 import { useNotionData } from '../hooks/useNotionData'
 import { useVaultSession } from '../hooks/useVaultSession'
-import BranchCard from '../components/BranchCard'
+import SectionCard from '../components/SectionCard'
 import Testimonials from '../components/Testimonials'
 import EmailCapture from '../components/EmailCapture'
 
@@ -98,10 +98,17 @@ export default function Home() {
                                     We don't just "fix" ADHD. We build a scaffolding around it. Each vector addresses a core friction point in the neurodivergent experience.
                                 </p>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {branches.map(branch => (
-                                    <BranchCard key={branch.name} branch={branch} />
-                                ))}
+                            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 mb-16 md:mb-12 text-left">
+                                {sections.map((section, i) => {
+                                    let span = 'md:col-span-3' // Default for 4-in-a-row (Think, Care, Spend, Connect)
+                                    if (i >= 4) span = 'md:col-span-4' // Last row of 3 (File, Live, Grow)
+
+                                    return (
+                                        <div key={section.name} className={`${span}`}>
+                                            <SectionCard section={section} />
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </div>
                     </section>
