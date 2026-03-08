@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import BlogCard from '../components/BlogCard'
-import { branches } from '../data/branches'
+import { sections } from '../data/sections'
 import { useNotionData } from '../hooks/useNotionData'
 
 interface Article {
@@ -19,10 +19,10 @@ interface Article {
 
 const Blog = () => {
     const { data: articles, loading } = useNotionData<Article>('/api/articles')
-    const [selectedBranch, setSelectedBranch] = useState<string | null>(null)
+    const [selectedSection, setSelectedSection] = useState<string | null>(null)
 
-    const filteredArticles = selectedBranch
-        ? articles.filter(article => article.branch === selectedBranch)
+    const filteredArticles = selectedSection
+        ? articles.filter(article => article.branch === selectedSection)
         : articles
 
     return (
@@ -41,27 +41,27 @@ const Blog = () => {
                 <div className="container mx-auto max-w-7xl flex flex-col items-center">
                     {/* Content Header removed per user request: 'dont repeat the title when on that specific tab' */}
 
-                    {/* Branch Filter */}
+                    {/* Section Filter */}
                     <div className="flex flex-wrap gap-4 justify-center mb-24 animate-in fade-in delay-300">
                         <button
-                            onClick={() => setSelectedBranch(null)}
-                            className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 border ${selectedBranch === null
+                            onClick={() => setSelectedSection(null)}
+                            className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 border ${selectedSection === null
                                 ? 'bg-sor7ed-yellow border-sor7ed-yellow text-black'
                                 : 'bg-transparent border-white/10 text-zinc-500 hover:text-white hover:border-white/30'
                                 }`}
                         >
                             ALL
                         </button>
-                        {branches.map(branch => (
+                        {sections.map(section => (
                             <button
-                                key={branch.id}
-                                onClick={() => setSelectedBranch(branch.name)}
-                                className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 border ${selectedBranch === branch.name
+                                key={section.id}
+                                onClick={() => setSelectedSection(section.name)}
+                                className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 border ${selectedSection === section.name
                                     ? 'bg-sor7ed-yellow border-sor7ed-yellow text-black'
                                     : 'bg-transparent border-white/10 text-zinc-500 hover:text-white hover:border-white/30'
                                     }`}
                             >
-                                {branch.name}
+                                {section.name}
                             </button>
                         ))}
                     </div>
