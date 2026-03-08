@@ -2,8 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const NOTION_API_KEY = (process.env.NOTION_API_KEY || '').trim()
 const BLOG_DB_ID = (process.env.NOTION_BLOG_DB_ID || '').trim()
-    ```typescript
-const BRANCH_COLORS = {
+const BRANCH_COLORS: Record<string, string> = {
     MIND: '#9B59B6',
     WEALTH: '#27AE60',
     BODY: '#E74C3C',
@@ -12,7 +11,6 @@ const BRANCH_COLORS = {
     IMPRESSION: '#F39C12',
     GROWTH: '#16A085',
 }
-```
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
     try {
