@@ -12,7 +12,7 @@ export default function SectionCard({ section, delay = 0, className = "" }: Sect
     return (
         <Link
             to={`/section/${section.id}`}
-            className={`stealth-card relative rounded-2xl p-6 md:p-10 flex flex-col justify-between h-full border border-white/5 hover:border-white/20 transition-all duration-500 bg-black/40 group block ${className}`}
+            className={`stealth-card relative rounded-2xl p-6 md:p-10 flex flex-col justify-between h-full border border-sor7ed-yellow transition-all duration-500 bg-black/40 group block ${className}`}
             style={{ animationDelay: `${delay}ms` }}
         >
             <div className="flex justify-between items-start mb-6 md:mb-12">
@@ -27,7 +27,7 @@ export default function SectionCard({ section, delay = 0, className = "" }: Sect
                     <p className="text-white/90 font-roboto font-light text-sm md:text-base">{section.description}</p>
                 </div>
 
-                <div className="inline-flex items-center justify-center border border-white/20 bg-transparent text-white font-fuel-decay uppercase tracking-[0.2em] text-[10px] py-4 px-6 rounded-full group-hover:bg-white group-hover:text-black transition-colors w-max">
+                <div className="inline-flex items-center justify-center border border-sor7ed-yellow bg-transparent text-white font-fuel-decay uppercase tracking-[0.2em] text-[10px] py-4 px-6 rounded-full group-hover:bg-sor7ed-yellow group-hover:text-black transition-colors w-max">
                     EXPLORE SECTION
                 </div>
             </div>
