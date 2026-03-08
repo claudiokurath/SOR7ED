@@ -55,9 +55,6 @@ export default function Home({ onOpenAuth }: HomeProps) {
 
                     <div className="text-zinc-400 text-sm md:text-lg font-light leading-relaxed max-w-3xl mx-auto space-y-4 md:space-y-6 text-left md:text-center">
                         <p>
-                            — people with ADHD, autism, dyslexia, RSD, and related experiences who are tired of productivity advice that doesn't work for them.
-                        </p>
-                        <p>
                             We publish practical articles three times a week and deliver <strong className="text-white font-medium">free templates via WhatsApp</strong> — no new apps, no downloads, just the app you already use.
                         </p>
                         <p>
