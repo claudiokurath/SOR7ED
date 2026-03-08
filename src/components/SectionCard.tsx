@@ -12,11 +12,7 @@ export default function SectionCard({ section, delay = 0, className = "" }: Sect
     return (
         <Link
             to={`/section/${section.id}`}
-<<<<<<< HEAD
-            className={`stealth-card relative rounded-2xl p-6 md:p-10 flex flex-col justify-between h-full border border-sor7ed-yellow transition-all duration-500 bg-black/40 group block ${className}`}
-=======
             className={`relative rounded-3xl p-6 flex flex-col justify-between h-[300px] md:h-full min-h-[220px] transition-all duration-500 bg-sor7ed-yellow group block shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] hover:shadow-[0_0_50px_rgba(245,198,20,0.4)] hover:-translate-y-1 ${className}`}
->>>>>>> 5cf9a89 (Update home and sections layout)
             style={{ animationDelay: `${delay}ms` }}
         >
             <div className="flex justify-between items-start mb-4">
@@ -31,11 +27,7 @@ export default function SectionCard({ section, delay = 0, className = "" }: Sect
                     <p className="text-black/90 font-roboto text-xs md:text-sm line-clamp-3">{section.description}</p>
                 </div>
 
-<<<<<<< HEAD
-                <div className="inline-flex items-center justify-center border border-sor7ed-yellow bg-transparent text-white font-fuel-decay uppercase tracking-[0.2em] text-[10px] py-4 px-6 rounded-full group-hover:bg-sor7ed-yellow group-hover:text-black transition-colors w-max">
-=======
                 <div className="inline-flex items-center justify-center border border-black bg-black text-sor7ed-yellow font-fuel-decay uppercase tracking-[0.2em] text-[10px] py-3 px-5 rounded-full group-hover:bg-zinc-900 transition-colors w-max">
->>>>>>> 5cf9a89 (Update home and sections layout)
                     EXPLORE SECTION
                 </div>
             </div>
