@@ -11,6 +11,13 @@ const BRANCH_COLORS: Record<string, string> = {
     CONNECTION: '#E67E22',
     IMPRESSION: '#F39C12',
     GROWTH: '#16A085',
+    'KEEP GOING': '#9B59B6',
+    'SPEND SMART': '#27AE60',
+    'FEEL GOOD': '#E74C3C',
+    'PLAN AHEAD': '#3498DB',
+    'BE CONNECTED': '#E67E22',
+    'BE YOURSELF': '#F39C12',
+    'LEVEL UP': '#16A085',
 }
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {

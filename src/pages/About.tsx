@@ -24,7 +24,7 @@ const About = () => {
 
                         <h2 className="text-3xl font-bold mt-12 mb-4 text-white">The 7 Branches Framework</h2>
                         <p>
-                            Everything we create maps to one of 7 core life areas: MIND, WEALTH, BODY, TECH, CONNECTION, IMPRESSION, and GROWTH. Because ADHD doesn't just affect one part of your life—it touches everything.
+                            Everything we create maps to one of 7 core life areas: Keep Going, Feel Good, Spend Smart, Be Connected, Plan Ahead, Be Yourself, and Level Up. Because ADHD doesn't just affect one part of your life—it touches everything.
                         </p>
 
                         <h2 className="text-3xl font-bold mt-12 mb-4 text-white">Our Promise</h2>

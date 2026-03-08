@@ -2,7 +2,7 @@ export const branches = [
     {
         id: 'mind',
         emoji: '🧠',
-        name: 'Mind',
+        name: 'Keep Going',
         problem: "Can't Focus?",
         solution: "Neuro-Architectural Guards",
         description: 'Protocols to stabilize focus and bypass emotional dysregulation.',
@@ -11,7 +11,7 @@ export const branches = [
     {
         id: 'wealth',
         emoji: '💰',
-        name: 'Wealth',
+        name: 'Spend Smart',
         problem: "Broke from Impulse?",
         solution: "Financial Gatekeepers",
         description: 'Eliminate the ADHD tax with friction-based spending systems.',
@@ -20,7 +20,7 @@ export const branches = [
     {
         id: 'body',
         emoji: '💪',
-        name: 'Body',
+        name: 'Feel Good',
         problem: "Constant Burnout?",
         solution: "Energy Scaffolding",
         description: 'Regulate your biology with systems that respect your sensory limits.',
@@ -29,7 +29,7 @@ export const branches = [
     {
         id: 'tech',
         emoji: '💻',
-        name: 'Tech',
+        name: 'Plan Ahead',
         problem: "Digital Chaos?",
         solution: "Frictionless Interfaces",
         description: 'Custom tools delivered via WhatsApp. No apps. No accounts.',
@@ -38,7 +38,7 @@ export const branches = [
     {
         id: 'connection',
         emoji: '🤝',
-        name: 'Connection',
+        name: 'Be Connected',
         problem: "Socially Drained?",
         solution: "Boundary Frameworks",
         description: 'Communication protocols that protect your social battery.',
@@ -47,7 +47,7 @@ export const branches = [
     {
         id: 'impression',
         emoji: '✨',
-        name: 'Impression',
+        name: 'Be Yourself',
         problem: "Hiding Your Self?",
         solution: "Strategic Unmasking",
         description: 'Master the art of showing up without losing your identity.',
@@ -56,7 +56,7 @@ export const branches = [
     {
         id: 'growth',
         emoji: '🌱',
-        name: 'Growth',
+        name: 'Level Up',
         problem: "Stuck in Loops?",
         solution: "Cyclic Momentum",
         description: 'Leverage hyperfocus cycles to build compounding progress.',
