@@ -47,12 +47,14 @@ export default function Home() {
 
     return (
         <div className="bg-[#050505] min-h-screen bg-grid relative overflow-hidden text-white font-sans">
-            {/* Full-Screen Background Video */}
+            {/* Full-Screen Background Image */}
             <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
-                <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-20 filter grayscale scale-105">
-                    <source src="/Intro.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+                <img
+                    src="/hero-background.png"
+                    alt="Hero Background"
+                    className="w-full h-full object-cover opacity-40 filter grayscale scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black/95" />
             </div>
 
             {/* Dynamic Background Glows */}
@@ -100,8 +102,15 @@ export default function Home() {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 mb-16 md:mb-12 text-left">
                                 {sections.map((section, i) => {
-                                    let span = 'md:col-span-3' // Default for 4-in-a-row (Think, Care, Spend, Connect)
-                                    if (i >= 4) span = 'md:col-span-4' // Last row of 3 (File, Live, Grow)
+                                    // 2:3:2 masonry style across 12 cols
+                                    let span = ''
+
+                                    // Row 1 (2 items): col-span-6 each
+                                    if (i === 0 || i === 1) span = 'md:col-span-6'
+                                    // Row 2 (3 items): col-span-4 each
+                                    else if (i >= 2 && i <= 4) span = 'md:col-span-4'
+                                    // Row 3 (2 items): col-span-6 each
+                                    else span = 'md:col-span-6'
 
                                     return (
                                         <div key={section.name} className={`${span}`}>
@@ -157,17 +166,29 @@ export default function Home() {
                                     <div
                                         key={i}
                                         onClick={() => handlePostClick(post)}
-                                        className="stealth-card group cursor-pointer hover:border-white/20 transition-all duration-700 h-[320px] flex flex-col justify-between p-10"
+                                        className="stealth-card group cursor-pointer hover:border-white/20 transition-all duration-700 h-[380px] flex flex-col justify-between overflow-hidden relative"
                                     >
-                                        <div>
-                                            <div className="flex justify-between items-center mb-6">
-                                                <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-widest">{post.branch}</span>
-                                                <span className="text-[9px] font-mono-headline text-zinc-600 uppercase tracking-widest">{post.date}</span>
+                                        {post.coverImage && (
+                                            <div className="absolute inset-0 w-full h-full z-0">
+                                                <img
+                                                    src={post.coverImage}
+                                                    alt={post.title}
+                                                    className="w-full h-full object-cover opacity-20 filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
                                             </div>
-                                            <h3 className="text-2xl font-bold uppercase tracking-tight mb-4 group-hover:text-sor7ed-yellow transition-colors">{post.title}</h3>
-                                            <p className="text-sm text-zinc-500 leading-relaxed line-clamp-3">{post.excerpt}</p>
+                                        )}
+                                        <div className="relative z-10 p-10 flex flex-col justify-between h-full">
+                                            <div>
+                                                <div className="flex justify-between items-center mb-6">
+                                                    <span className="text-[9px] font-mono-headline text-sor7ed-yellow uppercase tracking-widest">{post.branch}</span>
+                                                    <span className="text-[9px] font-mono-headline text-zinc-600 uppercase tracking-widest">{post.date}</span>
+                                                </div>
+                                                <h3 className="text-2xl font-bold uppercase tracking-tight mb-4 group-hover:text-sor7ed-yellow transition-colors">{post.title}</h3>
+                                                <p className="text-sm text-zinc-500 leading-relaxed line-clamp-3">{post.excerpt}</p>
+                                            </div>
+                                            <div className="text-right text-zinc-800 group-hover:text-white transition-colors">→</div>
                                         </div>
-                                        <div className="text-right text-zinc-800 group-hover:text-white transition-colors">→</div>
                                     </div>
                                 ))}
                             </div>
