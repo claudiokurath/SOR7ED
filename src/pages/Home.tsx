@@ -52,9 +52,9 @@ export default function Home() {
                 <img
                     src="/hero-background.jpg"
                     alt="Hero Background"
-                    className="w-full h-full object-cover opacity-60 filter grayscale-50 scale-105"
+                    className="w-full h-full object-cover opacity-80 scale-105 transition-all duration-1000"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black/95" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-[#050505]" />
             </div>
 
             {/* Dynamic Background Glows */}
